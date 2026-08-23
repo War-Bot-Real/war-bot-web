@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import { Application, Assets, Sprite } from "pixi.js";
 
 import { getMapUrl, getTerritories } from "../../api";
-import { buildProvinceLookup } from "../../map/BuildProvinceLookup";
-import type { ProvincePixelLookup } from "../../types/Province";
+import { buildTerritoryLookup } from "../../map/BuildTerritoryLookup";
+import type { TerritoryPixelLookup } from "../../types/Territory";
 
 function GameMap() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const lookupRef = useRef<ProvincePixelLookup | null>(null);
+    const lookupRef = useRef<TerritoryPixelLookup | null>(null);
 
     useEffect(() => {
         let app: Application | null = null;
@@ -35,7 +35,7 @@ function GameMap() {
 
             try {
                 // Get both pieces of data.
-                const [mapUrl, provinces] = await Promise.all([
+                const [mapUrl, territories] = await Promise.all([
                     getMapUrl(),
                     getTerritories(),
                 ]);
@@ -84,16 +84,13 @@ function GameMap() {
                     canvas.height,
                 );
 
-                /*
-                 * This is the important part.
-                 */
-                lookupRef.current = buildProvinceLookup(
+                lookupRef.current = buildTerritoryLookup(
                     imageData,
-                    provinces,
+                    territories,
                 );
 
                 console.log(
-                    `Province lookup built: ${canvas.width} × ${canvas.height}`,
+                    `Territory lookup built: ${canvas.width} × ${canvas.height}`,
                 );
 
                 /*
@@ -127,18 +124,18 @@ function GameMap() {
 
                     const index = y * lookup.width + x;
 
-                    const provinceIndex =
-                        lookup.provinceIds[index];
+                    const territoryIndex =
+                        lookup.territoryIds[index];
 
-                    if (provinceIndex === -1) {
+                    if (territoryIndex === -1) {
                         console.log("Clicked water/border.");
                         return;
                     }
 
-                    const province =
-                        lookup.provinces[provinceIndex];
+                    const territory =
+                        lookup.territories[territoryIndex];
 
-                    console.log("Clicked province:", province);
+                    console.log("Clicked territory:", territory);
                 });
             } catch (error) {
                 console.error("Failed to load map:", error);

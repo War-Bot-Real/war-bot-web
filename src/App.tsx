@@ -10,7 +10,7 @@ function App() {
 
             <aside className="panel">
                 <h2>War Bot Web</h2>
-                <p>Province information will appear here.</p>
+                <p>Territory information will appear here.</p>
             </aside>
         </main>
     );

@@ -1,4 +1,4 @@
-export interface Province {
+export interface Territory {
     Name: string;
     Nation: string;
     Population: number;
@@ -16,9 +16,9 @@ export interface Province {
     game: unknown;
 }
 
-export interface ProvincePixelLookup {
+export interface TerritoryPixelLookup {
     width: number;
     height: number;
-    provinceIds: Int32Array;
-    provinces: Province[];
+    territoryIds: Int32Array;
+    territories: Territory[];
 }

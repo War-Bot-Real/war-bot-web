@@ -1,4 +1,4 @@
-import type { Province, ProvincePixelLookup } from "../types/Province";
+import type { Territory, TerritoryPixelLookup } from "../types/Territory";
 import { parseLocation } from "./ParseLocation";
 
 const WHITE = 255;
@@ -14,28 +14,28 @@ function isWhite(
     );
 }
 
-export function buildProvinceLookup(
+export function buildTerritoryLookup(
     imageData: ImageData,
-    provinces: Province[],
-): ProvincePixelLookup {
+    territories: Territory[],
+): TerritoryPixelLookup {
     const { width, height, data } = imageData;
 
     /*
-     * provinceIds[index] stores which province owns a pixel.
+     * territoryIds[index] stores which territory owns a pixel.
      *
-     * -1 = no province
-     *  0 = provinces[0]
-     *  1 = provinces[1]
+     * -1 = no territory
+     *  0 = territories[0]
+     *  1 = territories[1]
      * etc.
      */
-    const provinceIds = new Int32Array(width * height);
-    provinceIds.fill(-1);
+    const territoryIds = new Int32Array(width * height);
+    territoryIds.fill(-1);
 
     const queueX = new Int32Array(width * height);
     const queueY = new Int32Array(width * height);
 
-    provinces.forEach((province, provinceIndex) => {
-        const seeds = parseLocation(province.Location);
+    territories.forEach((territory, territoryIndex) => {
+        const seeds = parseLocation(territory.Location);
 
         for (const [startX, startY] of seeds) {
             if (
@@ -45,7 +45,7 @@ export function buildProvinceLookup(
                 startY >= height
             ) {
                 console.warn(
-                    `Invalid location for ${province.Name}:`,
+                    `Invalid location for ${territory.Name}:`,
                     startX,
                     startY,
                 );
@@ -55,14 +55,14 @@ export function buildProvinceLookup(
             const startIndex = startY * width + startX;
 
             // Don't process a region that has already been assigned.
-            if (provinceIds[startIndex] !== -1) {
+            if (territoryIds[startIndex] !== -1) {
                 continue;
             }
 
             // The seed should be inside a white region.
             if (!isWhite(data, startIndex * 4)) {
                 console.warn(
-                    `Location for ${province.Name} is not white:`,
+                    `Location for ${territory.Name} is not white:`,
                     startX,
                     startY,
                 );
@@ -76,7 +76,7 @@ export function buildProvinceLookup(
             queueY[tail] = startY;
             tail++;
 
-            provinceIds[startIndex] = provinceIndex;
+            territoryIds[startIndex] = territoryIndex;
 
             while (head < tail) {
                 const x = queueX[head];
@@ -103,7 +103,7 @@ export function buildProvinceLookup(
 
                     const neighborIndex = ny * width + nx;
 
-                    if (provinceIds[neighborIndex] !== -1) {
+                    if (territoryIds[neighborIndex] !== -1) {
                         continue;
                     }
 
@@ -113,7 +113,7 @@ export function buildProvinceLookup(
                         continue;
                     }
 
-                    provinceIds[neighborIndex] = provinceIndex;
+                    territoryIds[neighborIndex] = territoryIndex;
 
                     queueX[tail] = nx;
                     queueY[tail] = ny;
@@ -126,7 +126,7 @@ export function buildProvinceLookup(
     return {
         width,
         height,
-        provinceIds,
-        provinces,
+        territoryIds,
+        territories,
     };
 }
