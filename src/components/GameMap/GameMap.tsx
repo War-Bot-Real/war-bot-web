@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Application, Assets, Sprite } from "pixi.js";
 
 import { getMapUrl, getTerritories } from "../../api";
-import { buildTerritoryLookup } from "../../map/BuildTerritoryLookup";
+import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import type { TerritoryPixelLookup } from "../../types/Territory";
 
 function GameMap() {
