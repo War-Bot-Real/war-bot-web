@@ -1,5 +1,5 @@
 import type { Territory, TerritoryPixelLookup } from "../types/Territory";
-import { parseLocation } from "./ParseLocation";
+import { parseLocation } from "./parseLocation";
 
 const WHITE = 255;
 

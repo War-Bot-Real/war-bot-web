@@ -1,9 +1,19 @@
 import { useEffect, useRef } from "react";
-import { Application, Assets, Sprite } from "pixi.js";
+import { Application, Assets, Sprite, Texture } from "pixi.js";
 
-import { getMapUrl, getTerritories } from "../../api";
+import {
+    getMapUrl,
+    getTerritories,
+    getNations,
+} from "../../api";
+
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
-import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
+import { buildPoliticalMap } from "../../map/buildPoliticalMap";
+
+import type {
+    TerritoryPixelLookup,
+    Territory,
+} from "../../types/Territory";
 
 interface GameMapProps {
     territorySelected: (territory: Territory) => void;
@@ -38,15 +48,24 @@ function GameMap({ territorySelected }: GameMapProps) {
             container.appendChild(pixiApp.canvas);
 
             try {
-                // Get both pieces of data.
-                const [mapUrl, territories] = await Promise.all([
+                /*
+                 * Get map, territories, and nations.
+                 */
+                const [
+                    mapUrl,
+                    territories,
+                    nations,
+                ] = await Promise.all([
                     getMapUrl(),
                     getTerritories(),
+                    getNations(),
                 ]);
 
                 if (cancelled) return;
 
-                // Load the actual PNG.
+                /*
+                 * Load the original PNG.
+                 */
                 const texture = await Assets.load(mapUrl);
 
                 if (cancelled) return;
@@ -56,8 +75,8 @@ function GameMap({ territorySelected }: GameMapProps) {
                 pixiApp.stage.addChild(map);
 
                 /*
-                 * Create a temporary canvas so we can inspect
-                 * the original PNG's pixels.
+                 * Create a temporary canvas so we can
+                 * inspect the original PNG's pixels.
                  */
                 const image = new Image();
 
@@ -76,7 +95,9 @@ function GameMap({ territorySelected }: GameMapProps) {
                 const context = canvas.getContext("2d");
 
                 if (!context) {
-                    throw new Error("Could not create 2D canvas context");
+                    throw new Error(
+                        "Could not create 2D canvas context",
+                    );
                 }
 
                 context.drawImage(image, 0, 0);
@@ -88,55 +109,117 @@ function GameMap({ territorySelected }: GameMapProps) {
                     canvas.height,
                 );
 
-                lookupRef.current = buildTerritoryLookup(
+                /*
+                 * Build the pixel → territory lookup.
+                 */
+                const lookup = buildTerritoryLookup(
                     imageData,
                     territories,
                 );
+
+                lookupRef.current = lookup;
 
                 console.log(
                     `Territory lookup built: ${canvas.width} × ${canvas.height}`,
                 );
 
                 /*
-                 * Handle clicks on the Pixi map.
+                 * Build the political color image.
+                 */
+                const politicalImage = buildPoliticalMap(
+                    lookup,
+                    nations,
+                );
+
+                /*
+                 * Put the political ImageData into
+                 * another canvas.
+                 */
+                const politicalCanvas =
+                    document.createElement("canvas");
+
+                politicalCanvas.width = lookup.width;
+                politicalCanvas.height = lookup.height;
+
+                const politicalContext =
+                    politicalCanvas.getContext("2d");
+
+                if (!politicalContext) {
+                    throw new Error(
+                        "Could not create political map canvas",
+                    );
+                }
+
+                politicalContext.putImageData(
+                    politicalImage,
+                    0,
+                    0,
+                );
+
+                /*
+                 * Turn the canvas into a Pixi texture.
+                 */
+                const politicalTexture = Texture.from(politicalCanvas);
+
+                if (cancelled) return;
+
+                const politicalMap =
+                    new Sprite(politicalTexture);
+
+                /*
+                 * Put the political layer above the
+                 * original map.
+                 */
+                pixiApp.stage.addChild(politicalMap);
+
+                /*
+                 * Handle clicks on the original map.
                  */
                 map.eventMode = "static";
                 map.cursor = "pointer";
 
                 map.on("pointerdown", (event) => {
-                  const lookup = lookupRef.current;
+                    const lookup = lookupRef.current;
 
-                  if (!lookup) return;
+                    if (!lookup) return;
 
-                  const position = event.getLocalPosition(map);
+                    const position =
+                        event.getLocalPosition(map);
 
-                  const x = Math.floor(position.x);
-                  const y = Math.floor(position.y);
+                    const x = Math.floor(position.x);
+                    const y = Math.floor(position.y);
 
-                  if (
-                      x < 0 ||
-                      x >= lookup.width ||
-                      y < 0 ||
-                      y >= lookup.height
-                  ) {
-                      return;
-                  }
+                    if (
+                        x < 0 ||
+                        x >= lookup.width ||
+                        y < 0 ||
+                        y >= lookup.height
+                    ) {
+                        return;
+                    }
 
-                  const index = y * lookup.width + x;
+                    const index =
+                        y * lookup.width + x;
 
-                  const territoryIndex = lookup.territoryIds[index];
+                    const territoryIndex =
+                        lookup.territoryIds[index];
 
-                  if (territoryIndex === -1) {
-                      return;
-                  }
+                    if (territoryIndex === -1) {
+                        return;
+                    }
 
-                  const territory = lookup.territories[territoryIndex];
+                    const territory =
+                        lookup.territories[
+                            territoryIndex
+                        ];
 
-                  territorySelected(territory);
+                    territorySelected(territory);
                 });
-
             } catch (error) {
-                console.error("Failed to load map:", error);
+                console.error(
+                    "Failed to load map:",
+                    error,
+                );
             }
         };
 
