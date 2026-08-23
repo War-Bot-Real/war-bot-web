@@ -3,57 +3,110 @@ import "./App.css";
 
 import GameMap from "./components/GameMap/GameMap";
 import type { Territory } from "./types/Territory";
+import type { Nation } from "./types/Nation";
+
+type Selection =
+    | { type: "territory"; territory: Territory }
+    | { type: "nation"; nation: Nation }
+    | null;
 
 function App() {
-    const [selectedTerritory, setSelectedTerritory] =
-        useState<Territory | null>(null);
+    const [selection, setSelection] = useState<Selection>(null);
 
     return (
         <main className="game">
             <section className="map">
                 <GameMap
-                    territorySelected={setSelectedTerritory}
+                    territorySelected={(territory) =>
+                        setSelection({
+                            type: "territory",
+                            territory,
+                        })
+                    }
+                    nationSelected={(nation) =>
+                        setSelection({
+                            type: "nation",
+                            nation,
+                        })
+                    }
                 />
             </section>
 
             <aside className="panel">
-                {selectedTerritory ? (
+                {selection?.type === "territory" ? (
                     <>
-                        <h2>{selectedTerritory.Name}</h2>
+                        <h2>{selection.territory.Name}</h2>
 
                         <p>
                             <strong>Nation:</strong>{" "}
-                            {selectedTerritory.Nation}
+                            {selection.territory.Nation}
                         </p>
 
                         <p>
                             <strong>Population:</strong>{" "}
-                            {selectedTerritory.Population.toLocaleString()}
+                            {selection.territory.Population.toLocaleString()}
                         </p>
 
                         <p>
                             <strong>Area:</strong>{" "}
-                            {selectedTerritory.Area.toLocaleString()}
+                            {selection.territory.Area.toLocaleString()}
                         </p>
 
                         <p>
                             <strong>Terrain:</strong>{" "}
-                            {selectedTerritory.Terrain}
+                            {selection.territory.Terrain}
                         </p>
 
                         <p>
                             <strong>Coal:</strong>{" "}
-                            {selectedTerritory.Coal}
+                            {selection.territory.Coal}
                         </p>
 
                         <p>
                             <strong>Oil:</strong>{" "}
-                            {selectedTerritory.Oil}
+                            {selection.territory.Oil}
                         </p>
 
                         <p>
                             <strong>Devastation:</strong>{" "}
-                            {selectedTerritory.Devastation}
+                            {selection.territory.Devastation}
+                        </p>
+                    </>
+                ) : selection?.type === "nation" ? (
+                    <>
+                        <h2>
+                            {selection.nation.Flag}{" "}
+                            {selection.nation.Name}
+                        </h2>
+
+                        <p>
+                            <strong>Balance:</strong>{" "}
+                            {selection.nation.Balance.toLocaleString()}
+                        </p>
+
+                        <p>
+                            <strong>Stability:</strong>{" "}
+                            {selection.nation.Stability}
+                        </p>
+
+                        <p>
+                            <strong>Ideology:</strong>{" "}
+                            {selection.nation.Ideology}
+                        </p>
+
+                        <p>
+                            <strong>Tax Rate:</strong>{" "}
+                            {selection.nation["Tax Rate"]}%
+                        </p>
+
+                        <p>
+                            <strong>Political Power:</strong>{" "}
+                            {selection.nation["Political Power"]}
+                        </p>
+
+                        <p>
+                            <strong>Capital:</strong>{" "}
+                            {selection.nation.Capital}
                         </p>
                     </>
                 ) : (

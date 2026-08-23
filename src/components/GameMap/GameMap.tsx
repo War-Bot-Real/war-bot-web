@@ -1,25 +1,18 @@
 import { useEffect, useRef } from "react";
 import { Application, Assets, Sprite, Texture } from "pixi.js";
 
-import {
-    getMapUrl,
-    getTerritories,
-    getNations,
-} from "../../api";
-
+import { getMapUrl, getTerritories, getNations } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import { buildPoliticalMap } from "../../map/buildPoliticalMap";
-
-import type {
-    TerritoryPixelLookup,
-    Territory,
-} from "../../types/Territory";
+import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
+import type { Nation } from "../../types/Nation";
 
 interface GameMapProps {
     territorySelected: (territory: Territory) => void;
+    nationSelected: (nation: Nation) => void;
 }
 
-function GameMap({ territorySelected }: GameMapProps) {
+function GameMap({ territorySelected, nationSelected }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
 
@@ -213,7 +206,15 @@ function GameMap({ territorySelected }: GameMapProps) {
                             territoryIndex
                         ];
 
-                    territorySelected(territory);
+                    if (event.shiftKey || event.ctrlKey) {
+                        const nation = nations.find((nation: Nation) => nation.Name === territory.Nation);
+
+                        if (nation) {
+                            nationSelected(nation);
+                        }
+                    } else {
+                        territorySelected(territory);
+                    }
                 });
             } catch (error) {
                 console.error(
