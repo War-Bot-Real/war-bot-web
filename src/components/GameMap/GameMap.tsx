@@ -6,13 +6,15 @@ import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import { buildPoliticalMap } from "../../map/buildPoliticalMap";
 import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
 import type { Nation } from "../../types/Nation";
+import type { Selection } from "../../types/Selection";
 
 interface GameMapProps {
+    selection: Selection;
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
 }
 
-function GameMap({ territorySelected, nationSelected }: GameMapProps) {
+function GameMap({ selection, territorySelected, nationSelected }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
 

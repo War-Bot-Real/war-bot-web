@@ -2,13 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 import GameMap from "./components/GameMap/GameMap";
-import type { Territory } from "./types/Territory";
-import type { Nation } from "./types/Nation";
-
-type Selection =
-    | { type: "territory"; territory: Territory }
-    | { type: "nation"; nation: Nation }
-    | null;
+import type { Selection } from "./types/Selection";
 
 function App() {
     const [selection, setSelection] = useState<Selection>(null);
@@ -17,6 +11,7 @@ function App() {
         <main className="game">
             <section className="map">
                 <GameMap
+                    selection={selection}
                     territorySelected={(territory) =>
                         setSelection({
                             type: "territory",
