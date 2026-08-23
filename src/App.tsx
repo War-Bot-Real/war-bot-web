@@ -1,129 +1,53 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-import GameMap from "./components/GameMap/GameMap";
+import MapPanel from "./components/MapPanel/MapPanel";
+import GamePanel from "./components/GamePanel/GamePanel";
+
 import type { Selection } from "./types/Selection";
+import type { MapMode } from "./components/MapPanel/MapModeBar";
 
 function App() {
-    const [selection, setSelection] = useState<Selection>(null);
+    const [selection, setSelection] =
+        useState<Selection>(null);
+
+    const [mapMode, setMapMode] =
+        useState<MapMode>("political");
+
     useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
+        const handleKeyDown = (
+            event: KeyboardEvent,
+        ) => {
             if (event.key === "Escape") {
                 setSelection(null);
             }
         };
 
-        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener(
+            "keydown",
+            handleKeyDown,
+        );
 
         return () => {
-            window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener(
+                "keydown",
+                handleKeyDown,
+            );
         };
     }, []);
 
     return (
         <main className="game">
-            <section className="map">
-                <GameMap
-                    selection={selection}
-                    territorySelected={(territory) =>
-                        setSelection({
-                            type: "territory",
-                            territory,
-                        })
-                    }
-                    nationSelected={(nation) =>
-                        setSelection({
-                            type: "nation",
-                            nation,
-                        })
-                    }
-                />
-            </section>
+            <MapPanel
+                selection={selection}
+                setSelection={setSelection}
+                mapMode={mapMode}
+                setMapMode={setMapMode}
+            />
 
-            <aside className="panel">
-                {selection?.type === "territory" ? (
-                    <>
-                        <h2>{selection.territory.Name}</h2>
-
-                        <p>
-                            <strong>Nation:</strong>{" "}
-                            {selection.territory.Nation}
-                        </p>
-
-                        <p>
-                            <strong>Population:</strong>{" "}
-                            {selection.territory.Population.toLocaleString()}
-                        </p>
-
-                        <p>
-                            <strong>Area:</strong>{" "}
-                            {selection.territory.Area.toLocaleString()}
-                        </p>
-
-                        <p>
-                            <strong>Terrain:</strong>{" "}
-                            {selection.territory.Terrain}
-                        </p>
-
-                        <p>
-                            <strong>Coal:</strong>{" "}
-                            {selection.territory.Coal}
-                        </p>
-
-                        <p>
-                            <strong>Oil:</strong>{" "}
-                            {selection.territory.Oil}
-                        </p>
-
-                        <p>
-                            <strong>Devastation:</strong>{" "}
-                            {selection.territory.Devastation}
-                        </p>
-                    </>
-                ) : selection?.type === "nation" ? (
-                    <>
-                        <h2>
-                            {selection.nation.Flag}{" "}
-                            {selection.nation.Name}
-                        </h2>
-
-                        <p>
-                            <strong>Balance:</strong>{" "}
-                            {selection.nation.Balance.toLocaleString()}
-                        </p>
-
-                        <p>
-                            <strong>Stability:</strong>{" "}
-                            {selection.nation.Stability}
-                        </p>
-
-                        <p>
-                            <strong>Ideology:</strong>{" "}
-                            {selection.nation.Ideology}
-                        </p>
-
-                        <p>
-                            <strong>Tax Rate:</strong>{" "}
-                            {selection.nation["Tax Rate"]}%
-                        </p>
-
-                        <p>
-                            <strong>Political Power:</strong>{" "}
-                            {selection.nation["Political Power"]}
-                        </p>
-
-                        <p>
-                            <strong>Capital:</strong>{" "}
-                            {selection.nation.Capital}
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <h2>No Territory Selected</h2>
-                        <p>Click a territory on the map.</p>
-                    </>
-                )}
-            </aside>
+            <GamePanel
+                selection={selection}
+            />
         </main>
     );
 }
