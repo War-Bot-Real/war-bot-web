@@ -17,6 +17,8 @@ interface GameMapProps {
 function GameMap({ selection, territorySelected, nationSelected }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
+    const nationsRef = useRef<Nation[]>([]);
+    const politicalMapRef = useRef<Sprite | null>(null);
 
     useEffect(() => {
         let app: Application | null = null;
@@ -55,6 +57,8 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                     getTerritories(),
                     getNations(),
                 ]);
+
+                nationsRef.current = nations;
 
                 if (cancelled) return;
 
@@ -124,20 +128,19 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                 const politicalImage = buildPoliticalMap(
                     lookup,
                     nations,
+                    selection
                 );
 
                 /*
                  * Put the political ImageData into
                  * another canvas.
                  */
-                const politicalCanvas =
-                    document.createElement("canvas");
+                const politicalCanvas = document.createElement("canvas");
 
                 politicalCanvas.width = lookup.width;
                 politicalCanvas.height = lookup.height;
 
-                const politicalContext =
-                    politicalCanvas.getContext("2d");
+                const politicalContext = politicalCanvas.getContext("2d");
 
                 if (!politicalContext) {
                     throw new Error(
@@ -158,8 +161,8 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
 
                 if (cancelled) return;
 
-                const politicalMap =
-                    new Sprite(politicalTexture);
+                const politicalMap = new Sprite(politicalTexture);
+                politicalMapRef.current = politicalMap;
 
                 /*
                  * Put the political layer above the
@@ -237,6 +240,47 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
             }
         };
     }, []);
+
+    useEffect(() => {
+        const lookup = lookupRef.current;
+        const politicalMap = politicalMapRef.current;
+        const nations = nationsRef.current;
+
+        if (!lookup || !politicalMap || nations.length === 0) {
+            return;
+        }
+
+        const politicalImage = buildPoliticalMap(
+            lookup,
+            nations,
+            selection,
+        );
+
+        const canvas = document.createElement("canvas");
+
+        canvas.width = lookup.width;
+        canvas.height = lookup.height;
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+            return;
+        }
+
+        context.putImageData(
+            politicalImage,
+            0,
+            0,
+        );
+
+        const texture = Texture.from(canvas);
+
+        const oldTexture = politicalMap.texture;
+
+        politicalMap.texture = texture;
+
+        oldTexture.destroy(true);
+    }, [selection]);
 
     return (
         <div
