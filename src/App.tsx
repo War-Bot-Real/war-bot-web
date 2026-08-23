@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 import GameMap from "./components/GameMap/GameMap";
@@ -6,6 +6,19 @@ import type { Selection } from "./types/Selection";
 
 function App() {
     const [selection, setSelection] = useState<Selection>(null);
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setSelection(null);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
     return (
         <main className="game">
