@@ -19,3 +19,22 @@ export async function getTerritories() {
 
     return response.json();
 }
+
+export interface MapResponse {
+    url: {
+        signedURL: string;
+        signedUrl: string;
+    };
+}
+
+export async function getMapUrl(): Promise<string> {
+    const response = await fetch(`${API_URL}/map/expanded_europe.png`);
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch map: ${response.status}`);
+    }
+
+    const data: MapResponse = await response.json();
+
+    return data.url.signedUrl;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { Application } from "pixi.js";
+import { Application, Assets, Sprite } from "pixi.js";
+import { getMapUrl } from "../../api";
 
 function GameMap() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -17,7 +18,7 @@ function GameMap() {
 
             await pixiApp.init({
                 resizeTo: container,
-                background: "#295891",
+                background: "white",
             });
 
             if (cancelled) {
@@ -27,6 +28,22 @@ function GameMap() {
 
             app = pixiApp;
             container.appendChild(pixiApp.canvas);
+
+            try {
+                const mapUrl = await getMapUrl();
+
+                if (cancelled) return;
+
+                const texture = await Assets.load(mapUrl);
+
+                if (cancelled) return;
+
+                const map = new Sprite(texture);
+
+                pixiApp.stage.addChild(map);
+            } catch (error) {
+                console.error("Failed to load map:", error);
+            }
         };
 
         initialize();
