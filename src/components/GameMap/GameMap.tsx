@@ -3,9 +3,13 @@ import { Application, Assets, Sprite } from "pixi.js";
 
 import { getMapUrl, getTerritories } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
-import type { TerritoryPixelLookup } from "../../types/Territory";
+import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
 
-function GameMap() {
+interface GameMapProps {
+    territorySelected: (territory: Territory) => void;
+}
+
+function GameMap({ territorySelected }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
 
@@ -100,43 +104,37 @@ function GameMap() {
                 map.cursor = "pointer";
 
                 map.on("pointerdown", (event) => {
-                    const lookup = lookupRef.current;
+                  const lookup = lookupRef.current;
 
-                    if (!lookup) return;
+                  if (!lookup) return;
 
-                    /*
-                     * Convert the mouse position into the map's
-                     * original PNG coordinates.
-                     */
-                    const position = event.getLocalPosition(map);
+                  const position = event.getLocalPosition(map);
 
-                    const x = Math.floor(position.x);
-                    const y = Math.floor(position.y);
+                  const x = Math.floor(position.x);
+                  const y = Math.floor(position.y);
 
-                    if (
-                        x < 0 ||
-                        x >= lookup.width ||
-                        y < 0 ||
-                        y >= lookup.height
-                    ) {
-                        return;
-                    }
+                  if (
+                      x < 0 ||
+                      x >= lookup.width ||
+                      y < 0 ||
+                      y >= lookup.height
+                  ) {
+                      return;
+                  }
 
-                    const index = y * lookup.width + x;
+                  const index = y * lookup.width + x;
 
-                    const territoryIndex =
-                        lookup.territoryIds[index];
+                  const territoryIndex = lookup.territoryIds[index];
 
-                    if (territoryIndex === -1) {
-                        console.log("Clicked water/border.");
-                        return;
-                    }
+                  if (territoryIndex === -1) {
+                      return;
+                  }
 
-                    const territory =
-                        lookup.territories[territoryIndex];
+                  const territory = lookup.territories[territoryIndex];
 
-                    console.log("Clicked territory:", territory);
+                  territorySelected(territory);
                 });
+
             } catch (error) {
                 console.error("Failed to load map:", error);
             }
