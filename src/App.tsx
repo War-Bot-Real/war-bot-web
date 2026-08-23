@@ -3,6 +3,7 @@ import "./App.css";
 
 import MapPanel from "./components/MapPanel/MapPanel";
 import GamePanel from "./components/GamePanel/GamePanel";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 import type { Selection } from "./types/Selection";
 import type { MapMode } from "./components/MapPanel/MapModeBar";
@@ -38,6 +39,7 @@ function App() {
 
     return (
         <main className="game">
+            <BackgroundMusic />
             <MapPanel
                 selection={selection}
                 setSelection={setSelection}
