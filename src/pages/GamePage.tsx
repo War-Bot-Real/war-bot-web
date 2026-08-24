@@ -3,6 +3,7 @@ import "./GamePage.css"
 
 import MapPanel from "../components/MapPanel/MapPanel";
 import GamePanel from "../components/GamePanel/GamePanel";
+import Navbar from "../components/NavBar/NavBar";
 
 import type { Selection } from "../types/Selection";
 import type { MapMode } from "../components/MapPanel/MapModeBar";
@@ -37,6 +38,8 @@ function GamePage() {
     }, []);
 
     return (
+      <div className="game-page">
+        <Navbar />
         <main className="game">
             <MapPanel
                 selection={selection}
@@ -49,6 +52,7 @@ function GamePage() {
                 selection={selection}
             />
         </main>
+      </div>
     );
 }
 
