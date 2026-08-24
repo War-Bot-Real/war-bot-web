@@ -38,3 +38,13 @@ export async function getMapUrl(): Promise<string> {
 
     return data.url.signedUrl;
 }
+
+export async function getShop() {
+    const response = await fetch(`${API_URL}/shop`);
+
+    if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+    }
+
+    return response.json();
+}
