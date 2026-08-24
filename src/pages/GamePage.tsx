@@ -8,7 +8,11 @@ import Navbar from "../components/NavBar/NavBar";
 import type { Selection } from "../types/Selection";
 import type { MapMode } from "../components/MapPanel/MapModeBar";
 
-function GamePage() {
+interface GamePageProps {
+    onAccount: () => void;
+}
+
+function GamePage({ onAccount }: GamePageProps) {
     const [selection, setSelection] =
         useState<Selection>(null);
 
@@ -39,7 +43,7 @@ function GamePage() {
 
     return (
       <div className="game-page">
-        <Navbar />
+        <Navbar onAccount={onAccount} />
         <main className="game">
             <MapPanel
                 selection={selection}

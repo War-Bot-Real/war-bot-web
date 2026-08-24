@@ -1,6 +1,10 @@
 import { supabase } from "../../lib/supabase";
 
-function Navbar() {
+interface NavbarProps {
+    onAccount: () => void;
+}
+
+function Navbar({ onAccount }: NavbarProps) {
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
 
@@ -14,7 +18,7 @@ function Navbar() {
             <h1>War Bot Web</h1>
 
             <div className="navbar-actions">
-                <button>
+                <button onClick={onAccount}>
                     Account
                 </button>
 

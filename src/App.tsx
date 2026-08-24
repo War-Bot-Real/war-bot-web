@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-
-import {
-    supabase,
-} from "./lib/supabase";
-
-import LoginPage from "./pages/LoginPage";
-import GamePage from "./pages/GamePage";
-
 import type { Session } from "@supabase/supabase-js";
 
+import { supabase } from "./lib/supabase";
+import LoginPage from "./pages/LoginPage";
+import GamePage from "./pages/GamePage";
+import AccountPage from "./pages/AccountPage";
+
+type Page = "game" | "account";
+
 function App() {
+    const [page, setPage] = useState<Page>("game");
+
     const [session, setSession] =
         useState<Session | null>(null);
 
@@ -45,7 +46,11 @@ function App() {
         return <LoginPage />;
     }
 
-    return <GamePage />;
+    if (page === "account") {
+        return <AccountPage onBack={() => setPage("game")} />;
+    }
+
+    return <GamePage onAccount={() => setPage("account")}/>;
 }
 
 export default App;
