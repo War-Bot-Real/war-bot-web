@@ -1,57 +1,51 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 
-import MapPanel from "./components/MapPanel/MapPanel";
-import GamePanel from "./components/GamePanel/GamePanel";
-import BackgroundMusic from "./components/BackgroundMusic";
+import {
+    supabase,
+} from "./lib/supabase";
 
-import type { Selection } from "./types/Selection";
-import type { MapMode } from "./components/MapPanel/MapModeBar";
+import LoginPage from "./pages/LoginPage";
+import GamePage from "./pages/GamePage";
+
+import type { Session } from "@supabase/supabase-js";
 
 function App() {
-    const [selection, setSelection] =
-        useState<Selection>(null);
+    const [session, setSession] =
+        useState<Session | null>(null);
 
-    const [mapMode, setMapMode] =
-        useState<MapMode>("political");
+    const [loading, setLoading] =
+        useState(true);
 
     useEffect(() => {
-        const handleKeyDown = (
-            event: KeyboardEvent,
-        ) => {
-            if (event.key === "Escape") {
-                setSelection(null);
-            }
-        };
+        supabase.auth.getSession().then(
+            ({ data }) => {
+                setSession(data.session);
+                setLoading(false);
+            },
+        );
 
-        window.addEventListener(
-            "keydown",
-            handleKeyDown,
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                setSession(session);
+            },
         );
 
         return () => {
-            window.removeEventListener(
-                "keydown",
-                handleKeyDown,
-            );
+            subscription.unsubscribe();
         };
     }, []);
 
-    return (
-        <main className="game">
-            <BackgroundMusic />
-            <MapPanel
-                selection={selection}
-                setSelection={setSelection}
-                mapMode={mapMode}
-                setMapMode={setMapMode}
-            />
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
-            <GamePanel
-                selection={selection}
-            />
-        </main>
-    );
+    if (!session) {
+        return <LoginPage />;
+    }
+
+    return <GamePage />;
 }
 
 export default App;
