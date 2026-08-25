@@ -1,0 +1,294 @@
+.login-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+    box-sizing: border-box;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            rgba(20, 22, 22, 0.72),
+            rgba(12, 14, 14, 0.82)
+        ),
+        url("/ww2-background.jpg");
+
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/1d/Tanks_Destroyed_Sinai.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20100304004554");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Old military-document texture */
+
+.login-page::before {
+    content: "";
+
+    position: absolute;
+    inset: -20px;
+
+    background:
+        linear-gradient(
+            rgba(20, 20, 20, 0.65),
+            rgba(10, 10, 10, 0.75)
+        ),
+        url("https://upload.wikimedia.org/wikipedia/commons/1/1d/Tanks_Destroyed_Sinai.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail_unscaled&_=20100304004554");
+
+    background-size: cover;
+    background-position: center;
+
+    filter: blur(12px);
+
+    transform: scale(1.05);
+
+    z-index: 0;
+
+}
+
+/* Dark edges around the photograph */
+
+.login-page::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 25%,
+            rgba(0, 0, 0, 0.65) 100%
+        );
+
+    pointer-events: none;
+}
+
+/* Main command panel */
+
+.login-form {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 440px;
+
+    padding: 44px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(62, 65, 63, 0.97),
+            rgba(38, 40, 39, 0.98)
+        );
+
+    border: 1px solid #777773;
+    border-top: 3px solid #aaa99f;
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.75),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Title */
+
+.login-form h1 {
+    margin: 0 0 34px;
+
+    text-align: center;
+
+    color: #e1e0d7;
+
+    /*
+     * Typewriter-style appearance.
+     * Uses fonts already available on most systems.
+     */
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 29px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Typewriter-style divider */
+
+.login-form h1::after {
+    content: "";
+
+    display: block;
+
+    width: 110px;
+    height: 1px;
+
+    margin: 16px auto 0;
+
+    background: #aaa99f;
+
+    box-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.7);
+}
+
+/* Input fields */
+
+.login-form input {
+    width: 100%;
+
+    margin-bottom: 16px;
+    padding: 13px 14px;
+
+    box-sizing: border-box;
+
+    background: #202322;
+
+    color: #e5e4dc;
+
+    border: 1px solid #666864;
+    border-radius: 2px;
+
+    outline: none;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 14px;
+
+    box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.4);
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.login-form input::placeholder {
+    color: #858680;
+}
+
+.login-form input:hover {
+    border-color: #85867f;
+}
+
+.login-form input:focus {
+    background: #282a29;
+
+    border-color: #aaa99f;
+
+    box-shadow:
+        0 0 0 1px rgba(190, 188, 174, 0.15),
+        inset 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Login button */
+
+.login-form button {
+    width: 100%;
+
+    padding: 13px;
+
+    margin-top: 4px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #777872 0%,
+            #5b5d58 100%
+        );
+
+    color: #eeeeea;
+
+    border: 1px solid #999a93;
+    border-radius: 2px;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.login-form button:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #898a83 0%,
+            #686a64 100%
+        );
+}
+
+.login-form button:active {
+    transform: translateY(1px);
+}
+
+/* Login error */
+
+.login-error {
+    margin: 4px 0 16px;
+    padding: 11px 13px;
+
+    background: rgba(70, 45, 43, 0.8);
+
+    color: #d8b9b4;
+
+    border: 1px solid #80645f;
+    border-left: 3px solid #a08b86;
+
+    border-radius: 2px;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Smaller screens */
+
+@media (max-width: 500px) {
+    .login-page {
+        padding: 15px;
+    }
+
+    .login-form {
+        padding: 30px 24px;
+    }
+
+    .login-form h1 {
+        font-size: 24px;
+    }
+}

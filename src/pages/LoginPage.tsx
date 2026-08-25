@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
+import "./LoginPage.css";
 
 function LoginPage() {
     const [email, setEmail] = useState("");
