@@ -1,8 +1,281 @@
-.account-page{
-  margin-inline: 5%;
-  margin-top: 2%;
+.account-page {
+    min-height: 100vh;
+
+    padding: 40px 30px;
+    box-sizing: border-box;
+
+    position: relative;
+    overflow: hidden;
+
+    color: #e2e1da;
+
+    background: #111;
 }
 
-button {
-  padding: 5px
+/* Blurred historical background */
+
+.account-page::before {
+    content: "";
+
+    position: absolute;
+    inset: -20px;
+
+    background:
+        linear-gradient(
+            rgba(15, 15, 15, 0.62),
+            rgba(8, 8, 8, 0.78)
+        ),
+        url("https://img.apmcdn.org/829032e834ec06bbed3138ba271087779b03d59d/normal/1f5026-20080123-colalillotruman.jpg");
+
+    background-size: cover;
+    background-position: center 0%;
+    background-repeat: no-repeat;
+
+    filter: blur(7px);
+
+    transform: scale(1.04);
+
+    z-index: 0;
+}
+
+/* Dark vignette */
+
+.account-page::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 25%,
+            rgba(0, 0, 0, 0.55) 100%
+        );
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+/* Header */
+
+.account-page header {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto 30px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 16px 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(35, 37, 36, 0.94);
+
+    border: 1px solid #666862;
+    border-top: 2px solid #9b9a90;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.55);
+}
+
+/* Title */
+
+.account-page h1 {
+    position: absolute;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    margin: 0;
+
+    color: #e4e3da;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.7);
+
+    white-space: nowrap;
+}
+
+/* Back button */
+
+.account-page header button {
+    padding: 10px 16px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #777872,
+            #555752
+        );
+
+    color: #eee;
+
+    border: 1px solid #999a92;
+    border-radius: 2px;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 7px rgba(0, 0, 0, 0.4);
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.account-page header button:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #898a84,
+            #666862
+        );
+}
+
+.account-page header button:active {
+    transform: translateY(1px);
+}
+
+/* Account information panel */
+
+.account-info {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(55, 57, 55, 0.96),
+            rgba(30, 32, 31, 0.97)
+        );
+
+    border: 1px solid #686a64;
+    border-top: 2px solid #96968d;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.65);
+}
+
+/* Individual settings */
+
+.account-info > div {
+    padding: 20px;
+
+    background: rgba(18, 20, 19, 0.78);
+
+    border: 1px solid #4f524e;
+    border-left: 4px solid #85867f;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.account-info > div + div {
+    margin-top: 14px;
+}
+
+.account-info > div:hover {
+    background: rgba(28, 30, 29, 0.9);
+
+    border-left-color: #aaa99f;
+}
+
+/* Labels */
+
+.account-info strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #aaa99f;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+/* Values */
+
+.account-info p {
+    margin: 0;
+
+    color: #e3e2da;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 15px;
+
+    word-break: break-word;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .account-page {
+        padding: 20px 12px;
+    }
+
+    .account-page header {
+        padding: 14px;
+    }
+
+    .account-page h1 {
+        font-size: 22px;
+    }
+
+    .account-info {
+        padding: 16px;
+    }
+
+    .account-info > div {
+        padding: 16px;
+    }
 }
