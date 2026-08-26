@@ -35,7 +35,7 @@ function ShopFlow() {
     }
 
     return (
-        <div>
+        <div className="shop-flow">
             <h2>Shop</h2>
 
             {Object.entries(shop).map(
