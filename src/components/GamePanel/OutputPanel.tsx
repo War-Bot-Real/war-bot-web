@@ -3,6 +3,7 @@ import type { Selection } from "../../types/Selection";
 import ShopFlow from "../../commands/flows/ShopFlow";
 import TerritoryFlow from "./outputs/TerritoryInfo";
 import NationFlow from "./outputs/NationInfo";
+import "../../commands/styles.css"
 
 interface OutputPanelProps {
     selection: Selection;
