@@ -13,11 +13,10 @@ interface GamePageProps {
 }
 
 function GamePage({ onAccount }: GamePageProps) {
-    const [selection, setSelection] =
-        useState<Selection>(null);
+    const [selection, setSelection] = useState<Selection>(null);
+    const [activeCommand, setActiveCommand] = useState<string | null>(null);
 
-    const [mapMode, setMapMode] =
-        useState<MapMode>("political");
+    const [mapMode, setMapMode] = useState<MapMode>("political");
 
     useEffect(() => {
         const handleKeyDown = (
@@ -54,6 +53,8 @@ function GamePage({ onAccount }: GamePageProps) {
 
             <GamePanel
                 selection={selection}
+                activeCommand={activeCommand}
+                setActiveCommand={setActiveCommand}
             />
         </main>
       </div>

@@ -2,11 +2,10 @@ import type { Selection } from "../../types/Selection";
 
 interface CommandPanelProps {
     selection: Selection;
+    setActiveCommand: (command: string | null) => void;
 }
 
-function CommandPanel({
-    selection,
-}: CommandPanelProps) {
+function CommandPanel({selection, setActiveCommand}: CommandPanelProps) {
     return (
         <section className="command-panel">
             <input
@@ -32,7 +31,7 @@ function CommandPanel({
 
                 {!selection && (
                     <>
-                        <button>Shop</button>
+                        <button onClick={() => setActiveCommand("shop")}>Shop</button>
                         <button>Balance</button>
                         <button>Inventory</button>
                     </>
