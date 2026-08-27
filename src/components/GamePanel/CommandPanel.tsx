@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Selection } from "../../types/Selection";
 import { commands } from "../../commands/commands";
 
@@ -11,9 +12,20 @@ function CommandPanel({
     setActiveCommand,
 }: CommandPanelProps) {
     const context = selection?.type ?? "general";
+    const [search, setSearch] = useState("");
 
-    const availableCommands = commands.filter(
-        (command) => command.context === context,
+    const orderedCommands = [...commands].sort((a, b) => {
+        const aRelevant = a.context === context;
+        const bRelevant = b.context === context;
+
+        if (aRelevant && !bRelevant) return -1;
+        if (!aRelevant && bRelevant) return 1;
+
+        return 0;
+    });
+
+    const visibleCommands = orderedCommands.filter((command) =>
+        command.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
@@ -24,7 +36,7 @@ function CommandPanel({
             />
 
             <div className="commands">
-                {availableCommands.map((command) => (
+                {visibleCommands.map((command) => (
                     <button
                         key={command.id}
                         onClick={() =>
