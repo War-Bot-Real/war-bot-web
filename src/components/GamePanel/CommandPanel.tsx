@@ -1,11 +1,21 @@
 import type { Selection } from "../../types/Selection";
+import { commands } from "../../commands/commands";
 
 interface CommandPanelProps {
     selection: Selection;
     setActiveCommand: (command: string | null) => void;
 }
 
-function CommandPanel({selection, setActiveCommand}: CommandPanelProps) {
+function CommandPanel({
+    selection,
+    setActiveCommand,
+}: CommandPanelProps) {
+    const context = selection?.type ?? "general";
+
+    const availableCommands = commands.filter(
+        (command) => command.context === context,
+    );
+
     return (
         <section className="command-panel">
             <input
@@ -14,28 +24,16 @@ function CommandPanel({selection, setActiveCommand}: CommandPanelProps) {
             />
 
             <div className="commands">
-                {selection?.type === "territory" && (
-                    <>
-                        <button>Build</button>
-                        <button>Attack</button>
-                        <button>Move</button>
-                    </>
-                )}
-
-                {selection?.type === "nation" && (
-                    <>
-                        <button>Declare War</button>
-                        <button>Ally</button>
-                    </>
-                )}
-
-                {!selection && (
-                    <>
-                        <button onClick={() => setActiveCommand("shop")}>Shop</button>
-                        <button>Balance</button>
-                        <button>Inventory</button>
-                    </>
-                )}
+                {availableCommands.map((command) => (
+                    <button
+                        key={command.id}
+                        onClick={() =>
+                            setActiveCommand(command.id)
+                        }
+                    >
+                        {command.name}
+                    </button>
+                ))}
             </div>
         </section>
     );

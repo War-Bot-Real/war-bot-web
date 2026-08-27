@@ -24,6 +24,7 @@ function GamePage({ onAccount }: GamePageProps) {
         ) => {
             if (event.key === "Escape") {
                 setSelection(null);
+                setActiveCommand(null);
             }
         };
 
