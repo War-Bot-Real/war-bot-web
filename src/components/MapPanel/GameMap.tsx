@@ -13,13 +13,15 @@ interface GameMapProps {
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
     onMapDimensions: (width: number, height: number) => void;
+    shrink: boolean;
 }
 
 function GameMap({
     selection,
     territorySelected,
     nationSelected,
-    onMapDimensions
+    onMapDimensions,
+    shrink
 }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
@@ -62,7 +64,7 @@ function GameMap({
                     territories,
                     nations,
                 ] = await Promise.all([
-                    getMapUrl(true),
+                    getMapUrl(shrink),
                     getTerritories(),
                     getNations(),
                 ]);
@@ -343,7 +345,7 @@ function GameMap({
                 app = null;
             }
         };
-    }, []);
+    }, [shrink]);
 
     useEffect(() => {
         const lookup = lookupRef.current;

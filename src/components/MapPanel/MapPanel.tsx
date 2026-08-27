@@ -22,20 +22,18 @@ function MapPanel({
           width: 847,
           height: 672,
       });
-    
     const [mapPanelWidth, setMapPanelWidth] = useState(600);
+    const [shrink, setShrink] = useState(false);
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
-            const mapHeight =
-                window.innerHeight - 60 - 50 - 50;
+            const mapHeight = window.innerHeight - 60 - 50 - 50;
 
-            const aspectRatio =
-                mapDimensions.width /
-                mapDimensions.height;
+            const aspectRatio = mapDimensions.width / mapDimensions.height;
 
-            const mapWidth =
-                mapHeight * aspectRatio;
+            const mapWidth = mapHeight * aspectRatio;
+
+            setShrink((mapHeight / mapDimensions.height) < 0.9);
 
             setMapPanelWidth(mapWidth);
         };
@@ -85,6 +83,7 @@ function MapPanel({
                             height,
                         })
                     }
+                    shrink={shrink}
                 />
             </div>
 
