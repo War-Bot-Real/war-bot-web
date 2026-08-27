@@ -62,7 +62,7 @@ function GameMap({
                     territories,
                     nations,
                 ] = await Promise.all([
-                    getMapUrl(),
+                    getMapUrl(true),
                     getTerritories(),
                     getNations(),
                 ]);

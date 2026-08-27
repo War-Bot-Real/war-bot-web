@@ -27,8 +27,8 @@ export interface MapResponse {
     };
 }
 
-export async function getMapUrl(): Promise<string> {
-    const response = await fetch(`${API_URL}/map/expanded_europe.png`);
+export async function getMapUrl(shrink: boolean): Promise<string> {
+    const response = await fetch(`${API_URL}/map/expanded_europe/${shrink}`);
 
     if (!response.ok) {
         throw new Error(`Failed to fetch map: ${response.status}`);
