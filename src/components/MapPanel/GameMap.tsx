@@ -14,7 +14,11 @@ interface GameMapProps {
     nationSelected: (nation: Nation) => void;
 }
 
-function GameMap({ selection, territorySelected, nationSelected }: GameMapProps) {
+function GameMap({
+    selection,
+    territorySelected,
+    nationSelected,
+}: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
     const nationsRef = useRef<Nation[]>([]);
@@ -22,6 +26,7 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
 
     useEffect(() => {
         let app: Application | null = null;
+        let resizeObserver: ResizeObserver | null = null;
         let cancelled = false;
 
         const initialize = async () => {
@@ -66,6 +71,7 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                  * Load the original PNG.
                  */
                 const texture = await Assets.load(mapUrl);
+                texture.source.scaleMode = "nearest";
 
                 if (cancelled) return;
 
@@ -128,19 +134,21 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                 const politicalImage = buildPoliticalMap(
                     lookup,
                     nations,
-                    selection
+                    selection,
                 );
 
                 /*
                  * Put the political ImageData into
                  * another canvas.
                  */
-                const politicalCanvas = document.createElement("canvas");
+                const politicalCanvas =
+                    document.createElement("canvas");
 
                 politicalCanvas.width = lookup.width;
                 politicalCanvas.height = lookup.height;
 
-                const politicalContext = politicalCanvas.getContext("2d");
+                const politicalContext =
+                    politicalCanvas.getContext("2d");
 
                 if (!politicalContext) {
                     throw new Error(
@@ -158,10 +166,12 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                  * Turn the canvas into a Pixi texture.
                  */
                 const politicalTexture = Texture.from(politicalCanvas);
+                politicalTexture.source.scaleMode = "nearest";
 
                 if (cancelled) return;
 
                 const politicalMap = new Sprite(politicalTexture);
+
                 politicalMapRef.current = politicalMap;
 
                 /*
@@ -171,16 +181,87 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                 pixiApp.stage.addChild(politicalMap);
 
                 /*
+                 * Resize both map layers so that the
+                 * entire map fits inside the container
+                 * while preserving its aspect ratio.
+                 */
+                const resizeMap = () => {
+                    const containerWidth =
+                        container.clientWidth;
+
+                    const containerHeight =
+                        container.clientHeight;
+
+                    if (
+                        containerWidth <= 0 ||
+                        containerHeight <= 0
+                    ) {
+                        return;
+                    }
+
+                    const scaleX =
+                        containerWidth / lookup.width;
+
+                    const scaleY =
+                        containerHeight / lookup.height;
+
+                    const scale = Math.min(
+                        scaleX,
+                        scaleY,
+                    );
+
+                    const mapWidth =
+                        lookup.width * scale;
+
+                    const mapHeight =
+                        lookup.height * scale;
+
+                    const x =
+                        (containerWidth - mapWidth) / 2;
+
+                    const y =
+                        (containerHeight - mapHeight) / 2;
+
+                    map.scale.set(scale);
+                    map.position.set(x, y);
+
+                    politicalMap.scale.set(scale);
+                    politicalMap.position.set(x, y);
+                };
+
+                /*
+                 * Resize immediately.
+                 */
+                resizeMap();
+
+                /*
+                 * Resize whenever the map container
+                 * changes size.
+                 */
+                resizeObserver = new ResizeObserver(
+                    resizeMap,
+                );
+
+                resizeObserver.observe(container);
+
+                /*
                  * Handle clicks on the original map.
                  */
                 map.eventMode = "static";
                 map.cursor = "pointer";
 
                 map.on("pointerdown", (event) => {
-                    const lookup = lookupRef.current;
+                    const lookup =
+                        lookupRef.current;
 
                     if (!lookup) return;
 
+                    /*
+                     * getLocalPosition(map) converts the
+                     * displayed/scaled coordinates back
+                     * into the original map's coordinate
+                     * system.
+                     */
                     const position =
                         event.getLocalPosition(map);
 
@@ -211,8 +292,16 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
                             territoryIndex
                         ];
 
-                    if (event.shiftKey || event.ctrlKey) {
-                        const nation = nations.find((nation: Nation) => nation.Name === territory.Nation);
+                    if (
+                        event.shiftKey ||
+                        event.ctrlKey
+                    ) {
+                        const nation =
+                            nations.find(
+                                (nation: Nation) =>
+                                    nation.Name ===
+                                    territory.Nation,
+                            );
 
                         if (nation) {
                             nationSelected(nation);
@@ -234,6 +323,11 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
         return () => {
             cancelled = true;
 
+            if (resizeObserver) {
+                resizeObserver.disconnect();
+                resizeObserver = null;
+            }
+
             if (app) {
                 app.destroy(true);
                 app = null;
@@ -243,25 +337,33 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
 
     useEffect(() => {
         const lookup = lookupRef.current;
-        const politicalMap = politicalMapRef.current;
+        const politicalMap =
+            politicalMapRef.current;
         const nations = nationsRef.current;
 
-        if (!lookup || !politicalMap || nations.length === 0) {
+        if (
+            !lookup ||
+            !politicalMap ||
+            nations.length === 0
+        ) {
             return;
         }
 
-        const politicalImage = buildPoliticalMap(
-            lookup,
-            nations,
-            selection,
-        );
+        const politicalImage =
+            buildPoliticalMap(
+                lookup,
+                nations,
+                selection,
+            );
 
-        const canvas = document.createElement("canvas");
+        const canvas =
+            document.createElement("canvas");
 
         canvas.width = lookup.width;
         canvas.height = lookup.height;
 
-        const context = canvas.getContext("2d");
+        const context =
+            canvas.getContext("2d");
 
         if (!context) {
             return;
@@ -274,6 +376,7 @@ function GameMap({ selection, territorySelected, nationSelected }: GameMapProps)
         );
 
         const texture = Texture.from(canvas);
+        texture.source.scaleMode = "nearest";
 
         const oldTexture = politicalMap.texture;
 
