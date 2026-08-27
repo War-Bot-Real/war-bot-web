@@ -25,6 +25,7 @@ function GameMap({
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
     const nationsRef = useRef<Nation[]>([]);
     const politicalMapRef = useRef<Sprite | null>(null);
+    const clickSound = useRef(new Audio("/click_territory.wav"));
 
     useEffect(() => {
         let app: Application | null = null;
@@ -312,9 +313,11 @@ function GameMap({
 
                         if (nation) {
                             nationSelected(nation);
+                            clickSound.current.play();
                         }
                     } else {
                         territorySelected(territory);
+                        clickSound.current.play();
                     }
                 });
             } catch (error) {
