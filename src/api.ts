@@ -1,6 +1,29 @@
 import { supabase } from "./lib/supabase";
 
+type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+
 const API_URL = "https://war-bot-api.vercel.app";
+
+async function fetchRequest(request: string, method: HttpMethod = "GET") {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
+        throw new Error("User is not logged in");
+    }
+
+    const response = await fetch(`${API_URL}/${request}`, {
+        method,
+        headers: {
+            Authorization: `Bearer ${session.access_token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+    }
+
+    return response.json();
+}
 
 export async function getNations() {
     return fetchRequest('nations');
@@ -37,22 +60,6 @@ export async function me() {
     return fetchRequest('me');
 }
 
-async function fetchRequest(request: string) {
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (!session) {
-        throw new Error("User is not logged in");
-    }
-
-    const response = await fetch(`${API_URL}/${request}`, {
-        headers: {
-            Authorization: `Bearer ${session.access_token}`,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-    }
-
-    return response.json();
+export async function setTax(rate: number) {
+    return fetchRequest(`settax/${rate}`, "PATCH");
 }

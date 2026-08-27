@@ -4,6 +4,7 @@ import ShopFlow from "../../commands/flows/ShopFlow";
 import TerritoryFlow from "./outputs/TerritoryInfo";
 import NationFlow from "./outputs/NationInfo";
 import "../../commands/styles.css"
+import SetTaxFlow from "../../commands/flows/SetTaxFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -18,6 +19,8 @@ function OutputPanel({
         <section className="output-panel">
             {activeCommand === "shop" ? (
                 <ShopFlow />
+            ) : activeCommand === "settax" ? (
+                <SetTaxFlow />
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
