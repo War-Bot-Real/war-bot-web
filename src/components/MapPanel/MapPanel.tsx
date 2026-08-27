@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import GameMap from "./GameMap";
 import MapModeBar, { type MapMode } from "./MapModeBar";
 
@@ -16,8 +17,46 @@ function MapPanel({
     mapMode,
     setMapMode,
 }: MapPanelProps) {
+    const [mapDimensions, setMapDimensions] =
+      useState({
+          width: 847,
+          height: 672,
+      });
+    
+    const [mapPanelWidth, setMapPanelWidth] = useState(600);
+
+    useEffect(() => {
+        const updateMapPanelWidth = () => {
+            const mapHeight =
+                window.innerHeight - 60 - 50 - 50;
+
+            const aspectRatio =
+                mapDimensions.width /
+                mapDimensions.height;
+
+            const mapWidth =
+                mapHeight * aspectRatio;
+
+            setMapPanelWidth(mapWidth);
+        };
+
+        updateMapPanelWidth();
+
+        window.addEventListener(
+            "resize",
+            updateMapPanelWidth,
+        );
+
+        return () => {
+            window.removeEventListener(
+                "resize",
+                updateMapPanelWidth,
+            );
+        };
+    }, [mapDimensions]);
+
     return (
-        <section className="map-panel">
+        <section className="map-panel" style={{width: `${mapPanelWidth}px`}}>
             <div className="entity-search">
                 <input
                     type="text"
@@ -38,6 +77,12 @@ function MapPanel({
                         setSelection({
                             type: "nation",
                             nation,
+                        })
+                    }
+                    onMapDimensions={(width, height) =>
+                        setMapDimensions({
+                            width,
+                            height,
                         })
                     }
                 />

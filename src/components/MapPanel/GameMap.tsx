@@ -12,12 +12,14 @@ interface GameMapProps {
     selection: Selection;
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
+    onMapDimensions: (width: number, height: number) => void;
 }
 
 function GameMap({
     selection,
     territorySelected,
     nationSelected,
+    onMapDimensions
 }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
@@ -47,6 +49,7 @@ function GameMap({
             }
 
             app = pixiApp;
+            app.renderer.background.color = '#F5F5F5'
             container.appendChild(pixiApp.canvas);
 
             try {
@@ -120,6 +123,10 @@ function GameMap({
                 const lookup = buildTerritoryLookup(
                     imageData,
                     territories,
+                );
+                onMapDimensions(
+                    lookup.width,
+                    lookup.height,
                 );
 
                 lookupRef.current = lookup;

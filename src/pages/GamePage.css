@@ -11,7 +11,7 @@ body,
     flex: 1;
     min-height: 0;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: auto minmax(0, 1fr);
 }
 
 .map-panel {
