@@ -34,6 +34,10 @@ function OutputPanel({
                         Select a territory or nation
                         on the map.
                     </p>
+                    <br></br>
+                    <p><b>Left Click:</b> Select Territory</p>
+                    <p><b>Shift/Ctrl Click:</b> Select Nation</p>
+                    <p><b>Escape:</b> Back to Full View</p>
                 </>
             )}
         </section>

@@ -6,46 +6,84 @@ export const commands: Command[] = [
         name: "Shop",
         context: "general",
     },
-
     {
-        id: "balance",
-        name: "Balance",
+        id: "settax",
+        name: "Set Tax",
         context: "general",
     },
-
     {
-        id: "inventory",
+        id: "collect",
+        name: "Collect Income",
+        context: "general",
+    },
+    {
+        id: "deploy",
+        name: "Deploy Unit",
+        context: "territory",
+    },
+    {
+        id: "bal",
+        name: "View Balance",
+        context: "general",
+    },
+    {
+        id: "buy",
+        name: "Buy",
+        context: "general",
+    },
+    {
+        id: "inv",
         name: "Inventory",
         context: "general",
     },
-
     {
-        id: "build",
-        name: "Build",
-        context: "territory",
+        id: "territories",
+        name: "Territories",
+        context: "nation",
     },
-
     {
-        id: "move",
-        name: "Move",
-        context: "territory",
+        id: "top",
+        name: "Top",
+        context: "general",
     },
-
+    {
+        id: "declarewar",
+        name: "Declare War",
+        context: "nation",
+    },
+    {
+        id: "wars",
+        name: "Wars",
+        context: "general",
+    },
+    {
+        id: "resign",
+        name: "Resign",
+        context: "general",
+    },
     {
         id: "attack",
         name: "Attack",
         context: "territory",
     },
-
     {
-        id: "declare-war",
-        name: "Declare War",
+        id: "give",
+        name: "Give",
         context: "nation",
     },
-
     {
-        id: "ally",
-        name: "Ally",
-        context: "nation",
+        id: "build",
+        name: "Build",
+        context: "territory",
     },
+    {
+        id: "borders",
+        name: "Territory Borders",
+        context: "territory",
+    },
+    {
+        id: "bordersnat",
+        name: "Nation Borders",
+        context: "nation",
+    }
 ];
