@@ -29,6 +29,10 @@ export async function getNations() {
     return fetchRequest('nations');
 }
 
+export async function getNation(nation: string) {
+    return fetchRequest(`nation/${nation}`);
+}
+
 export async function getTerritories() {
     return fetchRequest('territories');
 }
@@ -62,4 +66,12 @@ export async function me() {
 
 export async function setTax(rate: number) {
     return fetchRequest(`settax/${rate}`, "PATCH");
+}
+
+export async function getBalance() {
+    return fetchRequest(`bal`);
+}
+
+export async function getInventory() {
+    return fetchRequest(`inv`);
 }
