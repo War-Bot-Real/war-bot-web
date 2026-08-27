@@ -33,6 +33,10 @@ function CommandPanel({
             <input
                 type="text"
                 placeholder="Search commands..."
+                value={search}
+                onChange={(event) =>
+                    setSearch(event.target.value)
+                }
             />
 
             <div className="commands">
