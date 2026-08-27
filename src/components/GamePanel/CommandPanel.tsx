@@ -14,6 +14,7 @@ function CommandPanel({
     const context = selection?.type ?? "general";
     const [search, setSearch] = useState("");
     const clickSound = useRef(new Audio("/click_default.wav"));
+    const searchSound = useRef(new Audio("/click_search.wav"));
 
     const orderedCommands = [...commands].sort((a, b) => {
         const aRelevant = a.context === context;
@@ -35,8 +36,11 @@ function CommandPanel({
                 type="text"
                 placeholder="Search commands..."
                 value={search}
-                onChange={(event) =>
+                onChange={(event) => 
                     setSearch(event.target.value)
+                }
+                onClick={() => 
+                  searchSound.current.play()
                 }
             />
 
