@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { Selection } from "../../types/Selection";
 import { commands } from "../../commands/commands";
 
@@ -13,6 +13,7 @@ function CommandPanel({
 }: CommandPanelProps) {
     const context = selection?.type ?? "general";
     const [search, setSearch] = useState("");
+    const clickSound = useRef(new Audio("/click_default.wav"));
 
     const orderedCommands = [...commands].sort((a, b) => {
         const aRelevant = a.context === context;
@@ -43,9 +44,10 @@ function CommandPanel({
                 {visibleCommands.map((command) => (
                     <button
                         key={command.id}
-                        onClick={() =>
+                        onClick={() => {
+                            clickSound.current.play();
                             setActiveCommand(command.id)
-                        }
+                        }}
                     >
                         {command.name}
                     </button>
