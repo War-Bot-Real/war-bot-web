@@ -75,3 +75,11 @@ export async function getBalance() {
 export async function getInventory() {
     return fetchRequest(`inv`);
 }
+
+export async function getBorders(territory: string) {
+    return fetchRequest(`borders/terr/${territory}`);
+}
+
+export async function getNationBorders(nation: string) {
+    return fetchRequest(`borders/nation/${nation}`);
+}

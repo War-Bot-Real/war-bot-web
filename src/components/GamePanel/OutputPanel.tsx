@@ -7,6 +7,7 @@ import "../../commands/styles.css"
 import SetTaxFlow from "../../commands/flows/SetTaxFlow";
 import BalanceFlow from "../../commands/flows/BalanceFlow";
 import InventoryFlow from "../../commands/flows/InventoryFlow";
+import BordersFlow from "../../commands/flows/BordersFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -23,10 +24,12 @@ function OutputPanel({
                 <ShopFlow />
             ) : activeCommand === "settax" ? (
                 <SetTaxFlow />
-            ) :  activeCommand === "bal" ? (
+            ) : activeCommand === "bal" ? (
                 <BalanceFlow />
-            ) :  activeCommand === "inv" ? (
+            ) : activeCommand === "inv" ? (
                 <InventoryFlow />
+            ) : activeCommand === "borders" ? (
+                <BordersFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
