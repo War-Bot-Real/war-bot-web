@@ -78,12 +78,7 @@ export const commands: Command[] = [
     },
     {
         id: "borders",
-        name: "Territory Borders",
-        context: "territory",
-    },
-    {
-        id: "bordersnat",
-        name: "Nation Borders",
-        context: "nation",
+        name: "Borders",
+        context: "territory", //Also for nation
     }
 ];

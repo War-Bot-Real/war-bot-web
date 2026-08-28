@@ -29,7 +29,7 @@ function OutputPanel({
             ) : activeCommand === "inv" ? (
                 <InventoryFlow />
             ) : activeCommand === "borders" ? (
-                <BordersFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
+                <BordersFlow selection={selection}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
