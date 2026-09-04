@@ -4,7 +4,7 @@ export interface Territory {
     Population: number;
     Bordering: string[];
     Buildings: unknown[];
-    Location: string;
+    Location: string[][];
     Coast: string[];
     Integrated: number;
     Area: number;
