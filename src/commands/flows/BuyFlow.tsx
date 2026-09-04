@@ -5,6 +5,7 @@ function BuyFlow() {
     const [quan, setQuan] = useState(0);
     const [item, setItem] = useState("");
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
     const handleBuy = async () => {
@@ -13,7 +14,12 @@ function BuyFlow() {
       }
       
       setLoading(true)
-      buy(item, quan)
+      const resp = await buy(item, quan)
+      if (resp["success"]){
+        setSuccess(`Successfully bought ${quan.toLocaleString()} ${item} for $${Math.abs(resp["Change"][resp["Nation"]]["Balance"]["value"])}. You have $${resp["Updated"][resp["Nation"]]["Balance"]} remaining.`)
+        setError("")
+      }
+      setLoading(false)
     };
 
     return (
@@ -45,6 +51,7 @@ function BuyFlow() {
                 <br/>
                 <button onClick={handleBuy} disabled={loading}>Buy!</button>
             </div>
+            <p>{success}</p>
             <p>{error}</p>
         </div>
     );

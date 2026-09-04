@@ -15,6 +15,7 @@ async function fetchRequest(request: string, method: HttpMethod = "GET", body?: 
         method,
         headers: {
             Authorization: `Bearer ${session.access_token}`,
+            "Content-Type": "application/json",
         },
         body: body ? JSON.stringify(body) : undefined
     });
@@ -90,5 +91,5 @@ export async function collect() {
 }
 
 export async function buy(item: string, quantity: number) {
-    return fetchRequest(`buy`, "POST", {"item": item, "quantity": quantity});
+    return fetchRequest(`buy`, "POST", {item, quantity});
 }
