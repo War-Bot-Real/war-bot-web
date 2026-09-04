@@ -83,3 +83,7 @@ export async function getBorders(territory: string) {
 export async function getNationBorders(nation: string) {
     return fetchRequest(`borders/nation/${nation}`);
 }
+
+export async function collect() {
+    return fetchRequest(`income/collect`, "POST");
+}

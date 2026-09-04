@@ -8,6 +8,7 @@ import SetTaxFlow from "../../commands/flows/SetTaxFlow";
 import BalanceFlow from "../../commands/flows/BalanceFlow";
 import InventoryFlow from "../../commands/flows/InventoryFlow";
 import BordersFlow from "../../commands/flows/BordersFlow";
+import CollectFlow from "../../commands/flows/CollectFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -30,6 +31,8 @@ function OutputPanel({
                 <InventoryFlow />
             ) : activeCommand === "borders" ? (
                 <BordersFlow selection={selection}/>
+            ) : activeCommand === "collect" ? (
+                <CollectFlow/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
