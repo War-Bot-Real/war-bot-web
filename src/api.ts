@@ -4,7 +4,7 @@ type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
 const API_URL = "https://war-bot-api.vercel.app";
 
-async function fetchRequest(request: string, method: HttpMethod = "GET") {
+async function fetchRequest(request: string, method: HttpMethod = "GET", body?: object) {
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) {
@@ -16,6 +16,7 @@ async function fetchRequest(request: string, method: HttpMethod = "GET") {
         headers: {
             Authorization: `Bearer ${session.access_token}`,
         },
+        body: body ? JSON.stringify(body) : undefined
     });
 
     if (!response.ok) {
@@ -86,4 +87,8 @@ export async function getNationBorders(nation: string) {
 
 export async function collect() {
     return fetchRequest(`income/collect`, "POST");
+}
+
+export async function buy(item: string, quantity: number) {
+    return fetchRequest(`buy`, "POST", {"item": item, "quantity": quantity});
 }

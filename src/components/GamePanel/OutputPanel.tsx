@@ -9,6 +9,7 @@ import BalanceFlow from "../../commands/flows/BalanceFlow";
 import InventoryFlow from "../../commands/flows/InventoryFlow";
 import BordersFlow from "../../commands/flows/BordersFlow";
 import CollectFlow from "../../commands/flows/CollectFlow";
+import BuyFlow from "../../commands/flows/BuyFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -33,6 +34,8 @@ function OutputPanel({
                 <BordersFlow selection={selection}/>
             ) : activeCommand === "collect" ? (
                 <CollectFlow/>
+            ) : activeCommand === "buy" ? (
+                <BuyFlow/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
