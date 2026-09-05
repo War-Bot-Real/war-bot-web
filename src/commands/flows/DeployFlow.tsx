@@ -52,7 +52,7 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
                     }
                     disabled={loading}
                     placeholder="Territory"
-                    value={territory === null ? "" : territory.Name}
+                    value={territory === null ? terr : territory.Name}
                 />
                 <br/>
                 <input
