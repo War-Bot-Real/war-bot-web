@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { deploy } from "../../api";
+import type { Territory } from "../../types/Territory";
 
-function DeployFlow() {
+function DeployFlow({ territory }: { territory: Territory | null }) {
     const [quan, setQuan] = useState(0);
     const [terr, setTerr] = useState("");
     const [unit, setUnit] = useState("");
@@ -51,6 +52,7 @@ function DeployFlow() {
                     }
                     disabled={loading}
                     placeholder="Territory"
+                    value={territory === null ? "" : territory.Name}
                 />
                 <br/>
                 <input

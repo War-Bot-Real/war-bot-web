@@ -38,7 +38,7 @@ function OutputPanel({
             ) : activeCommand === "buy" ? (
                 <BuyFlow/>
             ) : activeCommand === "deploy" ? (
-                <DeployFlow/>
+                <DeployFlow territory={selection?.type === "territory" ? selection.territory : null}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
