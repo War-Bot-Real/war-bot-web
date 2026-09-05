@@ -11,10 +11,6 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
     const [error, setError] = useState<string | null>(null);
 
     const handleDeploy = async () => {
-        if (quan < 1) {
-          setError("Quantity must be at least 1!")
-        }
-
         setLoading(true)
         try {
             const data = await deploy(terr, unit, quan);
