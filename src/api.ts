@@ -92,6 +92,10 @@ export async function collect() {
     return fetchRequest(`income/collect`, "POST");
 }
 
+export async function getIncome() {
+    return fetchRequest(`income/view`);
+}
+
 export async function buy(item: string, quantity: number) {
     return fetchRequest(`buy`, "POST", {item, quantity});
 }

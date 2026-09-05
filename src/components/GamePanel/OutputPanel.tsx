@@ -11,6 +11,7 @@ import BordersFlow from "../../commands/flows/BordersFlow";
 import CollectFlow from "../../commands/flows/CollectFlow";
 import BuyFlow from "../../commands/flows/BuyFlow";
 import DeployFlow from "../../commands/flows/DeployFlow";
+import IncomeFlow from "../../commands/flows/IncomeFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -35,6 +36,8 @@ function OutputPanel({
                 <BordersFlow selection={selection}/>
             ) : activeCommand === "collect" ? (
                 <CollectFlow/>
+            ) : activeCommand === "income" ? (
+                <IncomeFlow/>
             ) : activeCommand === "buy" ? (
                 <BuyFlow/>
             ) : activeCommand === "deploy" ? (

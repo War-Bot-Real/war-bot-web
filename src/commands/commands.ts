@@ -17,6 +17,11 @@ export const commands: Command[] = [
         context: "general",
     },
     {
+        id: "income",
+        name: "View Income",
+        context: "general",
+    },
+    {
         id: "deploy",
         name: "Deploy Unit",
         context: "territory",
