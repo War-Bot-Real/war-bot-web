@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import GameMap from "./GameMap";
 import MapModeBar, { type MapMode } from "./MapModeBar";
+import EntitySearch from "./EntitySearch";
 
 import { getTerritories, getNations } from "../../api";
 
@@ -102,12 +103,11 @@ function MapPanel({
             className="map-panel"
             style={{ width: `${mapPanelWidth}px` }}
         >
-            <div className="entity-search">
-                <input
-                    type="text"
-                    placeholder="Search territories or nations..."
-                />
-            </div>
+            <EntitySearch
+                territories={territories}
+                nations={nations}
+                setSelection={setSelection}
+            />
 
             <div className="map-container">
                 <GameMap
