@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./EntitySearch.css"
 import type { Selection } from "../../types/Selection";
@@ -82,6 +82,13 @@ function EntitySearch({
     setSelection,
 }: EntitySearchProps) {
     const [query, setQuery] = useState("");
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setHighlightedIndex(-1);
+        setIsOpen(query.trim().length > 0);
+    }, [query]);
 
     const results = searchEntities(
         query,
@@ -103,29 +110,83 @@ function EntitySearch({
         }
 
         setQuery("");
+        setIsOpen(false);
+        setHighlightedIndex(-1);
+    };
+
+    const handleKeyDown = (
+        event: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Escape") {
+            setIsOpen(false);
+            setHighlightedIndex(-1);
+            return;
+        }
+
+        if (!isOpen || results.length === 0) {
+            return;
+        }
+
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+
+            setHighlightedIndex((current) =>
+                current < results.length - 1
+                    ? current + 1
+                    : 0
+            );
+        }
+
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+
+            setHighlightedIndex((current) =>
+                current > 0
+                    ? current - 1
+                    : results.length - 1
+            );
+        }
+
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            if (highlightedIndex >= 0) {
+                handleSelect(results[highlightedIndex]);
+            }
+        }
     };
 
     return (
         <div className="entity-search">
             <input
                 type="text"
-                placeholder="Search territories or nations..."
                 value={query}
-                onChange={(event) =>
-                    setQuery(event.target.value)
-                }
+                onChange={(event) => {
+                    setQuery(event.target.value);
+                    setIsOpen(true);
+                }}
+                onKeyDown={handleKeyDown}
+                onFocus={() => {
+                    if (query.trim()) {
+                        setIsOpen(true);
+                    }
+                }}
             />
 
-            {results.length > 0 && (
+            {isOpen && results.length > 0 && (
                 <div className="entity-search-results">
-                    {results.map((result) => (
+                    {results.map((result, index) => (
                         <button
                             key={`${result.type}-${result.name}`}
-                            type="button"
-                            className="entity-search-result"
-                            onClick={() =>
-                                handleSelect(result)
-                            }
+                            className={`entity-search-result ${
+                                index === highlightedIndex
+                                    ? "highlighted"
+                                    : ""
+                            }`}
+                            onMouseDown={(event) => {
+                                event.preventDefault();
+                                handleSelect(result);
+                            }}
                         >
                             <span className="entity-search-name">
                                 {result.name}

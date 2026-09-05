@@ -25,7 +25,7 @@
     cursor: pointer;
 }
 
-.entity-search-result:hover {
+.entity-search-result:hover, .entity-search-result.highlighted {
     background: #f2f2f2;
 }
 
