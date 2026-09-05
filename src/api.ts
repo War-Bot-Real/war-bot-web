@@ -93,3 +93,7 @@ export async function collect() {
 export async function buy(item: string, quantity: number) {
     return fetchRequest(`buy`, "POST", {item, quantity});
 }
+
+export async function deploy(territory: string, unit: string, quantity: number) {
+    return fetchRequest(`deploy`, "POST", {territory, unit, quantity});
+}
