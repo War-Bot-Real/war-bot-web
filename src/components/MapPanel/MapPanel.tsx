@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import GameMap from "./GameMap";
 import MapModeBar, { type MapMode } from "./MapModeBar";
 
+import { getTerritories, getNations } from "../../api";
+
 import type { Selection } from "../../types/Selection";
+import type { Territory } from "../../types/Territory";
+import type { Nation } from "../../types/Nation";
 
 interface MapPanelProps {
     selection: Selection;
@@ -17,23 +21,63 @@ function MapPanel({
     mapMode,
     setMapMode,
 }: MapPanelProps) {
+    const [territories, setTerritories] =
+        useState<Territory[]>([]);
+
+    const [nations, setNations] =
+        useState<Nation[]>([]);
+
     const [mapDimensions, setMapDimensions] =
-      useState({
-          width: 847,
-          height: 672,
-      });
-    const [mapPanelWidth, setMapPanelWidth] = useState(600);
-    const [shrink, setShrink] = useState(false);
+        useState({
+            width: 847,
+            height: 672,
+        });
+
+    const [mapPanelWidth, setMapPanelWidth] =
+        useState(600);
+
+    const [shrink, setShrink] =
+        useState(false);
+
+    useEffect(() => {
+        const loadEntities = async () => {
+            try {
+                const [
+                    territories,
+                    nations,
+                ] = await Promise.all([
+                    getTerritories(),
+                    getNations(),
+                ]);
+
+                setTerritories(territories);
+                setNations(nations);
+            } catch (error) {
+                console.error(
+                    "Failed to load entities:",
+                    error,
+                );
+            }
+        };
+
+        loadEntities();
+    }, []);
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
-            const mapHeight = window.innerHeight - 60 - 50 - 50;
+            const mapHeight =
+                window.innerHeight - 60 - 50 - 50;
 
-            const aspectRatio = mapDimensions.width / mapDimensions.height;
+            const aspectRatio =
+                mapDimensions.width /
+                mapDimensions.height;
 
-            const mapWidth = mapHeight * aspectRatio;
+            const mapWidth =
+                mapHeight * aspectRatio;
 
-            setShrink((mapHeight / mapDimensions.height) < 0.9);
+            setShrink(
+                (mapHeight / mapDimensions.height) < 0.9,
+            );
 
             setMapPanelWidth(mapWidth);
         };
@@ -54,7 +98,10 @@ function MapPanel({
     }, [mapDimensions]);
 
     return (
-        <section className="map-panel" style={{width: `${mapPanelWidth}px`}}>
+        <section
+            className="map-panel"
+            style={{ width: `${mapPanelWidth}px` }}
+        >
             <div className="entity-search">
                 <input
                     type="text"
@@ -64,6 +111,8 @@ function MapPanel({
 
             <div className="map-container">
                 <GameMap
+                    territories={territories}
+                    nations={nations}
                     selection={selection}
                     territorySelected={(territory) =>
                         setSelection({

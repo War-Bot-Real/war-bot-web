@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Application, Assets, Sprite, Texture } from "pixi.js";
 
-import { getMapUrl, getTerritories, getNations } from "../../api";
+import { getMapUrl } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import { buildPoliticalMap } from "../../map/buildPoliticalMap";
 import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
@@ -9,6 +9,8 @@ import type { Nation } from "../../types/Nation";
 import type { Selection } from "../../types/Selection";
 
 interface GameMapProps {
+    territories: Territory[];
+    nations: Nation[];
     selection: Selection;
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
@@ -17,15 +19,20 @@ interface GameMapProps {
 }
 
 function GameMap({
+    territories,
+    nations,
     selection,
     territorySelected,
     nationSelected,
     onMapDimensions,
-    shrink
+    shrink,
 }: GameMapProps) {
+    if (territories.length === 0 || nations.length === 0) {
+        return;
+    }
+
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
-    const nationsRef = useRef<Nation[]>([]);
     const politicalMapRef = useRef<Sprite | null>(null);
     const clickSound = useRef(new Audio("/click_territory.wav"));
 
@@ -56,20 +63,7 @@ function GameMap({
             container.appendChild(pixiApp.canvas);
 
             try {
-                /*
-                 * Get map, territories, and nations.
-                 */
-                const [
-                    mapUrl,
-                    territories,
-                    nations,
-                ] = await Promise.all([
-                    getMapUrl(shrink),
-                    getTerritories(),
-                    getNations(),
-                ]);
-
-                nationsRef.current = nations;
+                const mapUrl = await getMapUrl(shrink);
 
                 if (cancelled) return;
 
@@ -345,13 +339,11 @@ function GameMap({
                 app = null;
             }
         };
-    }, [shrink]);
+    }, [shrink, territories, nations]);
 
     useEffect(() => {
         const lookup = lookupRef.current;
-        const politicalMap =
-            politicalMapRef.current;
-        const nations = nationsRef.current;
+        const politicalMap = politicalMapRef.current;
 
         if (
             !lookup ||
