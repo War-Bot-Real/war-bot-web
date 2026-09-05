@@ -19,9 +19,11 @@ function DeployFlow() {
             const data = await deploy(terr, unit, quan);
             if (data["success"]) {
               setSuccess(`Successfully deployed ${quan} ${unit} in ${terr}`)
+            } else {
+              setError(data["detail"])
             }
         } catch (error) {
-            console.error("Failed to load balance:", error);
+            setError(error instanceof Error ? error.message : "Failed to deploy");
         }
         setLoading(false)
     };

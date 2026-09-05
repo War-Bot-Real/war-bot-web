@@ -20,11 +20,13 @@ async function fetchRequest(request: string, method: HttpMethod = "GET", body?: 
         body: body ? JSON.stringify(body) : undefined
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        throw new Error(data.detail || `API error: ${response.status}`);
     }
 
-    return response.json();
+    return data;
 }
 
 export async function getNations() {
