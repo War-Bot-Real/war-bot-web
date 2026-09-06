@@ -25,8 +25,11 @@ function GamePage({ onAccount }: GamePageProps) {
             event: KeyboardEvent,
         ) => {
             if (event.key === "Escape") {
-                setSelection(null);
-                setActiveCommand(null);
+                if (selection === null) {
+                  setActiveCommand(null);
+                } else {
+                  setSelection(null);
+                }
             }
         };
 
@@ -41,7 +44,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 handleKeyDown,
             );
         };
-    }, []);
+    }, [selection]);
 
     useEffect(() => {
         const loadUser = async () => {
