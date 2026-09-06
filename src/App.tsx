@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 
 import { supabase } from "./lib/supabase";
@@ -10,12 +10,17 @@ type Page = "game" | "account";
 
 function App() {
     const [page, setPage] = useState<Page>("game");
+    const [session, setSession] = useState<Session | null>(null);
+    const [loading, setLoading] = useState(true);
+    const clickSound = useRef<HTMLAudioElement | null>(null);
 
-    const [session, setSession] =
-        useState<Session | null>(null);
+    useEffect(() => {
+        const audio = new Audio("/click_default.wav");
+        audio.preload = "auto";
+        clickSound.current = audio;
 
-    const [loading, setLoading] =
-        useState(true);
+        audio.load();
+    }, []);
 
     useEffect(() => {
         supabase.auth.getSession().then(
@@ -47,10 +52,22 @@ function App() {
     }
 
     if (page === "account") {
-        return <AccountPage onBack={() => setPage("game")} />;
+        return <AccountPage onBack={() => {
+          if (clickSound.current) {
+              clickSound.current.currentTime = 0;
+              clickSound.current.play();
+          }
+          setPage("game")
+        }}/>;
     }
 
-    return <GamePage onAccount={() => setPage("account")}/>;
+    return <GamePage onAccount={() => {
+      if (clickSound.current) {
+          clickSound.current.currentTime = 0;
+          clickSound.current.play();
+      }
+      setPage("account")
+    }}/>;
 }
 
 export default App;

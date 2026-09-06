@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./LoginPage.css";
 
@@ -6,11 +6,13 @@ function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const clickSound = useRef(new Audio("/click_default.wav"));
 
     const handleLogin = async (
         event: React.FormEvent,
     ) => {
         event.preventDefault();
+        clickSound.current.play();
 
         setError("");
 
