@@ -7,4 +7,5 @@ export interface Command {
     id: string;
     name: string;
     context: CommandContext;
+    requiresNation: boolean;
 }

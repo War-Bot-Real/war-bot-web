@@ -1,22 +1,37 @@
 import { useState, useRef } from "react";
 import type { Selection } from "../../types/Selection";
 import { commands } from "../../commands/commands";
+import type { Nation } from "../../types/Nation";
 
 interface CommandPanelProps {
     selection: Selection;
+    nation: Nation | null;
     setActiveCommand: (command: string | null) => void;
 }
 
-function CommandPanel({
-    selection,
-    setActiveCommand,
-}: CommandPanelProps) {
+function CommandPanel({selection, nation, setActiveCommand}: CommandPanelProps) {
     const context = selection?.type ?? "general";
     const [search, setSearch] = useState("");
     const clickSound = useRef(new Audio("/click_default.wav"));
     const searchSound = useRef(new Audio("/click_search.wav"));
 
     const orderedCommands = [...commands].sort((a, b) => {
+        if (nation === null) {
+            if (
+                !a.requiresNation &&
+                b.requiresNation
+            ) {
+                return -1;
+            }
+
+            if (
+                a.requiresNation &&
+                !b.requiresNation
+            ) {
+                return 1;
+            }
+        }
+
         const aRelevant = a.context === context;
         const bRelevant = b.context === context;
 
