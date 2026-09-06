@@ -103,3 +103,7 @@ export async function buy(item: string, quantity: number) {
 export async function deploy(territory: string, unit: string, quantity: number) {
     return fetchRequest(`deploy`, "POST", {territory, unit, quantity});
 }
+
+export async function generateDiscordLink() {
+    return fetchRequest("discord/link/generate", "POST");
+}
