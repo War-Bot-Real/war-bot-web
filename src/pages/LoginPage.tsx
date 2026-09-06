@@ -27,6 +27,19 @@ function LoginPage() {
         }
     };
 
+    const handleGuestLogin = async () => {
+        clickSound.current.play();
+
+        setError("");
+
+        const { error } =
+            await supabase.auth.signInAnonymously();
+
+        if (error) {
+            setError(error.message);
+        }
+    };
+
     return (
         <main className="login-page">
             <form
@@ -55,6 +68,10 @@ function LoginPage() {
 
                 <button type="submit">
                     Login
+                </button>
+
+                <button type="button" onClick={handleGuestLogin}>
+                    Browse as Guest
                 </button>
 
                 {error && (
