@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import "./EntitySearch.css"
 import type { Selection } from "../../types/Selection";
@@ -84,6 +84,8 @@ function EntitySearch({
     const [query, setQuery] = useState("");
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const [isOpen, setIsOpen] = useState(false);
+    const searchSound = useRef(new Audio("/click_search.wav"));
+    const enterSound = useRef(new Audio("/click_select.wav"));
 
     useEffect(() => {
         setHighlightedIndex(-1);
@@ -97,6 +99,7 @@ function EntitySearch({
     );
 
     const handleSelect = (result: SearchResult) => {
+        enterSound.current.play()
         if (result.type === "territory") {
             setSelection({
                 type: "territory",
@@ -164,6 +167,10 @@ function EntitySearch({
                 onChange={(event) => {
                     setQuery(event.target.value);
                     setIsOpen(true);
+                    
+                }}
+                onClick={() => {
+                  searchSound.current.play()
                 }}
                 onKeyDown={handleKeyDown}
                 onFocus={() => {
