@@ -11,6 +11,7 @@ function SignUpPage({ onLogin }: SignUpPageProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
     const clickSound = useRef(
         new Audio("/click_default.wav")
@@ -23,13 +24,14 @@ function SignUpPage({ onLogin }: SignUpPageProps) {
         clickSound.current.play();
 
         setError("");
+        setSuccess(false);
 
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
             return;
         }
 
-        const { error } =
+        const { data, error } =
             await supabase.auth.signUp({
                 email,
                 password,
@@ -37,7 +39,17 @@ function SignUpPage({ onLogin }: SignUpPageProps) {
 
         if (error) {
             setError(error.message);
+            return;
         }
+
+        if (data.session) {
+            // Email confirmation is not required.
+            // App.tsx will detect the new session.
+            return;
+        }
+
+        // Account created, but email confirmation is required.
+        setSuccess(true);
     };
 
     return (
@@ -85,6 +97,12 @@ function SignUpPage({ onLogin }: SignUpPageProps) {
                 {error && (
                     <p className="login-error">
                         {error}
+                    </p>
+                )}
+
+                {success && (
+                    <p className="login-success">
+                        Account created! Check your email to confirm your account.
                     </p>
                 )}
 

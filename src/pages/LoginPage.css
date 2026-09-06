@@ -349,3 +349,25 @@
 .login-link:active {
     transform: none;
 }
+
+.login-success {
+    margin: 4px 0 16px;
+    padding: 11px 13px;
+
+    background: rgba(55, 65, 55, 0.8);
+
+    color: #c7d0c4;
+
+    border: 1px solid #687365;
+    border-left: 3px solid #8a9783;
+
+    border-radius: 2px;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
