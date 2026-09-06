@@ -5,8 +5,9 @@ import { supabase } from "./lib/supabase";
 import LoginPage from "./pages/LoginPage";
 import GamePage from "./pages/GamePage";
 import AccountPage from "./pages/AccountPage";
+import SignUpPage from "./pages/SignUpPage";
 
-type Page = "game" | "account";
+type Page = "login" | "signup" | "game" | "account";
 
 function App() {
     const [page, setPage] = useState<Page>("game");
@@ -47,8 +48,20 @@ function App() {
         return <p>Loading...</p>;
     }
 
-    if (!session) {
-        return <LoginPage />;
+    if (page === "signup") {
+        return (
+            <SignUpPage
+                onLogin={() => setPage("login")}
+            />
+        );
+    }
+
+    if (page === "login" || !session) {
+        return (
+            <LoginPage
+                onSignup={() => setPage("signup")}
+            />
+        );
     }
 
     if (page === "account") {

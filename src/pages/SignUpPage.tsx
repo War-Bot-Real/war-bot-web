@@ -2,17 +2,21 @@ import { useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./LoginPage.css";
 
-interface LoginPageProps {
-    onSignup: () => void;
+interface SignUpPageProps {
+    onLogin: () => void;
 }
 
-function LoginPage({ onSignup }: LoginPageProps) {
+function SignUpPage({ onLogin }: SignUpPageProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
-    const clickSound = useRef(new Audio("/click_default.wav"));
 
-    const handleLogin = async (
+    const clickSound = useRef(
+        new Audio("/click_default.wav")
+    );
+
+    const handleSignUp = async (
         event: React.FormEvent,
     ) => {
         event.preventDefault();
@@ -20,24 +24,16 @@ function LoginPage({ onSignup }: LoginPageProps) {
 
         setError("");
 
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
         const { error } =
-            await supabase.auth.signInWithPassword({
+            await supabase.auth.signUp({
                 email,
                 password,
             });
-
-        if (error) {
-            setError(error.message);
-        }
-    };
-
-    const handleGuestLogin = async () => {
-        clickSound.current.play();
-
-        setError("");
-
-        const { error } =
-            await supabase.auth.signInAnonymously();
 
         if (error) {
             setError(error.message);
@@ -48,7 +44,7 @@ function LoginPage({ onSignup }: LoginPageProps) {
         <main className="login-page">
             <form
                 className="login-form"
-                onSubmit={handleLogin}
+                onSubmit={handleSignUp}
             >
                 <h1>War Bot Web</h1>
 
@@ -59,6 +55,7 @@ function LoginPage({ onSignup }: LoginPageProps) {
                     onChange={(event) =>
                         setEmail(event.target.value)
                     }
+                    required
                 />
 
                 <input
@@ -68,14 +65,21 @@ function LoginPage({ onSignup }: LoginPageProps) {
                     onChange={(event) =>
                         setPassword(event.target.value)
                     }
+                    required
+                />
+
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(event) =>
+                        setConfirmPassword(event.target.value)
+                    }
+                    required
                 />
 
                 <button type="submit">
-                    Login
-                </button>
-
-                <button type="button" onClick={handleGuestLogin}>
-                    Browse as Guest
+                    Sign Up
                 </button>
 
                 {error && (
@@ -85,13 +89,13 @@ function LoginPage({ onSignup }: LoginPageProps) {
                 )}
 
                 <p className="login-switch">
-                    Don't have an account?{" "}
+                    Already have an account?{" "}
                     <button
                         type="button"
                         className="login-link"
-                        onClick={onSignup}
+                        onClick={onLogin}
                     >
-                        Sign Up
+                        Log In
                     </button>
                 </p>
             </form>
@@ -99,4 +103,4 @@ function LoginPage({ onSignup }: LoginPageProps) {
     );
 }
 
-export default LoginPage;
+export default SignUpPage;
