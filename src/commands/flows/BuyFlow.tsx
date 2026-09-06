@@ -16,7 +16,7 @@ function BuyFlow() {
       setLoading(true)
       const resp = await buy(item, quan)
       if (resp["success"]){
-        setSuccess(`Successfully bought ${quan.toLocaleString()} ${item} for $${Math.abs(resp["Change"][resp["Nation"]]["Balance"]["value"])}. You have $${resp["Updated"][resp["Nation"]]["Balance"]} remaining.`)
+        setSuccess(`Successfully bought ${quan.toLocaleString()} ${item} for $${resp["result"]["price"]}. You have $${resp["result"]["New Balance"]} remaining.`)
         setError("")
       }
       setLoading(false)

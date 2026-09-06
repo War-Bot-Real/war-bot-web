@@ -9,9 +9,8 @@ function CollectFlow() {
         const loadCollect = async () => {
             try {
                 const data = await collect();
-                const nation = data["Nation"]
-                setIncome(data["Change"][nation]["Balance"]["value"]);
-                setBalance(data["Updated"][nation]["Balance"]);
+                setIncome(data["result"]["Income"]);
+                setBalance(data["result"]["Balance"]);
             } catch (error) {
                 console.error("Failed to load balance:", error);
             }
