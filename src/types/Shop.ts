@@ -1,6 +1,13 @@
-export interface Shop {
-    "Ground Units": Record<string, number>;
-    "Naval Units": Record<string, number>;
-    "Air Units": Record<string, number>;
-    Buildings: Record<string, number>;
+export interface ShopItem {
+    Money: number;
+    Steel?: number;
+    Iron?: number;
 }
+
+export interface Shop {
+    "Ground Units": Record<string, ShopItem>;
+    "Naval Units": Record<string, ShopItem>;
+    "Air Units": Record<string, ShopItem>;
+    Buildings: Record<string, ShopItem>;
+}
+
