@@ -1,9 +1,10 @@
 import type { Selection } from "../../types/Selection";
+import type { Nation } from "../../types/Nation";
 
 import ShopFlow from "../../commands/flows/ShopFlow";
 import TerritoryFlow from "./outputs/TerritoryInfo";
 import NationFlow from "./outputs/NationInfo";
-import "../../commands/styles.css"
+import "../../commands/styles.css";
 import SetTaxFlow from "../../commands/flows/SetTaxFlow";
 import BalanceFlow from "../../commands/flows/BalanceFlow";
 import InventoryFlow from "../../commands/flows/InventoryFlow";
@@ -16,16 +17,18 @@ import IncomeFlow from "../../commands/flows/IncomeFlow";
 interface OutputPanelProps {
     selection: Selection;
     activeCommand: string | null;
+    nation: Nation | null;
 }
 
 function OutputPanel({
     selection,
     activeCommand,
+    nation,
 }: OutputPanelProps) {
     return (
         <section className="output-panel">
             {activeCommand === "shop" ? (
-                <ShopFlow />
+                <ShopFlow nation={nation} />
             ) : activeCommand === "settax" ? (
                 <SetTaxFlow />
             ) : activeCommand === "bal" ? (
@@ -33,15 +36,21 @@ function OutputPanel({
             ) : activeCommand === "inv" ? (
                 <InventoryFlow />
             ) : activeCommand === "borders" ? (
-                <BordersFlow selection={selection}/>
+                <BordersFlow selection={selection} />
             ) : activeCommand === "collect" ? (
-                <CollectFlow/>
+                <CollectFlow />
             ) : activeCommand === "income" ? (
-                <IncomeFlow/>
+                <IncomeFlow />
             ) : activeCommand === "buy" ? (
-                <BuyFlow/>
+                <BuyFlow />
             ) : activeCommand === "deploy" ? (
-                <DeployFlow territory={selection?.type === "territory" ? selection.territory : null}/>
+                <DeployFlow
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory
+                            : null
+                    }
+                />
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
@@ -58,10 +67,20 @@ function OutputPanel({
                         Select a territory or nation
                         on the map.
                     </p>
-                    <br></br>
-                    <p><b>Left Click:</b> Select Territory</p>
-                    <p><b>Shift/Ctrl Click:</b> Select Nation</p>
-                    <p><b>Escape:</b> Back to Full View</p>
+
+                    <br />
+
+                    <p>
+                        <b>Left Click:</b> Select Territory
+                    </p>
+
+                    <p>
+                        <b>Shift/Ctrl Click:</b> Select Nation
+                    </p>
+
+                    <p>
+                        <b>Escape:</b> Back to Full View
+                    </p>
                 </>
             )}
         </section>

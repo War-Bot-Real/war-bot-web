@@ -17,6 +17,7 @@ function GamePanel({selection, activeCommand, nation, setActiveCommand}: GamePan
             <OutputPanel
                 selection={selection}
                 activeCommand={activeCommand}
+                nation={nation}
             />
 
             <CommandPanel
