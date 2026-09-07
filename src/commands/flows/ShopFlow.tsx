@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { buy, getBalance, getShop } from "../../api";
 
-import type { Shop } from "../../types/Shop";
+import type { Shop, ShopItem } from "../../types/Shop";
 
 function ShopFlow() {
     const [shop, setShop] = useState<Shop | null>(null);
@@ -10,6 +10,7 @@ function ShopFlow() {
     const [loading, setLoading] = useState(true);
     const [buying, setBuying] = useState<string | null>(null);
     const [message, setMessage] = useState("");
+    const purchaseSound = useRef(new Audio("/purchase.mp3"))
 
     useEffect(() => {
         const loadShop = async () => {
@@ -43,7 +44,7 @@ function ShopFlow() {
             for (const items of Object.values(shop)) {
                 for (const [item, itemData] of Object.entries(items)) {
                     const maxQuantity = Math.floor(
-                        balance / itemData.Money,
+                        balance / (itemData as ShopItem).Money,
                     );
 
                     if (
@@ -99,6 +100,7 @@ function ShopFlow() {
             const response = await buy(item, quantity);
 
             if (response["success"]) {
+                purchaseSound.current.play();
                 const newBalance = response["result"]["New Balance"];
 
                 setBalance(newBalance);
@@ -161,7 +163,7 @@ function ShopFlow() {
 
                         {Object.entries(items).map(
                             ([item, itemData]) => {
-                                const price = itemData.Money;
+                                const price = (itemData as ShopItem).Money;
 
                                 const maxQuantity = Math.floor(
                                     balance / price,
