@@ -107,3 +107,7 @@ export async function deploy(territory: string, unit: string, quantity: number) 
 export async function generateDiscordLink() {
     return fetchRequest("discord/link/generate", "POST");
 }
+
+export async function ally(nation: string) {
+    return fetchRequest("ally", "POST", {nation});
+}

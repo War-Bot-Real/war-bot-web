@@ -102,5 +102,11 @@ export const commands: Command[] = [
         name: "Borders",
         context: "territory", //Also for nation
         requiresNation: false
+    },
+    {
+        id: "ally",
+        name: "Ally Nation",
+        context: "nation", 
+        requiresNation: true
     }
 ];

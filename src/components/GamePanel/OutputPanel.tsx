@@ -13,6 +13,7 @@ import CollectFlow from "../../commands/flows/CollectFlow";
 import BuyFlow from "../../commands/flows/BuyFlow";
 import DeployFlow from "../../commands/flows/DeployFlow";
 import IncomeFlow from "../../commands/flows/IncomeFlow";
+import AllyFlow from "../../commands/flows/AllyFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -48,6 +49,14 @@ function OutputPanel({
                     territory={
                         selection?.type === "territory"
                             ? selection.territory
+                            : null
+                    }
+                />
+            ) : activeCommand === "ally" ? (
+                <AllyFlow
+                    nation={
+                        selection?.type === "nation"
+                            ? selection.nation
                             : null
                     }
                 />
