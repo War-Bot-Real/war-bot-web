@@ -55,7 +55,9 @@ function AllyFlow({ nation }: AllyFlowProps) {
 
             {accepted !== null && nation !== null && (
                 <p>
-                    Sent an ally request to {nation.Name}
+                    {accepted
+                        ? `You have accepted ${nation.Name}'s offer of an alliance. Good luck to you both, and may this alliance last.`
+                        : `Sent an ally request to ${nation.Name}`}
                 </p>
             )}
 
