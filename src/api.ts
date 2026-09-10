@@ -111,3 +111,7 @@ export async function generateDiscordLink() {
 export async function ally(nation: string) {
     return fetchRequest("ally", "POST", {nation});
 }
+
+export async function declareWar(nation: string) {
+    return fetchRequest("declarewar", "POST", {nation});
+}
