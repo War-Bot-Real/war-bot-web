@@ -7,8 +7,9 @@ import GamePanel from "../components/GamePanel/GamePanel";
 import Navbar from "../components/NavBar/NavBar";
 import type { Selection } from "../types/Selection";
 import type { MapMode } from "../components/MapPanel/MapModeBar";
-import { me, getNation } from "../api";
+import { me, getNation, getMessages } from "../api";
 import type { Nation } from "../types/Nation";
+import type { Message } from "../types/Messages";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -18,6 +19,7 @@ function GamePage({ onAccount }: GamePageProps) {
     const [selection, setSelection] = useState<Selection>(null);
     const [activeCommand, setActiveCommand] = useState<string | null>(null);
     const [nation, setNation] = useState<Nation | null>(null);
+    const [messages, setMessages] = useState<Message[]>([]);
 
     const [mapMode, setMapMode] = useState<MapMode>("political");
 
@@ -53,6 +55,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 const user = await me();
                 if (user.nation) {
                   setNation(await getNation(user.nation));
+                  setMessages((await getMessages())["result"]);
                 }
             } catch (error) {
                 console.error(
@@ -101,6 +104,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 selection={selection}
                 activeCommand={activeCommand}
                 nation={nation}
+                messages={messages}
                 setActiveCommand={setActiveCommand}
             />
         </main>

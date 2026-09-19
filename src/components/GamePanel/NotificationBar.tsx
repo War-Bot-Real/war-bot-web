@@ -1,15 +1,23 @@
 import { useState } from "react";
-
 import "./NotificationBar.css";
+import type { Message } from "../../types/Messages";
 
 type Popup = "news" | "messages" | "notifications" | null;
 
-function NotificationBar() {
+interface NotificationBarProps {
+    messages: Message[];
+}
+
+function NotificationBar({ messages }: NotificationBarProps) {
     const [popup, setPopup] = useState<Popup>(null);
 
     const togglePopup = (name: Exclude<Popup, null>) => {
         setPopup(current => current === name ? null : name);
     };
+
+    const news = messages.filter(message => message.type === "news");
+    const playerMessages = messages.filter(message => message.type === "message");
+    const notifications = messages.filter(message => message.type !== "news" && message.type !== "message");
 
     return (
         <div className="notification-bar">
@@ -39,24 +47,48 @@ function NotificationBar() {
             {popup === "news" && (
                 <div className="notification-popup">
                     <h3>World News</h3>
-                    <p>Britain has declared war on France.</p>
-                    <p>Germany has signed a treaty with Italy.</p>
+
+                    {news.length === 0 ? (
+                        <p>No world news.</p>
+                    ) : (
+                        news.map(message => (
+                            <p key={message.id}>
+                                {message.message}
+                            </p>
+                        ))
+                    )}
                 </div>
             )}
 
             {popup === "messages" && (
                 <div className="notification-popup">
                     <h3>Messages</h3>
-                    <p><strong>Britain:</strong> Would you like to form an alliance?</p>
-                    <p><strong>France:</strong> We have a proposal for you.</p>
+
+                    {playerMessages.length === 0 ? (
+                        <p>No messages.</p>
+                    ) : (
+                        playerMessages.map(message => (
+                            <p key={message.id}>
+                                <strong>{message.sender}:</strong> {message.message}
+                            </p>
+                        ))
+                    )}
                 </div>
             )}
 
             {popup === "notifications" && (
                 <div className="notification-popup">
                     <h3>Notifications</h3>
-                    <p>Britain has requested an alliance with you.</p>
-                    <p>Your tax income is ready to collect.</p>
+
+                    {notifications.length === 0 ? (
+                        <p>No notifications.</p>
+                    ) : (
+                        notifications.map(message => (
+                            <p key={message.id}>
+                                {message.message}
+                            </p>
+                        ))
+                    )}
                 </div>
             )}
         </div>

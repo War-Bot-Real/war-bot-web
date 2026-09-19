@@ -115,3 +115,7 @@ export async function ally(nation: string) {
 export async function declareWar(nation: string) {
     return fetchRequest("declarewar", "POST", {nation});
 }
+
+export async function getMessages() {
+    return fetchRequest("messages");
+}
