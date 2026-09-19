@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import "./GamePage.css"
 
+import "./GamePage.css"
+import { supabase } from "../lib/supabase";
 import MapPanel from "../components/MapPanel/MapPanel";
 import GamePanel from "../components/GamePanel/GamePanel";
 import Navbar from "../components/NavBar/NavBar";
@@ -63,6 +64,27 @@ function GamePage({ onAccount }: GamePageProps) {
 
         loadUser();
     }, []);
+
+    useEffect(() => {
+        if (!nation) return;
+
+        const channel = supabase.channel(`${nation.Name}:events`, {
+            config: { private: true, }}
+            ).on(
+                "broadcast",
+                { event: "ally" },
+                (payload) => {
+                    console.log("Received ally event:", payload.payload);
+                }
+            )
+            .subscribe((status) => {
+                console.log(`Realtime ${nation.Name}:events:`, status);
+            });
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [nation]);
 
     return (
       <div className="game-page">

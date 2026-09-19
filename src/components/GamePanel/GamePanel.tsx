@@ -3,6 +3,7 @@ import CommandPanel from "./CommandPanel";
 
 import type { Selection } from "../../types/Selection";
 import type { Nation } from "../../types/Nation";
+import NotificationBar from "./NotificationBar";
 
 interface GamePanelProps {
     selection: Selection;
@@ -14,6 +15,8 @@ interface GamePanelProps {
 function GamePanel({selection, activeCommand, nation, setActiveCommand}: GamePanelProps) {
     return (
         <section className="game-panel">
+            <NotificationBar />
+            
             <OutputPanel
                 selection={selection}
                 activeCommand={activeCommand}
