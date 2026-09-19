@@ -13,10 +13,6 @@ function EventPopup({ events, setEvents }: EventPopupProps) {
         setEvents(events.slice(1));
     };
 
-    const closeAllEvents = () => {
-        setEvents([]);
-    };
-
     return (
         <div className="event-popup-container">
             {events.map((event, index) => (
