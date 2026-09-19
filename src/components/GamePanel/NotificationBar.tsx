@@ -1,23 +1,29 @@
-import { useState } from "react";
+import { useRef } from "react";
+
 import "./NotificationBar.css";
 import type { Message } from "../../types/Messages";
-
-type Popup = "news" | "messages" | "notifications" | null;
+import type { NotificationPopup } from "../../types/NotificationPopup";
 
 interface NotificationBarProps {
     messages: Message[];
+    popup: NotificationPopup;
+    setPopup: (command: NotificationPopup) => void;
 }
 
-function NotificationBar({ messages }: NotificationBarProps) {
-    const [popup, setPopup] = useState<Popup>(null);
-
-    const togglePopup = (name: Exclude<Popup, null>) => {
-        setPopup(current => current === name ? null : name);
-    };
-
+function NotificationBar({ messages, popup, setPopup }: NotificationBarProps) {
     const news = messages.filter(message => message.type === "news");
     const playerMessages = messages.filter(message => message.type === "message");
     const notifications = messages.filter(message => message.type !== "news" && message.type !== "message");
+    const buttonSound = useRef(new Audio("/click_default.wav"));
+
+    const togglePopup = (name: NotificationPopup) => {
+        buttonSound.current.play();
+        if (name === popup) {
+          setPopup(null);
+        } else {
+          setPopup(name);
+        }
+    };
 
     return (
         <div className="notification-bar">

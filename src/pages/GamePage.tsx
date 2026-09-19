@@ -10,6 +10,7 @@ import type { MapMode } from "../components/MapPanel/MapModeBar";
 import { me, getNation, getMessages } from "../api";
 import type { Nation } from "../types/Nation";
 import type { Message } from "../types/Messages";
+import type { NotificationPopup } from "../types/NotificationPopup";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -18,6 +19,7 @@ interface GamePageProps {
 function GamePage({ onAccount }: GamePageProps) {
     const [selection, setSelection] = useState<Selection>(null);
     const [activeCommand, setActiveCommand] = useState<string | null>(null);
+    const [notifPopup, setNotifPopup] = useState<NotificationPopup>(null);
     const [nation, setNation] = useState<Nation | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
 
@@ -28,10 +30,12 @@ function GamePage({ onAccount }: GamePageProps) {
             event: KeyboardEvent,
         ) => {
             if (event.key === "Escape") {
-                if (selection === null) {
-                  setActiveCommand(null);
-                } else {
-                  setSelection(null);
+                if (notifPopup !== null) {
+                    setNotifPopup(null);
+                } else if (selection !== null) {
+                    setSelection(null);
+                } else if (activeCommand !== null) {
+                    setActiveCommand(null);
                 }
             }
         };
@@ -47,7 +51,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 handleKeyDown,
             );
         };
-    }, [selection]);
+    }, [selection, activeCommand, notifPopup]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -105,7 +109,9 @@ function GamePage({ onAccount }: GamePageProps) {
                 activeCommand={activeCommand}
                 nation={nation}
                 messages={messages}
+                notifPopup={notifPopup}
                 setActiveCommand={setActiveCommand}
+                setNotifPopup={setNotifPopup}
             />
         </main>
       </div>
