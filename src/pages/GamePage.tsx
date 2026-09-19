@@ -32,7 +32,7 @@ function GamePage({ onAccount }: GamePageProps) {
             event: KeyboardEvent,
         ) => {
             if (event.key === "Escape") {
-                if (events.length !== 0) {
+                if (events.length > 0) {
                     setEvents(current => current.slice(1));
                 } else if (notifPopup !== null) {
                     setNotifPopup(null);
@@ -55,7 +55,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 handleKeyDown,
             );
         };
-    }, [selection, activeCommand, notifPopup]);
+    }, [selection, activeCommand, notifPopup, events]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -83,12 +83,17 @@ function GamePage({ onAccount }: GamePageProps) {
             config: { private: true, }}
             ).on(
                 "broadcast",
-                { event: "ally" },
+                {event: "notification"},
                 (payload) => {
                     setEvents(current => [payload.payload, ...current]);
                 }
-            )
-            .subscribe((status) => {
+            ).on(
+                "broadcast",
+                {event: "message"},
+                (payload) => {
+                    setEvents(current => [payload.payload, ...current]);
+                }
+            ).subscribe((status) => {
                 console.log(`Realtime ${nation.Name}:events:`, status);
             });
 
