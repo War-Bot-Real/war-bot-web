@@ -49,6 +49,7 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
 
     return (
         <div className="flow">
+            <h1>Declare War</h1>
             <input
                 type="text"
                 value={nation ? nation.Name : nationName}

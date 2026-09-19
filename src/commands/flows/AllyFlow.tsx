@@ -37,6 +37,7 @@ function AllyFlow({ nation }: AllyFlowProps) {
 
     return (
         <div className="flow">
+            <h1>Ally Nation</h1>
             <input
                 type="text"
                 value={nation ? nation.Name : nationName}

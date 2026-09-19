@@ -11,6 +11,7 @@ import { me, getNation, getMessages } from "../api";
 import type { Nation } from "../types/Nation";
 import type { Message } from "../types/Messages";
 import type { NotificationPopup } from "../types/NotificationPopup";
+import EventPopup from "../components/EventPopup/EventPopup";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -22,6 +23,7 @@ function GamePage({ onAccount }: GamePageProps) {
     const [notifPopup, setNotifPopup] = useState<NotificationPopup>(null);
     const [nation, setNation] = useState<Nation | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
+    const [events, setEvents] = useState<Message[]>([]);
 
     const [mapMode, setMapMode] = useState<MapMode>("political");
 
@@ -30,7 +32,9 @@ function GamePage({ onAccount }: GamePageProps) {
             event: KeyboardEvent,
         ) => {
             if (event.key === "Escape") {
-                if (notifPopup !== null) {
+                if (events.length !== 0) {
+                    setEvents(current => current.slice(1));
+                } else if (notifPopup !== null) {
                     setNotifPopup(null);
                 } else if (selection !== null) {
                     setSelection(null);
@@ -81,7 +85,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 "broadcast",
                 { event: "ally" },
                 (payload) => {
-                    console.log("Received ally event:", payload.payload);
+                    setEvents(current => [payload.payload, ...current]);
                 }
             )
             .subscribe((status) => {
@@ -96,6 +100,10 @@ function GamePage({ onAccount }: GamePageProps) {
     return (
       <div className="game-page">
         <Navbar onAccount={onAccount} />
+        <EventPopup
+            events={events}
+            setEvents={setEvents}
+        />
         <main className="game">
             <MapPanel
                 selection={selection}
