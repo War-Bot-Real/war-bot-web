@@ -652,3 +652,16 @@
         gap: 12px;
     }
 }
+
+.output-panel .shop-flow > h2,
+.output-panel .set-tax-flow > h2,
+.output-panel .income-flow > h2,
+.output-panel .balance-flow > h2,
+.output-panel .inventory-flow > h2,
+.output-panel .borders-flow > h2,
+.output-panel .buy-flow > h2,
+.output-panel .deploy-flow > h2,
+.output-panel .ally-flow > h2,
+.output-panel .declare-war-flow > h2 {
+    display: none;
+}
