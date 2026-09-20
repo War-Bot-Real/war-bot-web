@@ -119,3 +119,11 @@ export async function declareWar(nation: string) {
 export async function getMessages() {
     return fetchRequest("messages");
 }
+
+export async function getLastRead() {
+    return fetchRequest("last/read");
+}
+
+export async function readCategory(category: string) {
+    return fetchRequest(`read/${category}`);
+}

@@ -21,9 +21,9 @@ function EventPopup({ events, setEvents }: EventPopupProps) {
     return (
         <div className="event-popup-container">
             {events.map((event, index) => (
-                <>
-                  <div className="header"> Dispatch {events.length > 0 ? `(${index})` : ""} </div>
-                  <div className={`event-popup ${index === 0 ? "active" : ""}`} key={event.id}>
+                <div key={event.id}>
+                  <div className="header"> Dispatch {events.length > 1 ? `(${index})` : ""} </div>
+                  <div className={`event-popup ${index === 0 ? "active" : ""}`}>
                       {index === 0 && (
                           <button className="event-popup-close" onClick={closeTopEvent}>
                               ×
@@ -32,7 +32,7 @@ function EventPopup({ events, setEvents }: EventPopupProps) {
 
                       <p>{event.message}</p>
                   </div>
-                </>
+                </div>
             ))}
         </div>
     );

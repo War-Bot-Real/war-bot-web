@@ -11,6 +11,7 @@
 }
 
 .notification-button {
+    position: relative;
     width: 36px;
     height: 36px;
     padding: 7px;
@@ -34,8 +35,8 @@
 
 .notification-popup {
     position: absolute;
-    top: 48px;
-    right: 0;
+    top: 100px;
+    right: 5px;
     z-index: 100;
 
     width: 350px;
@@ -57,4 +58,29 @@
     margin: 0;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: red;
+    border: 1px solid white;
+}
+
+.notification-item {
+    padding-block: 8px;
+}
+
+.timestamp {
+    font-size: 12px;
+    font-weight: bold;
+    color: #777;
+}
+
+.message-content{
+  margin: 5px;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./GamePage.css"
 import { supabase } from "../lib/supabase";
@@ -24,6 +24,15 @@ function GamePage({ onAccount }: GamePageProps) {
     const [nation, setNation] = useState<Nation | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [events, setEvents] = useState<Message[]>([]);
+    const eventSounds = useRef({
+        default: new Audio("/event_default.mp3"),
+        war: new Audio("/event_war.mp3")
+    });
+
+    function getEventMusic(type: string) {
+        if (type === "war") return eventSounds.current.war;
+        return eventSounds.current.default;
+    }
 
     const [mapMode, setMapMode] = useState<MapMode>("political");
 
@@ -85,12 +94,15 @@ function GamePage({ onAccount }: GamePageProps) {
                 "broadcast",
                 {event: "notification"},
                 (payload) => {
+                    console.log(payload.payload.type)
+                    getEventMusic(payload.payload.type).play();
                     setEvents(current => [payload.payload, ...current]);
                 }
             ).on(
                 "broadcast",
                 {event: "message"},
                 (payload) => {
+                    getEventMusic(payload.payload.type).play();
                     setEvents(current => [payload.payload, ...current]);
                 }
             ).subscribe((status) => {
