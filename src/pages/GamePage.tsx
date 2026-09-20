@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import "./GamePage.css"
 
+import "./GamePage.css"
+import { supabase } from "../lib/supabase";
 import MapPanel from "../components/MapPanel/MapPanel";
 import GamePanel from "../components/GamePanel/GamePanel";
 import Navbar from "../components/NavBar/NavBar";
 import type { Selection } from "../types/Selection";
 import type { MapMode } from "../components/MapPanel/MapModeBar";
-import { me, getNation } from "../api";
+import { me, getNation, getMessages } from "../api";
 import type { Nation } from "../types/Nation";
+import type { Message } from "../types/Messages";
+import type { NotificationPopup } from "../types/NotificationPopup";
+import EventPopup from "../components/EventPopup/EventPopup";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -16,7 +20,10 @@ interface GamePageProps {
 function GamePage({ onAccount }: GamePageProps) {
     const [selection, setSelection] = useState<Selection>(null);
     const [activeCommand, setActiveCommand] = useState<string | null>(null);
+    const [notifPopup, setNotifPopup] = useState<NotificationPopup>(null);
     const [nation, setNation] = useState<Nation | null>(null);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [events, setEvents] = useState<Message[]>([]);
 
     const [mapMode, setMapMode] = useState<MapMode>("political");
 
@@ -25,10 +32,14 @@ function GamePage({ onAccount }: GamePageProps) {
             event: KeyboardEvent,
         ) => {
             if (event.key === "Escape") {
-                if (selection === null) {
-                  setActiveCommand(null);
-                } else {
-                  setSelection(null);
+                if (events.length > 0) {
+                    setEvents(current => current.slice(1));
+                } else if (notifPopup !== null) {
+                    setNotifPopup(null);
+                } else if (selection !== null) {
+                    setSelection(null);
+                } else if (activeCommand !== null) {
+                    setActiveCommand(null);
                 }
             }
         };
@@ -44,7 +55,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 handleKeyDown,
             );
         };
-    }, [selection]);
+    }, [selection, activeCommand, notifPopup, events]);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -52,6 +63,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 const user = await me();
                 if (user.nation) {
                   setNation(await getNation(user.nation));
+                  setMessages((await getMessages())["result"]);
                 }
             } catch (error) {
                 console.error(
@@ -64,9 +76,39 @@ function GamePage({ onAccount }: GamePageProps) {
         loadUser();
     }, []);
 
+    useEffect(() => {
+        if (!nation) return;
+
+        const channel = supabase.channel(`${nation.Name}:events`, {
+            config: { private: true, }}
+            ).on(
+                "broadcast",
+                {event: "notification"},
+                (payload) => {
+                    setEvents(current => [payload.payload, ...current]);
+                }
+            ).on(
+                "broadcast",
+                {event: "message"},
+                (payload) => {
+                    setEvents(current => [payload.payload, ...current]);
+                }
+            ).subscribe((status) => {
+                console.log(`Realtime ${nation.Name}:events:`, status);
+            });
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [nation]);
+
     return (
       <div className="game-page">
         <Navbar onAccount={onAccount} />
+        <EventPopup
+            events={events}
+            setEvents={setEvents}
+        />
         <main className="game">
             <MapPanel
                 selection={selection}
@@ -79,7 +121,10 @@ function GamePage({ onAccount }: GamePageProps) {
                 selection={selection}
                 activeCommand={activeCommand}
                 nation={nation}
+                messages={messages}
+                notifPopup={notifPopup}
                 setActiveCommand={setActiveCommand}
+                setNotifPopup={setNotifPopup}
             />
         </main>
       </div>
