@@ -29,18 +29,18 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
 
             if (data["success"]) {
                 setSuccess(
-                    `Successfully deployed ${quan} ${unit} in ${territoryName}`,
+                    `Successfully deployed ${quan} ${unit} in ${territoryName}`
                 );
             } else {
                 setError(
-                    data["detail"] ?? "Failed to deploy",
+                    data["detail"] ?? "Failed to deploy"
                 );
             }
         } catch (error) {
             setError(
                 error instanceof Error
                     ? error.message
-                    : "Failed to deploy",
+                    : "Failed to deploy"
             );
         } finally {
             setLoading(false);
@@ -48,61 +48,68 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
     };
 
     return (
-        <div>
+        <div className="deploy-flow">
             <h2>Deploy</h2>
-            <h4>Deploy a unit in a territory you own.</h4>
 
-            <div>
-                <input
-                    type="text"
-                    onChange={(event) => {
-                        setUnit(event.target.value);
-                        setError(null);
-                        setSuccess(null);
-                    }}
-                    disabled={loading}
-                    placeholder="Unit Type"
-                    value={unit}
-                />
+            <p className="command-subtitle">
+                Deploy a unit in a territory you own.
+            </p>
 
-                <br />
+            <div className="command-form">
+                <label>
+                    Unit Type
+                    <input
+                        type="text"
+                        onChange={(event) => {
+                            setUnit(event.target.value);
+                            setError(null);
+                            setSuccess(null);
+                        }}
+                        disabled={loading}
+                        placeholder="Unit Type"
+                        value={unit}
+                    />
+                </label>
 
-                <input
-                    type="text"
-                    onChange={(event) => {
-                        setTerrInput(event.target.value);
-                        setError(null);
-                        setSuccess(null);
-                    }}
-                    disabled={loading || territory !== null}
-                    placeholder="Territory"
-                    value={
-                        territory === null
-                            ? terrInput
-                            : territory.Name
-                    }
-                />
+                <label>
+                    Territory
+                    <input
+                        type="text"
+                        onChange={(event) => {
+                            setTerrInput(event.target.value);
+                            setError(null);
+                            setSuccess(null);
+                        }}
+                        disabled={loading || territory !== null}
+                        placeholder="Territory"
+                        value={
+                            territory === null
+                                ? terrInput
+                                : territory.Name
+                        }
+                    />
+                </label>
 
-                <br />
-
-                <input
-                    type="number"
-                    min="1"
-                    onChange={(event) => {
-                        setQuan(
-                            parseInt(event.target.value) || 0,
-                        );
-                        setError(null);
-                        setSuccess(null);
-                    }}
-                    disabled={loading}
-                    placeholder="Quantity"
-                    value={quan || ""}
-                />
-
-                <br />
+                <label>
+                    Quantity
+                    <input
+                        type="number"
+                        min="1"
+                        onChange={(event) => {
+                            setQuan(
+                                parseInt(event.target.value) || 0
+                            );
+                            setError(null);
+                            setSuccess(null);
+                        }}
+                        disabled={loading}
+                        placeholder="Quantity"
+                        value={quan || ""}
+                    />
+                </label>
 
                 <button
+                    className="command-button"
                     onClick={handleDeploy}
                     disabled={loading}
                 >
@@ -110,8 +117,13 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
                 </button>
             </div>
 
-            {success && <p>{success}</p>}
-            {error && <p>{error}</p>}
+            {success && (
+                <p className="command-success">{success}</p>
+            )}
+
+            {error && (
+                <p className="command-error">{error}</p>
+            )}
         </div>
     );
 }

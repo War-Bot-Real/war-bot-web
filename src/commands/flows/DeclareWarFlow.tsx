@@ -48,32 +48,43 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
     };
 
     return (
-        <div className="flow">
-            <h1>Declare War</h1>
-            <input
-                type="text"
-                value={nation ? nation.Name : nationName}
-                onChange={(event) => setNationName(event.target.value)}
-                placeholder="Enter nation"
-                disabled={nation !== null}
-            />
+        <div className="declare-war-flow">
+            <h2>Declare War</h2>
 
-            <button
-                className="command-button"
-                onClick={handleDeclareWar}
-                disabled={loading}
-            >
-                {loading ? "Declaring War..." : "Declare War"}
-            </button>
+            <p className="command-subtitle">
+                Declare war on another nation.
+            </p>
+
+            <div className="command-form">
+                <label>
+                    Target Nation
+                    <input
+                        type="text"
+                        value={nation ? nation.Name : nationName}
+                        onChange={(event) => setNationName(event.target.value)}
+                        placeholder="Enter nation"
+                        disabled={nation !== null}
+                    />
+                </label>
+
+                <button
+                    className="command-button"
+                    onClick={handleDeclareWar}
+                    disabled={loading}
+                >
+                    {loading ? "Declaring War..." : "Declare War"}
+                </button>
+            </div>
 
             {result !== null && (
-                <p>
-                    You have declared war on {result.target}. It cost {result.cost} political power.
+                <p className="command-success">
+                    You have declared war on {result.target}. It cost{" "}
+                    {result.cost.toLocaleString()} political power.
                 </p>
             )}
 
             {error && (
-                <p>
+                <p className="command-error">
                     {error}
                 </p>
             )}

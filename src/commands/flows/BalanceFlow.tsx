@@ -26,11 +26,26 @@ function BalanceFlow() {
     }
 
     return (
-      <>
-        <p>Balance: ${balance.toLocaleString()}</p>
-        <p>Stability: {stability.toLocaleString()}%</p>
-        <p>Political Power: {polPow.toLocaleString()}</p>
-      </>
+        <div className="balance-flow">
+            <h2>View Balance</h2>
+
+            <div className="command-list">
+                <div className="command-row">
+                    <span>Balance</span>
+                    <span>${balance.toLocaleString()}</span>
+                </div>
+
+                <div className="command-row">
+                    <span>Stability</span>
+                    <span>{stability.toLocaleString()}%</span>
+                </div>
+
+                <div className="command-row">
+                    <span>Political Power</span>
+                    <span>{polPow.toLocaleString()}</span>
+                </div>
+            </div>
+        </div>
     );
 }
 

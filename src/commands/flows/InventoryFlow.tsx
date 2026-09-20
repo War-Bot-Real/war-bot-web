@@ -21,17 +21,26 @@ function InventoryFlow() {
         return <p>Loading...</p>;
     }
 
-    if (Object.entries(inventory).length == 0) {
-      return <p>You have nothing in your inventory!</p>
-    }
-
     return (
-        <div>
-            {Object.entries(inventory).map(([item, amount]) => (
-                <p key={item}>
-                    {item}: {amount.toLocaleString()}
+        <div className="inventory-flow">
+            <h2>Inventory</h2>
+
+            {Object.entries(inventory).length === 0 ? (
+                <p className="command-empty">
+                    You have nothing in your inventory!
                 </p>
-            ))}
+            ) : (
+                <div className="command-list">
+                    {Object.entries(inventory)
+                        .filter(([, amount]) => amount > 0)
+                        .map(([item, amount]) => (
+                        <div className="command-row" key={item}>
+                            <span>{item}</span>
+                            <span>{amount.toLocaleString()}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

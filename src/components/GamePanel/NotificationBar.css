@@ -1,16 +1,13 @@
 .notification-bar {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin-inline: 20px;
+    position: static;
+    width: auto;
 }
 
 .notification-buttons {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 8px;
-    padding: 6px 0;
 }
 
 .notification-button {

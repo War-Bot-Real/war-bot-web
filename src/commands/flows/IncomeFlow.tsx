@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { getIncome } from "../../api";
 
 function IncomeFlow() {
-    const [income, setIncome] = useState<number | null>(null);
+    const [income, setIncome] = useState<Record<string, number> | null>(null);
 
     useEffect(() => {
-        const loadBalance = async () => {
+        const loadIncome = async () => {
             try {
                 const data = await getIncome();
                 setIncome(data["Income"]);
@@ -14,7 +14,7 @@ function IncomeFlow() {
             }
         };
 
-        loadBalance();
+        loadIncome();
     }, []);
 
     if (income === null) {
@@ -22,15 +22,18 @@ function IncomeFlow() {
     }
 
     return (
-      <>
-        <h2>Income by Region</h2>
+        <div className="income-flow">
+            <h2>Income by Region</h2>
 
-        {Object.entries(income).map(([region, amount]) => (
-          <p key={region}>
-            <strong>{region}:</strong> {amount}
-          </p>
-        ))}
-      </>
+            <div className="command-list">
+                {Object.entries(income).map(([region, amount]) => (
+                    <div className="command-row" key={region}>
+                        <span>{region}</span>
+                        <span>{amount.toLocaleString()}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 }
 

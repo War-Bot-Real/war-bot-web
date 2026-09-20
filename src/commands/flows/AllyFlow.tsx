@@ -36,26 +36,34 @@ function AllyFlow({ nation }: AllyFlowProps) {
     };
 
     return (
-        <div className="flow">
-            <h1>Ally Nation</h1>
-            <input
-                type="text"
-                value={nation ? nation.Name : nationName}
-                onChange={(event) => setNationName(event.target.value)}
-                placeholder="Enter nation"
-                disabled={nation !== null}
-            />
+        <div className="ally-flow">
+            <h2>Ally Nation</h2>
 
-            <button
-                className="command-button"
-                onClick={handleAlly}
-                disabled={loading}
-            >
-                {loading ? "Sending..." : "Ally"}
-            </button>
+            <div className="command-form">
+                <label>
+                    Nation
+                    <input
+                        type="text"
+                        value={nation ? nation.Name : nationName}
+                        onChange={(event) =>
+                            setNationName(event.target.value)
+                        }
+                        placeholder="Enter nation"
+                        disabled={nation !== null}
+                    />
+                </label>
+
+                <button
+                    className="command-button"
+                    onClick={handleAlly}
+                    disabled={loading}
+                >
+                    {loading ? "Sending..." : "Ally"}
+                </button>
+            </div>
 
             {accepted !== null && nation !== null && (
-                <p>
+                <p className="command-success">
                     {accepted
                         ? `You have accepted ${nation.Name}'s offer of an alliance. Good luck to you both, and may this alliance last.`
                         : `Sent an ally request to ${nation.Name}`}
@@ -63,7 +71,7 @@ function AllyFlow({ nation }: AllyFlowProps) {
             )}
 
             {error && (
-                <p>
+                <p className="command-error">
                     {error}
                 </p>
             )}

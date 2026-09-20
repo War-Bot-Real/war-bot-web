@@ -1,159 +1,456 @@
 /* ========================================
-   SHOP COMMAND
+   SHARED COMMAND STYLES
    ======================================== */
 
-.shop-flow {
+.shop-flow,
+.set-tax-flow,
+.income-flow,
+.balance-flow,
+.inventory-flow,
+.borders-flow,
+.buy-flow,
+.deploy-flow,
+.ally-flow 
+.declare-war-flow {
     width: 100%;
-    max-width: 900px;
+    max-width: 1050px;
     min-width: 0;
     box-sizing: border-box;
     padding: 22px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #eeeeee 0%,
-            #dddddd 100%
-        );
+    background: linear-gradient(
+        180deg,
+        #eeeeee 0%,
+        #dddddd 100%
+    );
 
-    border: 1px solid #999;
-    border-left: 5px solid #555;
+    border: 1px solid #999999;
+    border-left: 5px solid #555555;
 
     box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.15);
+        0 3px 8px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
 
     color: #292929;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
+    font-family: "Courier New", monospace;
 }
 
 
-/* Shop title */
+/* ========================================
+   SHARED HEADINGS
+   ======================================== */
 
-.shop-flow > h2 {
-    margin: 0 0 12px;
-    padding-bottom: 12px;
+.shop-flow > h2,
+.set-tax-flow > h2,
+.income-flow > h2,
+.balance-flow > h2,
+.inventory-flow > h2,
+.borders-flow > h2,
+.buy-flow > h2,
+.deploy-flow > h2,
+.ally-flow > h2 {
+    margin: 0 0 18px;
+    padding-bottom: 10px;
 
-    color: #292929;
+    border-bottom: 2px solid #777777;
 
+    color: #242424;
+
+    font-family: "Courier New", monospace;
     font-size: 21px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-weight: 700;
 
-    border-bottom: 2px solid #777;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
 
-/* Balance */
+/* ========================================
+   SUBTITLES / EMPTY STATES
+   ======================================== */
 
-.shop-flow > p {
-    margin: 8px 0 14px;
+.command-subtitle {
+    margin: -7px 0 18px;
 
-    color: #444;
+    color: #5b5b5b;
 
     font-size: 13px;
-    font-weight: bold;
+    line-height: 1.5;
 }
 
-
-/* Category */
-
-.shop-flow section {
-    margin: 20px 0 0;
-    padding: 0;
-
-    border: 1px solid #aaa;
-    background: #d2d2d2;
-}
-
-
-/* Category header */
-
-.shop-flow section h3 {
+.command-empty {
     margin: 0;
-    padding: 10px 14px;
+    padding: 14px 16px;
 
-    background:
-        linear-gradient(
-            180deg,
-            #666 0%,
-            #4b4b4b 100%
-        );
+    background: #d2d2d2;
 
-    color: #f4f4f4;
+    border: 1px solid #a0a0a0;
+    border-left: 4px solid #777777;
+
+    color: #4a4a4a;
 
     font-size: 14px;
-    font-weight: bold;
+}
+
+
+/* ========================================
+   INFORMATION LISTS
+   Income / Balance / Inventory / Borders
+   ======================================== */
+
+.command-list {
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #a0a0a0;
+
+    background: #d3d3d3;
+}
+
+.command-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 0;
+
+    padding: 12px 15px;
+
+    border-bottom: 1px solid #aaaaaa;
+
+    background: linear-gradient(
+        180deg,
+        #dddddd 0%,
+        #d1d1d1 100%
+    );
+
+    color: #303030;
+
+    font-size: 14px;
+}
+
+.command-row:last-child {
+    border-bottom: none;
+}
+
+.command-row:hover {
+    background: #e3e3e3;
+}
+
+.command-row span:first-child {
+    min-width: 0;
+
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+.command-row span:last-child:not(:first-child) {
+    margin-left: 20px;
+
+    font-weight: 700;
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   SHARED FORMS
+   Set Tax / Buy / Deploy / Ally
+   ======================================== */
+
+.command-form,
+.set-tax-flow > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.command-form label,
+.set-tax-flow label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    color: #3b3b3b;
+
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.command-form input,
+.set-tax-flow input {
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    background: #f2f2f2;
+
+    border: 1px solid #888888;
+
+    color: #252525;
+
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+.command-form input:hover:not(:disabled),
+.set-tax-flow input:hover:not(:disabled) {
+    background: #f7f7f7;
+
+    border-color: #666666;
+}
+
+.command-form input:focus,
+.set-tax-flow input:focus {
+    background: #ffffff;
+
+    border-color: #555555;
+
+    box-shadow: 0 0 0 2px rgba(70, 70, 70, 0.15);
+}
+
+.command-form input:disabled,
+.set-tax-flow input:disabled {
+    background: #c7c7c7;
+
+    border-color: #aaaaaa;
+
+    color: #707070;
+
+    cursor: not-allowed;
+}
+
+
+/* ========================================
+   SHARED BUTTONS
+   ======================================== */
+
+.command-button,
+.set-tax-flow button {
+    min-height: 40px;
+
+    box-sizing: border-box;
+
+    padding: 9px 16px;
+
+    background: linear-gradient(
+        180deg,
+        #666666 0%,
+        #4c4c4c 100%
+    );
+
+    border: 1px solid #363636;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 2px 3px rgba(0, 0, 0, 0.18);
+
+    color: #ffffff;
+
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+
     letter-spacing: 0.8px;
     text-transform: uppercase;
 
-    border-bottom: 1px solid #333;
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.15s ease;
+}
+
+.command-button:hover:not(:disabled),
+.set-tax-flow button:hover:not(:disabled) {
+    background: linear-gradient(
+        180deg,
+        #555555 0%,
+        #3d3d3d 100%
+    );
+}
+
+.command-button:active:not(:disabled),
+.set-tax-flow button:active:not(:disabled) {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.22),
+        0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.command-button:disabled,
+.set-tax-flow button:disabled {
+    background: #a8a8a8;
+
+    border-color: #8d8d8d;
+
+    box-shadow: none;
+
+    color: #eeeeee;
+
+    cursor: not-allowed;
 }
 
 
-/* Individual shop item */
+/* ========================================
+   SUCCESS / ERROR MESSAGES
+   ======================================== */
 
-.shop-flow .shop-item {
+.command-success,
+.command-error,
+.set-tax-flow .success,
+.set-tax-flow .error {
+    margin: 16px 0 0;
+    padding: 11px 13px;
+
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+.command-success,
+.set-tax-flow .success {
+    background: #d4ddd4;
+
+    border: 1px solid #8c9b8c;
+    border-left: 4px solid #596c59;
+
+    color: #304330;
+}
+
+.command-error,
+.set-tax-flow .error {
+    background: #e1d0d0;
+
+    border: 1px solid #aa8585;
+    border-left: 4px solid #815454;
+
+    color: #653737;
+}
+
+
+/* ========================================
+   SHOP
+   ======================================== */
+
+.shop-flow section {
+    margin-top: 18px;
+
+    padding: 0 14px 14px;
+
+    background: #d1d1d1;
+
+    border: 1px solid #999999;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.shop-flow section > h3 {
+    margin: 0 -14px 14px;
+    padding: 9px 12px;
+
+    background: linear-gradient(
+        180deg,
+        #626262 0%,
+        #4b4b4b 100%
+    );
+
+    border-bottom: 1px solid #383838;
+
+    color: #ffffff;
+
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.shop-flow > p {
+    margin: 10px 0;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.shop-item {
     display: grid;
 
     grid-template-columns:
-        minmax(180px, 1fr)
-        minmax(130px, 1fr)
-        auto
+        minmax(150px, 1fr)
+        minmax(100px, 0.8fr)
+        126px
         110px;
 
     align-items: center;
 
     gap: 16px;
 
-    padding: 12px 14px;
+    min-width: 0;
 
-    background: #e3e3e3;
+    padding: 12px 10px;
 
-    border-bottom: 1px solid #bbb;
+    background: linear-gradient(
+        180deg,
+        #dddddd 0%,
+        #cecece 100%
+    );
 
-    transition:
-        background 0.15s ease;
-}
-
-.shop-flow .shop-item:last-child {
+    border: 1px solid #a0a0a0;
     border-bottom: none;
 }
 
-.shop-flow .shop-item:hover {
-    background: #ebebeb;
+.shop-item:last-child {
+    border-bottom: 1px solid #a0a0a0;
 }
 
-
-/* Item name and price */
-
-.shop-flow .shop-item-info {
-    min-width: 0;
-
+.shop-item-info {
     display: flex;
     flex-direction: column;
+
+    min-width: 0;
 
     gap: 3px;
 }
 
-.shop-flow .shop-item-info span:first-child {
+.shop-item-info span:first-child {
     color: #292929;
 
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 700;
 
     overflow-wrap: anywhere;
 }
 
-.shop-flow .shop-item-info span:last-child {
-    color: #666;
+.shop-item-info span:last-child {
+    color: #555555;
 
-    font-size: 11px;
-    font-weight: bold;
+    font-size: 12px;
 }
 
 
@@ -161,515 +458,197 @@
    SHOP RANGE SLIDER
    ======================================== */
 
-.shop-flow input[type="range"] {
+.shop-item input[type="range"] {
     width: 100%;
+    min-width: 100px;
 
-    accent-color: #555;
+    margin: 0;
+
+    accent-color: #555555;
 
     cursor: pointer;
 }
 
-.shop-flow input[type="range"]:disabled {
+.shop-item input[type="range"]:disabled {
     opacity: 0.45;
+
     cursor: not-allowed;
 }
 
 
 /* ========================================
-   QUANTITY CONTROLS
+   SHOP QUANTITY CONTROL
    ======================================== */
 
-.shop-flow .shop-item-quantity {
-    display: flex;
-    align-items: center;
+.shop-item-quantity {
+    display: grid;
 
-    height: 34px;
+    grid-template-columns: 32px 62px 32px;
 
-    border: 1px solid #888;
+    align-items: stretch;
 
-    background: #f8f8f8;
+    gap: 0;
 }
 
-
-/* Quantity number */
-
-.shop-flow .shop-item-quantity input {
-    width: 58px;
-    height: 32px;
-
-    box-sizing: border-box;
-
-    padding: 4px;
-
-    background: #f8f8f8;
-
-    color: #222;
-
-    border: none;
-    border-left: 1px solid #aaa;
-    border-right: 1px solid #aaa;
-
-    outline: none;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    text-align: center;
-}
-
-.shop-flow .shop-item-quantity input:focus {
-    background: #fff;
-}
-
-
-/* Remove number arrows */
-
-.shop-flow
-.shop-item-quantity
-input::-webkit-inner-spin-button,
-
-.shop-flow
-.shop-item-quantity
-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-
-/* Plus / minus */
-
-.shop-flow .shop-item-quantity button {
+.shop-item-quantity button {
     width: 32px;
-    height: 32px;
+    min-width: 32px;
 
     padding: 0;
 
-    background: #d4d4d4;
+    background: linear-gradient(
+        180deg,
+        #666666 0%,
+        #4e4e4e 100%
+    );
 
-    color: #333;
+    border: 1px solid #3e3e3e;
 
-    border: none;
+    color: #ffffff;
 
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 17px;
-    font-weight: bold;
+    font-family: "Courier New", monospace;
+    font-size: 18px;
+    font-weight: 700;
 
     cursor: pointer;
-
-    transition:
-        background 0.15s ease;
 }
 
-.shop-flow .shop-item-quantity button:hover:not(:disabled) {
-    background: #c3c3c3;
+.shop-item-quantity button:hover:not(:disabled) {
+    background: #444444;
 }
 
-.shop-flow .shop-item-quantity button:active:not(:disabled) {
-    background: #b8b8b8;
-}
+.shop-item-quantity button:disabled {
+    background: #aaaaaa;
 
-.shop-flow .shop-item-quantity button:disabled {
-    color: #aaa;
+    border-color: #969696;
 
     cursor: not-allowed;
 }
 
+.shop-item-quantity input[type="number"] {
+    width: 62px;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 7px 3px;
+
+    background: #eeeeee;
+
+    border-top: 1px solid #777777;
+    border-bottom: 1px solid #777777;
+    border-left: none;
+    border-right: none;
+
+    color: #252525;
+
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+
+    text-align: center;
+
+    outline: none;
+}
+
 
 /* ========================================
-   PURCHASE BUTTON
+   SHOP PURCHASE BUTTON
    ======================================== */
 
-.shop-flow .shop-item > button {
-    height: 36px;
+.shop-item > button {
+    width: 110px;
+    min-height: 36px;
 
-    padding: 0 14px;
+    box-sizing: border-box;
 
-    background:
-        linear-gradient(
-            180deg,
-            #666 0%,
-            #444 100%
-        );
+    padding: 7px 10px;
 
-    color: #f4f4f4;
+    background: linear-gradient(
+        180deg,
+        #666666 0%,
+        #4c4c4c 100%
+    );
 
-    border: 1px solid #333;
-    border-radius: 2px;
+    border: 1px solid #363636;
 
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 2px 3px rgba(0, 0, 0, 0.18);
 
-    font-size: 11px;
-    font-weight: bold;
+    color: #ffffff;
+
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    font-weight: 700;
 
     letter-spacing: 0.5px;
     text-transform: uppercase;
 
     cursor: pointer;
-
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.25);
-
-    transition:
-        background 0.15s ease,
-        transform 0.1s ease;
 }
 
-.shop-flow .shop-item > button:hover:not(:disabled) {
-    background:
-        linear-gradient(
-            180deg,
-            #777 0%,
-            #555 100%
-        );
+.shop-item > button:hover:not(:disabled) {
+    background: linear-gradient(
+        180deg,
+        #555555 0%,
+        #3d3d3d 100%
+    );
 }
 
-.shop-flow .shop-item > button:active:not(:disabled) {
+.shop-item > button:active:not(:disabled) {
     transform: translateY(1px);
 }
 
-.shop-flow .shop-item > button:disabled {
-    background: #999;
+.shop-item > button:disabled {
+    background: #a8a8a8;
 
-    border-color: #888;
-
-    color: #ddd;
-
-    cursor: not-allowed;
+    border-color: #8d8d8d;
 
     box-shadow: none;
+
+    color: #eeeeee;
+
+    cursor: not-allowed;
 }
 
 
 /* ========================================
-   GUEST SHOP
-   ======================================== */
-
-.shop-flow .shop-item:not(:has(input)) {
-    grid-template-columns: 1fr;
-}
-
-
-/* ========================================
-   MOBILE SHOP
+   RESPONSIVE
    ======================================== */
 
 @media (max-width: 750px) {
-
-    .shop-flow {
+    .shop-flow,
+    .set-tax-flow,
+    .income-flow,
+    .balance-flow,
+    .inventory-flow,
+    .borders-flow,
+    .buy-flow,
+    .deploy-flow,
+    .ally-flow {
         padding: 16px;
     }
 
-    .shop-flow .shop-item {
+    .shop-item {
         grid-template-columns: 1fr;
 
-        gap: 10px;
-
-        padding: 14px;
+        gap: 12px;
     }
 
-    .shop-flow .shop-item-info {
-        flex-direction: row;
-        justify-content: space-between;
-
-        gap: 15px;
-    }
-
-    .shop-flow .shop-item-quantity {
-        width: fit-content;
-    }
-
-    .shop-flow .shop-item > button {
-        width: 100%;
-    }
-}
-
-
-/* ========================================
-   GENERAL
-   ======================================== */
-
-h4 {
-    color: gray;
-}
-
-
-/* ========================================
-   SET TAX COMMAND
-   ======================================== */
-
-.set-tax-flow {
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    padding: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #eeeeee 0%,
-            #dddddd 100%
-        );
-
-    border: 1px solid #999;
-    border-left: 5px solid #555;
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-
-/* Header */
-
-.set-tax-flow h2 {
-    margin: 0 0 18px;
-    padding-bottom: 12px;
-
-    color: #292929;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 21px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-
-    border-bottom: 2px solid #777;
-}
-
-
-/* Form area */
-
-.set-tax-flow > div {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 14px;
-
-    background: #d2d2d2;
-
-    border: 1px solid #aaa;
-}
-
-
-/* Label */
-
-.set-tax-flow label {
-    color: #333;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-
-/* Tax input */
-
-.set-tax-flow input {
-    width: 85px;
-    height: 38px;
-
-    padding: 5px 10px;
-
-    box-sizing: border-box;
-
-    background: #f8f8f8;
-
-    color: #222;
-
-    border: 2px solid #888;
-    border-radius: 2px;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 16px;
-    font-weight: bold;
-
-    text-align: center;
-}
-
-.set-tax-flow input:hover {
-    border-color: #666;
-}
-
-.set-tax-flow input:focus {
-    outline: none;
-
-    background: #fff;
-
-    border-color: #444;
-
-    box-shadow:
-        0 0 0 2px rgba(60, 60, 60, 0.15);
-}
-
-
-/* Remove number input arrows */
-
-.set-tax-flow input::-webkit-inner-spin-button,
-.set-tax-flow input::-webkit-outer-spin-button {
-    opacity: 0.6;
-}
-
-
-/* Set Tax button */
-
-.set-tax-flow button {
-    height: 38px;
-
-    padding: 0 18px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #666 0%,
-            #444 100%
-        );
-
-    color: #f4f4f4;
-
-    border: 1px solid #333;
-    border-radius: 2px;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 12px;
-    font-weight: bold;
-
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.25);
-
-    transition:
-        background 0.15s ease,
-        transform 0.1s ease;
-}
-
-.set-tax-flow button:hover:not(:disabled) {
-    background:
-        linear-gradient(
-            180deg,
-            #777 0%,
-            #555 100%
-        );
-}
-
-.set-tax-flow button:active:not(:disabled) {
-    transform: translateY(1px);
-}
-
-.set-tax-flow button:disabled {
-    background: #999;
-
-    border-color: #888;
-
-    color: #ddd;
-
-    cursor: not-allowed;
-
-    box-shadow: none;
-}
-
-
-/* ========================================
-   COMMAND MESSAGES
-   ======================================== */
-
-.set-tax-flow .error,
-.set-tax-flow .success {
-    margin: 15px 0 0;
-
-    padding: 12px 15px;
-
-    font-family:
-        "Courier New",
-        Courier,
-        monospace;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    border: 1px solid;
-}
-
-
-/* Error */
-
-.set-tax-flow .error {
-    background: #e6d4d4;
-
-    color: #762d2d;
-
-    border-color: #a66;
-    border-left: 4px solid #8b3030;
-}
-
-
-/* Success */
-
-.set-tax-flow .success {
-    background: #d9ded8;
-
-    color: #345239;
-
-    border-color: #899789;
-    border-left: 4px solid #536d57;
-}
-
-
-/* ========================================
-   MOBILE SET TAX
-   ======================================== */
-
-@media (max-width: 600px) {
-
-    .set-tax-flow {
-        padding: 16px;
-    }
-
-    .set-tax-flow > div {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .set-tax-flow input {
+    .shop-item input[type="range"] {
         width: 100%;
     }
 
-    .set-tax-flow button {
+    .shop-item-quantity {
+        width: max-content;
+    }
+
+    .shop-item > button {
         width: 100%;
+    }
+
+    .command-row {
+        gap: 12px;
     }
 }

@@ -1,9 +1,11 @@
 import OutputPanel from "./OutputPanel";
 import CommandPanel from "./CommandPanel";
+import NotificationBar from "./NotificationBar";
+
+import { commands } from "../../commands/commands";
 
 import type { Selection } from "../../types/Selection";
 import type { Nation } from "../../types/Nation";
-import NotificationBar from "./NotificationBar";
 import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";
 
@@ -17,15 +19,31 @@ interface GamePanelProps {
     setNotifPopup: (command: NotificationPopup) => void;
 }
 
-function GamePanel({selection, activeCommand, nation, messages, notifPopup, setActiveCommand, setNotifPopup}: GamePanelProps) {
+function GamePanel({
+    selection,
+    activeCommand,
+    nation,
+    messages,
+    notifPopup,
+    setActiveCommand,
+    setNotifPopup
+}: GamePanelProps) {
+    const commandName =
+        commands.find((command) => command.id === activeCommand)?.name ??
+        "War Bot";
+
     return (
         <section className="game-panel">
-            <NotificationBar
-              messages={messages}
-              popup={notifPopup}
-              setPopup={setNotifPopup}
-            />
-            
+            <div className="output-header">
+                <h2>{commandName}</h2>
+
+                <NotificationBar
+                    messages={messages}
+                    popup={notifPopup}
+                    setPopup={setNotifPopup}
+                />
+            </div>
+
             <OutputPanel
                 selection={selection}
                 activeCommand={activeCommand}

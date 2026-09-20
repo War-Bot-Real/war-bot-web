@@ -14,7 +14,9 @@ function BuyFlow() {
             try {
                 const shop = await getShop();
 
-                const shopItems = Object.values(shop).flatMap(category => Object.keys(category as object));
+                const shopItems = Object.values(shop).flatMap(
+                    category => Object.keys(category as object)
+                );
 
                 setItems(shopItems);
             } catch (error) {
@@ -63,22 +65,25 @@ function BuyFlow() {
     };
 
     return (
-        <div>
+        <div className="buy-flow">
             <h2>Buy</h2>
 
-            <div>
-                <input
-                    type="text"
-                    list="shop-items"
-                    value={item}
-                    onChange={(event) => {
-                        setItem(event.target.value);
-                        setError("");
-                        setSuccess("");
-                    }}
-                    disabled={loading}
-                    placeholder="Item"
-                />
+            <div className="command-form">
+                <label>
+                    Item
+                    <input
+                        type="text"
+                        list="shop-items"
+                        value={item}
+                        onChange={(event) => {
+                            setItem(event.target.value);
+                            setError("");
+                            setSuccess("");
+                        }}
+                        disabled={loading}
+                        placeholder="Select or enter an item"
+                    />
+                </label>
 
                 <datalist id="shop-items">
                     {items.map((itemName) => (
@@ -89,33 +94,38 @@ function BuyFlow() {
                     ))}
                 </datalist>
 
-                <br />
-
-                <input
-                    type="number"
-                    min="1"
-                    value={quan || ""}
-                    onChange={(event) => {
-                        setQuan(parseInt(event.target.value) || 0);
-                        setError("");
-                        setSuccess("");
-                    }}
-                    disabled={loading}
-                    placeholder="Quantity"
-                />
-
-                <br />
+                <label>
+                    Quantity
+                    <input
+                        type="number"
+                        min="1"
+                        value={quan || ""}
+                        onChange={(event) => {
+                            setQuan(parseInt(event.target.value) || 0);
+                            setError("");
+                            setSuccess("");
+                        }}
+                        disabled={loading}
+                        placeholder="Quantity"
+                    />
+                </label>
 
                 <button
+                    className="command-button"
                     onClick={handleBuy}
                     disabled={loading}
                 >
-                    {loading ? "Buying..." : "Buy!"}
+                    {loading ? "Buying..." : "Buy"}
                 </button>
             </div>
 
-            {success && <p>{success}</p>}
-            {error && <p>{error}</p>}
+            {success && (
+                <p className="command-success">{success}</p>
+            )}
+
+            {error && (
+                <p className="command-error">{error}</p>
+            )}
         </div>
     );
 }
