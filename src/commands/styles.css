@@ -1,29 +1,407 @@
+/* ========================================
+   SHOP COMMAND
+   ======================================== */
+
 .shop-flow {
+    width: 100%;
+    max-width: 900px;
     min-width: 0;
+    box-sizing: border-box;
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #eeeeee 0%,
+            #dddddd 100%
+        );
+
+    border: 1px solid #999;
+    border-left: 5px solid #555;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15);
+
+    color: #292929;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
 }
+
+
+/* Shop title */
+
+.shop-flow > h2 {
+    margin: 0 0 12px;
+    padding-bottom: 12px;
+
+    color: #292929;
+
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    border-bottom: 2px solid #777;
+}
+
+
+/* Balance */
+
+.shop-flow > p {
+    margin: 8px 0 14px;
+
+    color: #444;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* Category */
 
 .shop-flow section {
-    margin-bottom: 20px;
+    margin: 20px 0 0;
+    padding: 0;
+
+    border: 1px solid #aaa;
+    background: #d2d2d2;
 }
 
-.shop-flow section > div {
-    display: flex;
-    justify-content: space-between;
+
+/* Category header */
+
+.shop-flow section h3 {
+    margin: 0;
+    padding: 10px 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #666 0%,
+            #4b4b4b 100%
+        );
+
+    color: #f4f4f4;
+
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid #333;
+}
+
+
+/* Individual shop item */
+
+.shop-flow .shop-item {
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(130px, 1fr)
+        auto
+        110px;
+
+    align-items: center;
+
     gap: 16px;
-    padding: 4px 0;
+
+    padding: 12px 14px;
+
+    background: #e3e3e3;
+
+    border-bottom: 1px solid #bbb;
+
+    transition:
+        background 0.15s ease;
 }
 
-.shop-flow section > div span:first-child {
+.shop-flow .shop-item:last-child {
+    border-bottom: none;
+}
+
+.shop-flow .shop-item:hover {
+    background: #ebebeb;
+}
+
+
+/* Item name and price */
+
+.shop-flow .shop-item-info {
     min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.shop-flow .shop-item-info span:first-child {
+    color: #292929;
+
+    font-size: 14px;
+    font-weight: bold;
+
     overflow-wrap: anywhere;
 }
 
-.shop-flow section > div span:last-child {
-    flex: 0 0 auto;
+.shop-flow .shop-item-info span:last-child {
+    color: #666;
+
+    font-size: 11px;
+    font-weight: bold;
 }
 
+
+/* ========================================
+   SHOP RANGE SLIDER
+   ======================================== */
+
+.shop-flow input[type="range"] {
+    width: 100%;
+
+    accent-color: #555;
+
+    cursor: pointer;
+}
+
+.shop-flow input[type="range"]:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+/* ========================================
+   QUANTITY CONTROLS
+   ======================================== */
+
+.shop-flow .shop-item-quantity {
+    display: flex;
+    align-items: center;
+
+    height: 34px;
+
+    border: 1px solid #888;
+
+    background: #f8f8f8;
+}
+
+
+/* Quantity number */
+
+.shop-flow .shop-item-quantity input {
+    width: 58px;
+    height: 32px;
+
+    box-sizing: border-box;
+
+    padding: 4px;
+
+    background: #f8f8f8;
+
+    color: #222;
+
+    border: none;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+
+    outline: none;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+.shop-flow .shop-item-quantity input:focus {
+    background: #fff;
+}
+
+
+/* Remove number arrows */
+
+.shop-flow
+.shop-item-quantity
+input::-webkit-inner-spin-button,
+
+.shop-flow
+.shop-item-quantity
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Plus / minus */
+
+.shop-flow .shop-item-quantity button {
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    background: #d4d4d4;
+
+    color: #333;
+
+    border: none;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease;
+}
+
+.shop-flow .shop-item-quantity button:hover:not(:disabled) {
+    background: #c3c3c3;
+}
+
+.shop-flow .shop-item-quantity button:active:not(:disabled) {
+    background: #b8b8b8;
+}
+
+.shop-flow .shop-item-quantity button:disabled {
+    color: #aaa;
+
+    cursor: not-allowed;
+}
+
+
+/* ========================================
+   PURCHASE BUTTON
+   ======================================== */
+
+.shop-flow .shop-item > button {
+    height: 36px;
+
+    padding: 0 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #666 0%,
+            #444 100%
+        );
+
+    color: #f4f4f4;
+
+    border: 1px solid #333;
+    border-radius: 2px;
+
+    font-family:
+        "Courier New",
+        Courier,
+        monospace;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.25);
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+.shop-flow .shop-item > button:hover:not(:disabled) {
+    background:
+        linear-gradient(
+            180deg,
+            #777 0%,
+            #555 100%
+        );
+}
+
+.shop-flow .shop-item > button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.shop-flow .shop-item > button:disabled {
+    background: #999;
+
+    border-color: #888;
+
+    color: #ddd;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* ========================================
+   GUEST SHOP
+   ======================================== */
+
+.shop-flow .shop-item:not(:has(input)) {
+    grid-template-columns: 1fr;
+}
+
+
+/* ========================================
+   MOBILE SHOP
+   ======================================== */
+
+@media (max-width: 750px) {
+
+    .shop-flow {
+        padding: 16px;
+    }
+
+    .shop-flow .shop-item {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+        padding: 14px;
+    }
+
+    .shop-flow .shop-item-info {
+        flex-direction: row;
+        justify-content: space-between;
+
+        gap: 15px;
+    }
+
+    .shop-flow .shop-item-quantity {
+        width: fit-content;
+    }
+
+    .shop-flow .shop-item > button {
+        width: 100%;
+    }
+}
+
+
+/* ========================================
+   GENERAL
+   ======================================== */
+
 h4 {
-  color: gray;
+    color: gray;
 }
 
 
@@ -34,9 +412,7 @@ h4 {
 .set-tax-flow {
     width: 100%;
     max-width: 600px;
-
     box-sizing: border-box;
-
     padding: 22px;
 
     background:
@@ -58,7 +434,6 @@ h4 {
 
 .set-tax-flow h2 {
     margin: 0 0 18px;
-
     padding-bottom: 12px;
 
     color: #292929;
@@ -70,9 +445,7 @@ h4 {
 
     font-size: 21px;
     font-weight: bold;
-
     letter-spacing: 1px;
-
     text-transform: uppercase;
 
     border-bottom: 2px solid #777;
@@ -83,7 +456,6 @@ h4 {
 
 .set-tax-flow > div {
     display: flex;
-
     align-items: center;
 
     gap: 12px;
@@ -110,7 +482,6 @@ h4 {
     font-weight: bold;
 
     letter-spacing: 0.5px;
-
     text-transform: uppercase;
 }
 
@@ -195,7 +566,6 @@ h4 {
     font-weight: bold;
 
     letter-spacing: 0.5px;
-
     text-transform: uppercase;
 
     cursor: pointer;
@@ -281,17 +651,17 @@ h4 {
 
 
 /* ========================================
-   MOBILE
+   MOBILE SET TAX
    ======================================== */
 
 @media (max-width: 600px) {
+
     .set-tax-flow {
         padding: 16px;
     }
 
     .set-tax-flow > div {
         align-items: stretch;
-
         flex-direction: column;
     }
 
