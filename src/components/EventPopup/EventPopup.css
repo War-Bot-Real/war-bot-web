@@ -30,6 +30,7 @@
 
     border: 1px solid #777777;
     border-left: 5px solid #555555;
+    border-top: none;
 
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.38),
@@ -39,12 +40,10 @@
 }
 
 /* Dark military dispatch header */
-.event-popup::before {
-    content: "BORING AHHH Dispatch";
-
+.header {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: 5px;
     right: 0;
 
     height: 42px;

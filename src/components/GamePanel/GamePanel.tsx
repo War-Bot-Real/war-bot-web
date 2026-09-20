@@ -28,9 +28,7 @@ function GamePanel({
     setActiveCommand,
     setNotifPopup
 }: GamePanelProps) {
-    const commandName =
-        commands.find((command) => command.id === activeCommand)?.name ??
-        "War Bot";
+    const commandName = commands.find((command) => command.id === activeCommand)?.name ?? "";
 
     return (
         <section className="game-panel">
