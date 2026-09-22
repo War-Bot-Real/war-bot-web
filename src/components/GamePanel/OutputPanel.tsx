@@ -15,6 +15,7 @@ import DeployFlow from "../../commands/flows/DeployFlow";
 import IncomeFlow from "../../commands/flows/IncomeFlow";
 import AllyFlow from "../../commands/flows/AllyFlow";
 import DeclareWarFlow from "../../commands/flows/DeclareWarFlow";
+import WarsFlow from "../../commands/flows/WarFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -45,6 +46,8 @@ function OutputPanel({
                 <IncomeFlow />
             ) : activeCommand === "buy" ? (
                 <BuyFlow />
+            ) :  activeCommand === "wars" ? (
+                <WarsFlow />
             ) : activeCommand === "deploy" ? (
                 <DeployFlow
                     territory={

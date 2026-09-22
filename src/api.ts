@@ -125,5 +125,9 @@ export async function getLastRead() {
 }
 
 export async function readCategory(category: string) {
-    return fetchRequest(`read/${category}`);
+    return fetchRequest(`read/${category}`, "POST");
+}
+
+export async function getWars() {
+    return fetchRequest(`wars`);
 }

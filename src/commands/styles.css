@@ -11,7 +11,8 @@
 .buy-flow,
 .deploy-flow,
 .ally-flow 
-.declare-war-flow {
+.declare-war-flow,
+.war {
     width: 100%;
     max-width: 1050px;
     min-width: 0;
@@ -651,6 +652,28 @@
     .command-row {
         gap: 12px;
     }
+}
+
+.war {
+    margin-bottom: 24px;
+}
+
+.war h3 {
+    margin-block: 0;
+}
+
+.war-sides {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.war-side h4 {
+    margin-bottom: 6px;
+}
+
+.war-side div {
+    padding: 2px 0;
 }
 
 .output-panel .shop-flow > h2,
