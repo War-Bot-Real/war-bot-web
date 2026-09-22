@@ -40,8 +40,6 @@ function SetTaxFlow() {
 
     return (
         <div className="set-tax-flow">
-            <h2>Set Tax Rate</h2>
-
             <div>
                 <label htmlFor="tax-rate">
                     Tax Rate (%)

@@ -23,8 +23,6 @@ function InventoryFlow() {
 
     return (
         <div className="inventory-flow">
-            <h2>Inventory</h2>
-
             {Object.entries(inventory).length === 0 ? (
                 <p className="command-empty">
                     You have nothing in your inventory!

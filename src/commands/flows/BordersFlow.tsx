@@ -46,8 +46,6 @@ function BordersFlow({ selection }: { selection: Selection }) {
     if (selection === null) {
         return (
             <div className="borders-flow">
-                <h2>Borders</h2>
-
                 <p className="command-empty">
                     Select a territory or nation on the map to see its borders.
                 </p>

@@ -66,8 +66,6 @@ function BuyFlow() {
 
     return (
         <div className="buy-flow">
-            <h2>Buy</h2>
-
             <div className="command-form">
                 <label>
                     Item

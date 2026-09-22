@@ -117,8 +117,6 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
   return (
     <div className="shop-flow">
-      <h2>Shop</h2>
-
       {canPurchase && balance !== null && (
         <p>
           Balance: $

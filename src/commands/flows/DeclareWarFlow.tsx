@@ -49,8 +49,6 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
 
     return (
         <div className="declare-war-flow">
-            <h2>Declare War</h2>
-
             <p className="command-subtitle">
                 Declare war on another nation.
             </p>

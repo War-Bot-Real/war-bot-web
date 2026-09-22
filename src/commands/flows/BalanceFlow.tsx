@@ -27,8 +27,6 @@ function BalanceFlow() {
 
     return (
         <div className="balance-flow">
-            <h2>View Balance</h2>
-
             <div className="command-list">
                 <div className="command-row">
                     <span>Balance</span>
