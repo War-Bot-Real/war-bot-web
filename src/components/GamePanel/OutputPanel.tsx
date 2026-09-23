@@ -16,6 +16,7 @@ import IncomeFlow from "../../commands/flows/IncomeFlow";
 import AllyFlow from "../../commands/flows/AllyFlow";
 import DeclareWarFlow from "../../commands/flows/DeclareWarFlow";
 import WarsFlow from "../../commands/flows/WarFlow";
+import GiveFlow from "../../commands/flows/GiveFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -50,27 +51,19 @@ function OutputPanel({
                 <WarsFlow />
             ) : activeCommand === "deploy" ? (
                 <DeployFlow
-                    territory={
-                        selection?.type === "territory"
-                            ? selection.territory
-                            : null
-                    }
+                    territory={selection?.type === "territory" ? selection.territory : null}
                 />
             ) : activeCommand === "ally" ? (
                 <AllyFlow
-                    nation={
-                        selection?.type === "nation"
-                            ? selection.nation
-                            : null
-                    }
+                    nation={selection?.type === "nation" ? selection.nation : null}
                 />
             ) : activeCommand === "declarewar" ? (
                 <DeclareWarFlow
-                    nation={
-                        selection?.type === "nation"
-                            ? selection.nation
-                            : null
-                    }
+                    nation={selection?.type === "nation" ? selection.nation : null}
+                />
+            ) : activeCommand === "give" ? (
+                <GiveFlow
+                    nation={selection?.type === "nation" ? selection.nation : null}
                 />
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow

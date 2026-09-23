@@ -131,3 +131,11 @@ export async function readCategory(category: string) {
 export async function getWars() {
     return fetchRequest(`wars`);
 }
+
+export async function top() {
+    return fetchRequest(`top`);
+}
+
+export async function give(nation: string, money: number, message: string = "") {
+    return fetchRequest(`give`, "POST", {nation, money, message});
+}
