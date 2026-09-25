@@ -139,3 +139,7 @@ export async function top() {
 export async function give(nation: string, money: number, message: string = "") {
     return fetchRequest(`give`, "POST", {nation, money, message});
 }
+
+export async function merge(units: string[]) {
+    return fetchRequest(`merge`, "POST", {units});
+}

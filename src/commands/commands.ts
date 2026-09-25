@@ -108,5 +108,11 @@ export const commands: Command[] = [
         name: "Ally Nation",
         context: "nation", 
         requiresNation: true
+    },
+    {
+        id: "merge",
+        name: "Merge Units",
+        context: "general", 
+        requiresNation: true
     }
 ];

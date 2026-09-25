@@ -17,6 +17,7 @@ import AllyFlow from "../../commands/flows/AllyFlow";
 import DeclareWarFlow from "../../commands/flows/DeclareWarFlow";
 import WarsFlow from "../../commands/flows/WarFlow";
 import GiveFlow from "../../commands/flows/GiveFlow";
+import MergeFlow from "../../commands/flows/MergeFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -65,6 +66,8 @@ function OutputPanel({
                 <GiveFlow
                     nation={selection?.type === "nation" ? selection.nation : null}
                 />
+            ) : activeCommand === "merge" ? (
+                <MergeFlow/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
