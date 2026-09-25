@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { merge } from "../../api";
+import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
 function MergeFlow() {
     const [units, setUnits] = useState("");
     const [loading, setLoading] = useState(false);
+    const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
@@ -52,18 +54,19 @@ function MergeFlow() {
             <div className="command-form">
                 <label>
                     Units
-                    <input
-                        type="text"
-                        value={units}
-                        onChange={(event) => {
-                            setUnits(event.target.value);
-                            setError("");
-                            setSuccess("");
-                        }}
-                        disabled={loading}
-                        placeholder="Enter unit names separated by commas"
-                    />
                 </label>
+                <label>
+                    {
+                      selectedUnits.length === 0 ? "None Selected" : selectedUnits.map((unit) => 
+                        <span className="unit-label"> {unit} </span>
+                      ) 
+                    } 
+                </label>
+                
+                <MilitaryView
+                    selectedUnits={selectedUnits}
+                    setSelectedUnits={setSelectedUnits}
+                />
 
                 <button
                     className="command-button"
