@@ -3,25 +3,18 @@ import { merge } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
 function MergeFlow() {
-    const [units, setUnits] = useState("");
+    const [units, setUnits] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
     useEffect(() => {
-        setUnits("");
         setSuccess("");
         setError("");
     }, []);
 
     const handleMerge = async () => {
-        const selectedUnits = units
-            .split(",")
-            .map(unit => unit.trim())
-            .filter(Boolean);
-
-        if (selectedUnits.length < 2) {
+        if (units.length < 2) {
             setError("You must select at least two units to merge.");
             return;
         }
@@ -31,7 +24,7 @@ function MergeFlow() {
         setError("");
 
         try {
-            const resp = await merge(selectedUnits);
+            const resp = await merge(units);
 
             if (resp["success"]) {
                 setSuccess("Units merged successfully.");
@@ -55,17 +48,17 @@ function MergeFlow() {
                 <label>
                     Units
                 </label>
-                <label>
+                <label className="unit-labels">
                     {
-                      selectedUnits.length === 0 ? "None Selected" : selectedUnits.map((unit) => 
+                      units.length === 0 ? "None Selected" : units.map((unit) => 
                         <span className="unit-label"> {unit} </span>
                       ) 
                     } 
                 </label>
                 
                 <MilitaryView
-                    selectedUnits={selectedUnits}
-                    setSelectedUnits={setSelectedUnits}
+                    selectedUnits={units}
+                    setSelectedUnits={setUnits}
                 />
 
                 <button

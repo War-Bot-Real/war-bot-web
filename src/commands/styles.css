@@ -161,16 +161,14 @@
    Set Tax / Buy / Deploy / Ally
    ======================================== */
 
-.command-form,
-.set-tax-flow > div {
+.command-form {
     display: flex;
     flex-direction: column;
 
     gap: 15px;
 }
 
-.command-form label,
-.set-tax-flow label {
+.command-form label {
     display: flex;
     flex-direction: column;
 
@@ -186,8 +184,7 @@
     text-transform: uppercase;
 }
 
-.command-form input,
-.set-tax-flow input {
+.command-form input {
     width: 100%;
     min-width: 0;
 
@@ -212,15 +209,13 @@
         background 0.15s ease;
 }
 
-.command-form input:hover:not(:disabled),
-.set-tax-flow input:hover:not(:disabled) {
+.command-form input:hover:not(:disabled) {
     background: #f7f7f7;
 
     border-color: #666666;
 }
 
-.command-form input:focus,
-.set-tax-flow input:focus {
+.command-form input:focus{
     background: #ffffff;
 
     border-color: #555555;
@@ -228,8 +223,7 @@
     box-shadow: 0 0 0 2px rgba(70, 70, 70, 0.15);
 }
 
-.command-form input:disabled,
-.set-tax-flow input:disabled {
+.command-form input:disabled {
     background: #c7c7c7;
 
     border-color: #aaaaaa;
@@ -598,6 +592,9 @@
     padding: 2px 0;
 }
 
-.unit-label {
+.command-form > .unit-labels {
   display: flex;
+  flex-direction: row;
+  font-family: "Monospace";
+  gap: 20px;
 }
