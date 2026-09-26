@@ -8,33 +8,58 @@ interface MilitaryViewProps {
     setSelectedUnits: (units: string[]) => void;
 }
 
-function MilitaryView({selectedUnits, setSelectedUnits}: MilitaryViewProps) {
+interface Military {
+    forces?: Unit[];
+    ground?: Unit[];
+    naval?: Unit[];
+    air?: Unit[];
+}
+
+type MilitaryBranch = keyof Military;
+
+function MilitaryView({
+    selectedUnits,
+    setSelectedUnits
+}: MilitaryViewProps) {
     const [open, setOpen] = useState(false);
-    const [units, setUnits] = useState<Unit[]>([]);
+    const [military, setMilitary] = useState<Military>({});
+    const [domain, setDomain] = useState<MilitaryBranch>("forces");
     const [location, setLocation] = useState("All");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        if (!open || units.length > 0) return;
+        if (!open) return;
 
         const loadForces = async () => {
+            if (military[domain]) return;
+
             setLoading(true);
             setError("");
 
             try {
-                const response = await getForces();
+                let response;
+
+                if (domain === "forces") {
+                    response = await getForces();
+                } else {
+                    response = await getForces(domain);
+                }
+
                 const result = response.result;
 
                 const territoryUnits = Object.values(result.territories).flat();
                 const abroadUnits = Object.values(result.abroad).flat();
                 const carrierUnits = Object.values(result.carriers).flat();
 
-                setUnits([
-                    ...territoryUnits,
-                    ...abroadUnits,
-                    ...carrierUnits,
-                ] as Unit[]);
+                setMilitary(current => ({
+                    ...current,
+                    [domain]: [
+                        ...territoryUnits,
+                        ...abroadUnits,
+                        ...carrierUnits,
+                    ] as Unit[],
+                }));
             } catch (error) {
                 setError(
                     error instanceof Error
@@ -47,18 +72,32 @@ function MilitaryView({selectedUnits, setSelectedUnits}: MilitaryViewProps) {
         };
 
         loadForces();
-    }, [open, units.length]);
+    }, [open, domain]);
+
+    const units = military[domain] ?? [];
 
     const locations = [
         "All",
         ...Array.from(new Set(units.map(unit => unit.Location))),
     ];
 
-    const filteredUnits = location === "All" ? units : units.filter(unit => unit.Location === location);
+    const groupedUnits = units.reduce<Record<string, Unit[]>>(
+        (groups, unit) => {
+            if (location !== "All" && unit.Location !== location) {
+                return groups;
+            }
+
+            (groups[unit.Location] ??= []).push(unit);
+            return groups;
+        },
+        {}
+    );
 
     const toggleUnit = (unitName: string) => {
         if (selectedUnits.includes(unitName)) {
-            setSelectedUnits(selectedUnits.filter(unit => unit !== unitName));
+            setSelectedUnits(
+                selectedUnits.filter(unit => unit !== unitName)
+            );
         } else {
             setSelectedUnits([...selectedUnits, unitName]);
         }
@@ -87,6 +126,25 @@ function MilitaryView({selectedUnits, setSelectedUnits}: MilitaryViewProps) {
                     </div>
 
                     <div className="military-filters">
+                        <label>
+                            Branch
+                            <select
+                                value={domain}
+                                onChange={(event) => {
+                                    const value =
+                                        event.target.value as MilitaryBranch;
+
+                                    setDomain(value);
+                                    setLocation("All");
+                                }}
+                            >
+                                <option value="forces">All</option>
+                                <option value="ground">Army</option>
+                                <option value="naval">Navy</option>
+                                <option value="air">Air Force</option>
+                            </select>
+                        </label>
+
                         <label>
                             Territory
                             <select
@@ -117,41 +175,45 @@ function MilitaryView({selectedUnits, setSelectedUnits}: MilitaryViewProps) {
                         )}
 
                         {!loading && !error && (
-                            <div className="military-units">
-                                {filteredUnits.length === 0 ? (
+                            <div>
+                                {Object.keys(groupedUnits).length === 0 ? (
                                     <p>No units found.</p>
                                 ) : (
-                                    filteredUnits.map(unit => {
-                                        const selected =
-                                            selectedUnits.includes(unit.Name);
-
-                                        return (
+                                    Object.entries(groupedUnits).map(
+                                        ([locationName, locationUnits]) => (
                                             <div
-                                                className={`military-unit ${
-                                                    selected ? "selected" : ""
-                                                }`}
-                                                key={unit.Name}
+                                                className="military-location"
+                                                key={locationName}
                                             >
-                                                <div>
-                                                    <strong>{unit.Name}</strong>
-                                                    <span>
-                                                        {unit.Type} —{" "}
-                                                        {unit.Quantity.toLocaleString()}
-                                                    </span>
-                                                </div>
+                                                <h4>{locationName}</h4>
+                                                <div className="military-units">
+                                                    {locationUnits.map(unit => {
+                                                        const selected = selectedUnits.includes(unit.Name);
 
-                                                <button
-                                                    onClick={() =>
-                                                        toggleUnit(unit.Name)
-                                                    }
-                                                >
-                                                    {selected
-                                                        ? "Remove"
-                                                        : "Add"}
-                                                </button>
+                                                        return (
+                                                            <div
+                                                                className={`military-unit ${selected ? "selected" : ""}`}
+                                                                key={unit.Name}
+                                                                onClick={() => toggleUnit(unit.Name)}
+                                                            >
+                                                                <div>
+                                                                    <strong>
+                                                                        {unit.Name}
+                                                                    </strong>
+
+                                                                    <span>
+                                                                        {unit.Type}{" "}
+                                                                        —{" "}
+                                                                        {unit.Quantity.toLocaleString()}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
-                                        );
-                                    })
+                                        )
+                                    )
                                 )}
                             </div>
                         )}

@@ -140,8 +140,12 @@ export async function give(nation: string, money: number, message: string = "") 
     return fetchRequest(`give`, "POST", {nation, money, message});
 }
 
-export async function getForces() {
-    return fetchRequest(`forces`);
+export async function getForces(domain?: string) {
+    let url = "forces"
+    if (domain) {
+      url += `?domain=${domain}`
+    }
+    return fetchRequest(url, "GET");
 }
 
 export async function merge(units: string[]) {
