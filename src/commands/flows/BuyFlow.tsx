@@ -109,7 +109,7 @@ function BuyFlow() {
                 </label>
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleBuy}
                     disabled={loading}
                 >

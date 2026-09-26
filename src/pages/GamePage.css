@@ -47,6 +47,7 @@ body,
 }
 
 .map-mode-bar button {
+    padding-block: 5px;
     flex: 1;
 }
 

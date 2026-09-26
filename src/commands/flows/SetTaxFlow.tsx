@@ -57,7 +57,7 @@ function SetTaxFlow() {
                     disabled={loading}
                 />
 
-                <button
+                <button className="action-button"
                     onClick={handleSetTax}
                     disabled={loading || rate === ""}
                 >
@@ -66,13 +66,13 @@ function SetTaxFlow() {
             </div>
 
             {error && (
-                <p className="error">
+                <p className="command-error">
                     {error}
                 </p>
             )}
 
             {success && (
-                <p className="success">
+                <p className="command-success">
                     {success}
                 </p>
             )}

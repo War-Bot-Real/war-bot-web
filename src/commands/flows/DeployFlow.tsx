@@ -107,7 +107,7 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
                 </label>
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleDeploy}
                     disabled={loading}
                 >

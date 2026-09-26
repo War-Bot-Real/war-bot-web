@@ -66,7 +66,7 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
                 </label>
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleDeclareWar}
                     disabled={loading}
                 >

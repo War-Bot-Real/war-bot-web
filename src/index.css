@@ -11,43 +11,66 @@ body {
     color: black;
 }
 
-.navbar {
-    height: 50px;
+.action-button {
+    min-height: 40px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 16px;
-
-    background: #1b1b1b;
-    color: white;
-
-    border-bottom: 1px solid #333;
     box-sizing: border-box;
-}
 
-.navbar h1 {
-    margin: 0;
-    font-size: 20px;
-}
+    padding: 9px 16px;
 
-.navbar-actions {
-    display: flex;
-    gap: 10px;
-}
+    background: linear-gradient(
+        180deg,
+        #666666 0%,
+        #4c4c4c 100%
+    );
 
-.navbar button {
-    padding: 6px 12px;
+    border: 1px solid #363636;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 2px 3px rgba(0, 0, 0, 0.18);
+
+    color: #ffffff;
+
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+
     cursor: pointer;
 
-    background: #2a2a2a;
-    color: white;
-
-    border: 1px solid #444;
-    border-radius: 4px;
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.15s ease;
 }
 
-.navbar button:hover {
-    background: #383838;
+.action-button:hover:not(:disabled) {
+    background: linear-gradient(
+        180deg,
+        #555555 0%,
+        #3d3d3d 100%
+    );
+}
+
+.action-button:active:not(:disabled) {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.22),
+        0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.action-button:disabled {
+    background: #a8a8a8;
+
+    border-color: #8d8d8d;
+
+    box-shadow: none;
+
+    color: #eeeeee;
+
+    cursor: not-allowed;
 }

@@ -67,7 +67,7 @@ function MilitaryView({selectedUnits, setSelectedUnits}: MilitaryViewProps) {
     return (
         <div className="military-view">
             <button
-                className="command-button"
+                className="action-button"
                 onClick={() => setOpen(!open)}
             >
                 {open ? "Hide Military" : "Show Military"}

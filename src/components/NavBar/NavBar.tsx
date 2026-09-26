@@ -1,5 +1,6 @@
 import { supabase } from "../../lib/supabase";
 import { useRef } from "react";
+import "./NavBar.css"
 
 interface NavbarProps {
     onAccount: () => void;

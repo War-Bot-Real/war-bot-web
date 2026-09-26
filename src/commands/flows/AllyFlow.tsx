@@ -52,7 +52,7 @@ function AllyFlow({ nation }: AllyFlowProps) {
                 </label>
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleAlly}
                     disabled={loading}
                 >

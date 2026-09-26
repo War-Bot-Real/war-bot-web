@@ -1,0 +1,40 @@
+.navbar {
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    background: #1b1b1b;
+    color: white;
+
+    border-bottom: 1px solid #333;
+    box-sizing: border-box;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar button {
+    padding: 6px 12px;
+    cursor: pointer;
+
+    background: #2a2a2a;
+    color: white;
+
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+.navbar button:hover {
+    background: #383838;
+}

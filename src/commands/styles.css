@@ -239,88 +239,12 @@
     cursor: not-allowed;
 }
 
-
-/* ========================================
-   SHARED BUTTONS
-   ======================================== */
-
-.command-button,
-.set-tax-flow button {
-    min-height: 40px;
-
-    box-sizing: border-box;
-
-    padding: 9px 16px;
-
-    background: linear-gradient(
-        180deg,
-        #666666 0%,
-        #4c4c4c 100%
-    );
-
-    border: 1px solid #363636;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.16),
-        0 2px 3px rgba(0, 0, 0, 0.18);
-
-    color: #ffffff;
-
-    font-family: "Courier New", monospace;
-    font-size: 13px;
-    font-weight: 700;
-
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    transition:
-        background 0.15s ease,
-        transform 0.08s ease,
-        box-shadow 0.15s ease;
-}
-
-.command-button:hover:not(:disabled),
-.set-tax-flow button:hover:not(:disabled) {
-    background: linear-gradient(
-        180deg,
-        #555555 0%,
-        #3d3d3d 100%
-    );
-}
-
-.command-button:active:not(:disabled),
-.set-tax-flow button:active:not(:disabled) {
-    transform: translateY(1px);
-
-    box-shadow:
-        inset 0 1px 2px rgba(0, 0, 0, 0.22),
-        0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-.command-button:disabled,
-.set-tax-flow button:disabled {
-    background: #a8a8a8;
-
-    border-color: #8d8d8d;
-
-    box-shadow: none;
-
-    color: #eeeeee;
-
-    cursor: not-allowed;
-}
-
-
 /* ========================================
    SUCCESS / ERROR MESSAGES
    ======================================== */
 
 .command-success,
-.command-error,
-.set-tax-flow .success,
-.set-tax-flow .error {
+.command-error {
     margin: 16px 0 0;
     padding: 11px 13px;
 
@@ -331,8 +255,7 @@
     line-height: 1.45;
 }
 
-.command-success,
-.set-tax-flow .success {
+.command-success {
     background: #d4ddd4;
 
     border: 1px solid #8c9b8c;
@@ -341,8 +264,7 @@
     color: #304330;
 }
 
-.command-error,
-.set-tax-flow .error {
+.command-error {
     background: #e1d0d0;
 
     border: 1px solid #aa8585;

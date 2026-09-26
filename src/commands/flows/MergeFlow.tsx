@@ -69,7 +69,7 @@ function MergeFlow() {
                 />
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleMerge}
                     disabled={loading}
                 >

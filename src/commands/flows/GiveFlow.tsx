@@ -104,7 +104,7 @@ function GiveFlow({ nation }: GiveFlowProps) {
                 </label>
 
                 <button
-                    className="command-button"
+                    className="action-button"
                     onClick={handleGive}
                     disabled={loading}
                 >
