@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { split } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
-function SplitFlow() {
+function SplitFlow({territory}: {territory: string | null}) {
     const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
     const [parts, setParts] = useState("");
     const [loading, setLoading] = useState(false);
@@ -55,10 +55,19 @@ function SplitFlow() {
     return (
         <div className="split-flow">
             <div className="command-form">
+                <div>
+                  <label className="unit-header">
+                      Unit
+                  </label>
+                  <label>
+                      <span className="unit-labels"> {selectedUnits.length > 0 ? selectedUnits[0] : "Not Selected"} </span>
+                  </label>
+                </div>
                 <MilitaryView
                     selectedUnits={selectedUnits}
                     setSelectedUnits={setSelectedUnits}
                     canSelectMultiple={false}
+                    territory={territory}
                 />
 
                 <label>

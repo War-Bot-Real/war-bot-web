@@ -592,9 +592,13 @@
     padding: 2px 0;
 }
 
-.command-form > .unit-labels {
+.command-form .unit-labels {
   display: flex;
   flex-direction: row;
   font-family: "Monospace";
   gap: 20px;
+}
+
+.unit-header {
+  padding-bottom: 5px;
 }

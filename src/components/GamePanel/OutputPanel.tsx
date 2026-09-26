@@ -69,11 +69,11 @@ function OutputPanel({
                     nation={selection?.type === "nation" ? selection.nation : null}
                 />
             ) : activeCommand === "merge" ? (
-                <MergeFlow/>
+                <MergeFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
             ) : activeCommand === "split" ? (
-                <SplitFlow/>
+                <SplitFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
             ) : activeCommand === "disband" ? (
-                <DisbandFlow/>
+                <DisbandFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}

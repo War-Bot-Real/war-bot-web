@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { disband } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
-function DisbandFlow() {
+function DisbandFlow({territory}: {territory: string | null}) {
     const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
@@ -47,10 +47,20 @@ function DisbandFlow() {
     return (
         <div className="disband-flow">
             <div className="command-form">
+                <div>
+                  <label className="unit-header">
+                      Unit
+                  </label>
+                  <label>
+                      <span className="unit-labels"> {selectedUnits.length > 0 ? selectedUnits[0] : "Not Selected"} </span>
+                  </label>
+                </div>
+
                 <MilitaryView
                     selectedUnits={selectedUnits}
                     setSelectedUnits={setSelectedUnits}
                     canSelectMultiple={false}
+                    territory={territory}
                 />
 
                 <button

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { merge } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
-function MergeFlow() {
+function MergeFlow({territory}: {territory: string | null}) {
     const [units, setUnits] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
@@ -45,21 +45,24 @@ function MergeFlow() {
     return (
         <div className="merge-flow">
             <div className="command-form">
-                <label>
-                    Units
-                </label>
-                <label className="unit-labels">
-                    {
-                      units.length === 0 ? "None Selected" : units.map((unit) => 
-                        <span className="unit-label"> {unit} </span>
-                      ) 
-                    } 
-                </label>
+                <div>
+                  <label className="unit-header">
+                      Units
+                  </label>
+                  <label className="unit-labels">
+                      {
+                        units.length === 0 ? "None Selected" : units.map((unit) => 
+                          <span className="unit-label"> {unit} </span>
+                        ) 
+                      } 
+                  </label>
+                </div>
                 
                 <MilitaryView
                     selectedUnits={units}
                     setSelectedUnits={setUnits}
                     canSelectMultiple={true}
+                    territory={territory}
                 />
 
                 <button

@@ -7,6 +7,7 @@ interface MilitaryViewProps {
     selectedUnits: string[];
     setSelectedUnits: (units: string[]) => void;
     canSelectMultiple?: boolean;
+    territory?: string | null;
 }
 
 interface Military {
@@ -21,7 +22,8 @@ type MilitaryBranch = keyof Military;
 function MilitaryView({
     selectedUnits,
     setSelectedUnits,
-    canSelectMultiple = true
+    canSelectMultiple,
+    territory = null
 }: MilitaryViewProps) {
     const [open, setOpen] = useState(false);
     const [military, setMilitary] = useState<Military>({});
@@ -81,12 +83,15 @@ function MilitaryView({
     const locations = [
         "All",
         ...Array.from(new Set(units.map(unit => unit.Location))),
+        ...(territory ? [territory] : [])
     ];
+
+    const selectedTerritory = territory ?? location;
 
     const groupedUnits = units.reduce<Record<string, Unit[]>>(
         (groups, unit) => {
-            if (location !== "All" && unit.Location !== location) {
-                return groups;
+            if (selectedTerritory !== "All" && unit.Location !== selectedTerritory) {
+              return groups;
             }
 
             (groups[unit.Location] ??= []).push(unit);
@@ -152,10 +157,11 @@ function MilitaryView({
                         <label>
                             Territory
                             <select
-                                value={location}
+                                value={selectedTerritory}
                                 onChange={(event) =>
                                     setLocation(event.target.value)
                                 }
+                                disabled={territory !== null}
                             >
                                 {locations.map(locationName => (
                                     <option
