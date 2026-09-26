@@ -18,6 +18,8 @@ import DeclareWarFlow from "../../commands/flows/DeclareWarFlow";
 import WarsFlow from "../../commands/flows/WarFlow";
 import GiveFlow from "../../commands/flows/GiveFlow";
 import MergeFlow from "../../commands/flows/MergeFlow";
+import DisbandFlow from "../../commands/flows/DisbandFlow";
+import SplitFlow from "../../commands/flows/SplitFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -68,6 +70,10 @@ function OutputPanel({
                 />
             ) : activeCommand === "merge" ? (
                 <MergeFlow/>
+            ) : activeCommand === "split" ? (
+                <SplitFlow/>
+            ) : activeCommand === "disband" ? (
+                <DisbandFlow/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}

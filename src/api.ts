@@ -151,3 +151,11 @@ export async function getForces(domain?: string) {
 export async function merge(units: string[]) {
     return fetchRequest(`merge`, "POST", {units});
 }
+
+export async function split(unit: string, parts?: string) {
+    return fetchRequest(`split`, "POST", {unit, parts});
+}
+
+export async function disband(unit: string) {
+    return fetchRequest(`disband/${unit}`, "POST");
+}

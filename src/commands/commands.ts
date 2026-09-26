@@ -114,5 +114,17 @@ export const commands: Command[] = [
         name: "Merge Units",
         context: "general", 
         requiresNation: true
+    },
+    {
+        id: "split",
+        name: "Split Unit",
+        context: "general", 
+        requiresNation: true
+    },
+    {
+        id: "disband",
+        name: "Disband Unit",
+        context: "general", 
+        requiresNation: true
     }
 ];
