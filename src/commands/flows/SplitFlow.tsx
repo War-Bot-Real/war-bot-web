@@ -8,6 +8,7 @@ function SplitFlow({territory}: {territory: string | null}) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+    const [militaryReset, setMilitaryReset] = useState(0);
 
     useEffect(() => {
         setSelectedUnits([]);
@@ -22,14 +23,10 @@ function SplitFlow({territory}: {territory: string | null}) {
             return;
         }
 
-        if (!parts.trim()) {
-            setError("You must enter the number of parts.");
-            return;
-        }
-
         setLoading(true);
         setSuccess("");
         setError("");
+        setMilitaryReset(value => value + 1);
 
         try {
             const resp = await split(selectedUnits[0], parts);
@@ -42,11 +39,7 @@ function SplitFlow({territory}: {territory: string | null}) {
                 setError(resp["detail"] ?? "Failed to split unit.");
             }
         } catch (error) {
-            setError(
-                error instanceof Error
-                    ? error.message
-                    : "Failed to split unit."
-            );
+            setError(error instanceof Error ? error.message : "Failed to split unit.");
         } finally {
             setLoading(false);
         }
@@ -68,6 +61,7 @@ function SplitFlow({territory}: {territory: string | null}) {
                     setSelectedUnits={setSelectedUnits}
                     canSelectMultiple={false}
                     territory={territory}
+                    resetKey={militaryReset}
                 />
 
                 <label>
@@ -82,7 +76,7 @@ function SplitFlow({territory}: {territory: string | null}) {
                             setSuccess("");
                         }}
                         disabled={loading}
-                        placeholder="Number of parts"
+                        placeholder="Number of parts (Defaults to 2)"
                     />
                 </label>
 

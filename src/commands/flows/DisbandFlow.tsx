@@ -7,6 +7,7 @@ function DisbandFlow({territory}: {territory: string | null}) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+    const [militaryReset, setMilitaryReset] = useState(0);
 
     useEffect(() => {
         setSelectedUnits([]);
@@ -23,6 +24,7 @@ function DisbandFlow({territory}: {territory: string | null}) {
         setLoading(true);
         setSuccess("");
         setError("");
+        setMilitaryReset(value => value + 1);
 
         try {
             const resp = await disband(selectedUnits[0]);
@@ -34,11 +36,7 @@ function DisbandFlow({territory}: {territory: string | null}) {
                 setError(resp["detail"] ?? "Failed to disband unit.");
             }
         } catch (error) {
-            setError(
-                error instanceof Error
-                    ? error.message
-                    : "Failed to disband unit."
-            );
+            setError(error instanceof Error ? error.message : "Failed to disband unit.");
         } finally {
             setLoading(false);
         }
@@ -61,6 +59,7 @@ function DisbandFlow({territory}: {territory: string | null}) {
                     setSelectedUnits={setSelectedUnits}
                     canSelectMultiple={false}
                     territory={territory}
+                    resetKey={militaryReset}
                 />
 
                 <button

@@ -153,6 +153,9 @@ export async function merge(units: string[]) {
 }
 
 export async function split(unit: string, parts?: string) {
+    if (!parts) {
+      return fetchRequest(`split`, "POST", {unit});
+    }
     return fetchRequest(`split`, "POST", {unit, parts});
 }
 

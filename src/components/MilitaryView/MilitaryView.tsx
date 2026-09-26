@@ -8,6 +8,7 @@ interface MilitaryViewProps {
     setSelectedUnits: (units: string[]) => void;
     canSelectMultiple?: boolean;
     territory?: string | null;
+    resetKey?: number;
 }
 
 interface Military {
@@ -23,7 +24,8 @@ function MilitaryView({
     selectedUnits,
     setSelectedUnits,
     canSelectMultiple,
-    territory = null
+    territory = null,
+    resetKey = 0
 }: MilitaryViewProps) {
     const [open, setOpen] = useState(false);
     const [military, setMilitary] = useState<Military>({});
@@ -77,6 +79,14 @@ function MilitaryView({
 
         loadForces();
     }, [open, domain]);
+
+    useEffect(() => {
+        if (resetKey === 0) return;
+
+        setOpen(false);
+        setMilitary({});
+        setLocation("All");
+    }, [resetKey]);
 
     const units = military[domain] ?? [];
 

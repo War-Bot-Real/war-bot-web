@@ -7,6 +7,7 @@ function MergeFlow({territory}: {territory: string | null}) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+    const [militaryReset, setMilitaryReset] = useState(0);
 
     useEffect(() => {
         setSuccess("");
@@ -22,6 +23,7 @@ function MergeFlow({territory}: {territory: string | null}) {
         setLoading(true);
         setSuccess("");
         setError("");
+        setMilitaryReset(value => value + 1);
 
         try {
             const resp = await merge(units);
@@ -32,11 +34,7 @@ function MergeFlow({territory}: {territory: string | null}) {
                 setError(resp["detail"] ?? "Failed to merge units.");
             }
         } catch (error) {
-            setError(
-                error instanceof Error
-                    ? error.message
-                    : "Failed to merge units."
-            );
+            setError(error instanceof Error ? error.message : "Failed to merge units.");
         } finally {
             setLoading(false);
         }
@@ -63,6 +61,7 @@ function MergeFlow({territory}: {territory: string | null}) {
                     setSelectedUnits={setUnits}
                     canSelectMultiple={true}
                     territory={territory}
+                    resetKey={militaryReset}
                 />
 
                 <button
