@@ -74,3 +74,10 @@ body {
 
     cursor: not-allowed;
 }
+
+.action-button.mini {
+  font-size: 10px;
+  padding: 5px;
+  min-height: 22px;
+  height: 30px;
+}

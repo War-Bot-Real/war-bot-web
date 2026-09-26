@@ -59,6 +59,7 @@ function MergeFlow() {
                 <MilitaryView
                     selectedUnits={units}
                     setSelectedUnits={setUnits}
+                    canSelectMultiple={true}
                 />
 
                 <button

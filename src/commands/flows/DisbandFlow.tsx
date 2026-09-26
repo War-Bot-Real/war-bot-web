@@ -50,6 +50,7 @@ function DisbandFlow() {
                 <MilitaryView
                     selectedUnits={selectedUnits}
                     setSelectedUnits={setSelectedUnits}
+                    canSelectMultiple={false}
                 />
 
                 <button

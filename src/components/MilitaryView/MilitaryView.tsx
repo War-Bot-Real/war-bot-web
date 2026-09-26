@@ -6,6 +6,7 @@ import "./MilitaryView.css";
 interface MilitaryViewProps {
     selectedUnits: string[];
     setSelectedUnits: (units: string[]) => void;
+    canSelectMultiple?: boolean;
 }
 
 interface Military {
@@ -19,7 +20,8 @@ type MilitaryBranch = keyof Military;
 
 function MilitaryView({
     selectedUnits,
-    setSelectedUnits
+    setSelectedUnits,
+    canSelectMultiple = true
 }: MilitaryViewProps) {
     const [open, setOpen] = useState(false);
     const [military, setMilitary] = useState<Military>({});
@@ -98,8 +100,10 @@ function MilitaryView({
             setSelectedUnits(
                 selectedUnits.filter(unit => unit !== unitName)
             );
-        } else {
+        } else if (canSelectMultiple) {
             setSelectedUnits([...selectedUnits, unitName]);
+        } else {
+            setSelectedUnits([unitName]);
         }
     };
 
@@ -163,6 +167,16 @@ function MilitaryView({
                                 ))}
                             </select>
                         </label>
+
+                        {canSelectMultiple && (
+                            <button
+                                className="action-button mini"
+                                onClick={() => setSelectedUnits([])}
+                                disabled={selectedUnits.length === 0}
+                            >
+                                Deselect All
+                            </button>
+                        )}
                     </div>
 
                     <div className="military-content">

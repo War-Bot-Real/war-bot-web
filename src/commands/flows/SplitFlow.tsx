@@ -58,6 +58,7 @@ function SplitFlow() {
                 <MilitaryView
                     selectedUnits={selectedUnits}
                     setSelectedUnits={setSelectedUnits}
+                    canSelectMultiple={false}
                 />
 
                 <label>

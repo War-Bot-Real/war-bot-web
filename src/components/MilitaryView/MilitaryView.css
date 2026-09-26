@@ -42,6 +42,7 @@
     border-bottom: 1px solid #eee;
     display: flex;
     gap: 40px;
+    align-items: center;
 }
 
 .military-filters label {
