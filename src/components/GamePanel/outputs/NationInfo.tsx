@@ -1,4 +1,5 @@
 import type { Nation } from "../../../types/Nation";
+import Flag from "../../Flag";
 
 interface NationFlowProps {
     nation: Nation;
@@ -10,7 +11,8 @@ function NationFlow({
     return (
         <>
             <h2>
-                {nation.Flag} {nation.Name}
+              <Flag code={nation.Flag}></Flag> 
+              {nation.Name}
             </h2>
 
             <p>

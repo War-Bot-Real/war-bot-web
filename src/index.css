@@ -81,3 +81,9 @@ body {
   min-height: 22px;
   height: 30px;
 }
+
+h2 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
