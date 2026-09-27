@@ -133,6 +133,7 @@ function MapPanel({
                         })
                     }
                     shrink={shrink}
+                    mapMode={mapMode}
                 />
             </div>
 

@@ -1,4 +1,5 @@
 import { supabase } from "./lib/supabase";
+import type { MapData } from "./types/MapData";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
@@ -49,7 +50,7 @@ export interface MapResponse {
 }
 
 export async function getMapUrl(shrink: boolean): Promise<string> {
-    const response = await fetch(`${API_URL}/map/expanded_europe/${shrink}`);
+    const response = await fetch(`${API_URL}/map/expanded_europe/image/${shrink}`);
 
     if (!response.ok) {
         throw new Error(`Failed to fetch map: ${response.status}`);
@@ -58,6 +59,10 @@ export async function getMapUrl(shrink: boolean): Promise<string> {
     const data: MapResponse = await response.json();
 
     return data.url.signedUrl;
+}
+
+export async function getMapData(): Promise<MapData> {
+  return fetchRequest('map/expanded_europe/data')
 }
 
 export async function getShop() {

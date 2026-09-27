@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import { Application, Assets, Sprite, Texture } from "pixi.js";
 
-import { getMapUrl } from "../../api";
+import { getMapUrl, getMapData } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import { buildPoliticalMap } from "../../map/buildPoliticalMap";
+import { buildTerrainMap } from "../../map/buildTerrainMap";
 import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
 import type { Nation } from "../../types/Nation";
 import type { Selection } from "../../types/Selection";
+import type { MapMode } from "./MapModeBar";
+import type { MapData } from "../../types/MapData";
 
 interface GameMapProps {
     territories: Territory[];
@@ -16,6 +19,7 @@ interface GameMapProps {
     nationSelected: (nation: Nation) => void;
     onMapDimensions: (width: number, height: number) => void;
     shrink: boolean;
+    mapMode: MapMode
 }
 
 function GameMap({
@@ -26,6 +30,7 @@ function GameMap({
     nationSelected,
     onMapDimensions,
     shrink,
+    mapMode
 }: GameMapProps) {
     if (territories.length === 0 || nations.length === 0) {
         return;
@@ -33,7 +38,8 @@ function GameMap({
 
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
-    const politicalMapRef = useRef<Sprite | null>(null);
+    const mapModeRef = useRef<Sprite | null>(null);
+    const mapDataRef = useRef<MapData | null>(null);
     const clickSound = useRef(new Audio("/click_territory.wav"));
 
     useEffect(() => {
@@ -63,7 +69,8 @@ function GameMap({
             container.appendChild(pixiApp.canvas);
 
             try {
-                const mapUrl = await getMapUrl(shrink);
+                const [mapUrl, mapData] = await Promise.all([getMapUrl(shrink), getMapData()]);
+                mapDataRef.current = mapData;
 
                 if (cancelled) return;
 
@@ -133,7 +140,7 @@ function GameMap({
                 );
 
                 /*
-                 * Build the political color image.
+                 * Build the map mode images.
                  */
                 const politicalImage = buildPoliticalMap(
                     lookup,
@@ -141,48 +148,37 @@ function GameMap({
                     selection,
                 );
 
-                /*
-                 * Put the political ImageData into
-                 * another canvas.
-                 */
-                const politicalCanvas =
-                    document.createElement("canvas");
-
-                politicalCanvas.width = lookup.width;
-                politicalCanvas.height = lookup.height;
-
-                const politicalContext =
-                    politicalCanvas.getContext("2d");
-
-                if (!politicalContext) {
-                    throw new Error(
-                        "Could not create political map canvas",
-                    );
-                }
-
-                politicalContext.putImageData(
-                    politicalImage,
-                    0,
-                    0,
+                const terrainImage = buildTerrainMap(
+                    lookup,
+                    mapData,
                 );
 
-                /*
-                 * Turn the canvas into a Pixi texture.
-                 */
-                const politicalTexture = Texture.from(politicalCanvas);
-                politicalTexture.source.scaleMode = "nearest";
+                const mapModeImage = mapMode === "terrain" ? terrainImage : politicalImage;
+
+                const mapModeCanvas = document.createElement("canvas");
+
+                mapModeCanvas.width = lookup.width;
+                mapModeCanvas.height = lookup.height;
+
+                const mapModeContext = mapModeCanvas.getContext("2d");
+
+                if (!mapModeContext) {
+                    throw new Error("Could not create map mode canvas");
+                }
+
+                mapModeContext.putImageData(mapModeImage, 0, 0);
+
+                const mapModeTexture = Texture.from(mapModeCanvas);
+
+                mapModeTexture.source.scaleMode = "nearest";
 
                 if (cancelled) return;
 
-                const politicalMap = new Sprite(politicalTexture);
+                const mapModeSprite = new Sprite(mapModeTexture);
 
-                politicalMapRef.current = politicalMap;
+                mapModeRef.current = mapModeSprite;
 
-                /*
-                 * Put the political layer above the
-                 * original map.
-                 */
-                pixiApp.stage.addChild(politicalMap);
+                pixiApp.stage.addChild(mapModeSprite);
 
                 /*
                  * Resize both map layers so that the
@@ -229,8 +225,8 @@ function GameMap({
                     map.scale.set(scale);
                     map.position.set(x, y);
 
-                    politicalMap.scale.set(scale);
-                    politicalMap.position.set(x, y);
+                    mapModeSprite.scale.set(scale);
+                    mapModeSprite.position.set(x, y);
                 };
 
                 /*
@@ -343,51 +339,39 @@ function GameMap({
 
     useEffect(() => {
         const lookup = lookupRef.current;
-        const politicalMap = politicalMapRef.current;
+        const mapModeSprite = mapModeRef.current;
+        const mapData = mapDataRef.current;
 
-        if (
-            !lookup ||
-            !politicalMap ||
-            nations.length === 0
-        ) {
+        if (!lookup || !mapModeSprite || !mapData || nations.length === 0) {
             return;
         }
 
-        const politicalImage =
-            buildPoliticalMap(
-                lookup,
-                nations,
-                selection,
-            );
+        let image: ImageData;
+        if (mapMode === "terrain") {
+            image = buildTerrainMap(lookup, mapData);
+        } else {
+            image = buildPoliticalMap(lookup, nations, selection);
+        }
 
-        const canvas =
-            document.createElement("canvas");
-
+        const canvas = document.createElement("canvas");
         canvas.width = lookup.width;
         canvas.height = lookup.height;
 
-        const context =
-            canvas.getContext("2d");
-
+        const context = canvas.getContext("2d");
         if (!context) {
             return;
         }
-
-        context.putImageData(
-            politicalImage,
-            0,
-            0,
-        );
+        context.putImageData(image, 0, 0);
 
         const texture = Texture.from(canvas);
         texture.source.scaleMode = "nearest";
 
-        const oldTexture = politicalMap.texture;
+        const oldTexture = mapModeSprite.texture;
 
-        politicalMap.texture = texture;
+        mapModeSprite.texture = texture;
 
         oldTexture.destroy(true);
-    }, [selection]);
+    }, [selection, mapMode]);
 
     return (
         <div
