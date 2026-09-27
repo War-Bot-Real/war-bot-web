@@ -20,6 +20,7 @@ import GiveFlow from "../../commands/flows/GiveFlow";
 import MergeFlow from "../../commands/flows/MergeFlow";
 import DisbandFlow from "../../commands/flows/DisbandFlow";
 import SplitFlow from "../../commands/flows/SplitFlow";
+import AttackFlow from "../../commands/flows/AttackFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -74,6 +75,8 @@ function OutputPanel({
                 <SplitFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
             ) : activeCommand === "disband" ? (
                 <DisbandFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
+            ) : activeCommand === "attack" ? (
+                <AttackFlow terrInput={selection?.type === "territory" ? selection.territory : null}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}

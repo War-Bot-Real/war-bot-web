@@ -6,9 +6,10 @@ import "./MilitaryView.css";
 interface MilitaryViewProps {
     selectedUnits: string[];
     setSelectedUnits: (units: string[]) => void;
-    canSelectMultiple?: boolean;
+    canSelectMultiple: boolean;
     territory?: string | null;
     resetKey?: number;
+    onOpenChange?: (open: boolean) => void;
 }
 
 interface Military {
@@ -25,14 +26,20 @@ function MilitaryView({
     setSelectedUnits,
     canSelectMultiple,
     territory = null,
-    resetKey = 0
+    resetKey = 0,
+    onOpenChange
 }: MilitaryViewProps) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpenState] = useState(false);
     const [military, setMilitary] = useState<Military>({});
     const [domain, setDomain] = useState<MilitaryBranch>("forces");
     const [location, setLocation] = useState("All");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    function setOpen(value: boolean) {
+        setOpenState(value);
+        onOpenChange?.(value);
+    }
 
     useEffect(() => {
         if (!open) return;

@@ -162,3 +162,7 @@ export async function split(unit: string, parts?: string) {
 export async function disband(unit: string) {
     return fetchRequest(`disband/${unit}`, "POST");
 }
+
+export async function attack(territory: string, units: string[]) {
+    return fetchRequest(`attack`, "POST", {territory, units});
+}
