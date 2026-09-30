@@ -100,31 +100,55 @@ export const commands: Command[] = [
     {
         id: "borders",
         name: "Borders",
-        context: "territory", //Also for nation
+        context: "territory",
         requiresNation: false
     },
     {
         id: "ally",
         name: "Ally Nation",
-        context: "nation", 
+        context: "nation",
         requiresNation: true
     },
     {
         id: "merge",
         name: "Merge Units",
-        context: "general", 
+        context: "general",
         requiresNation: true
     },
     {
         id: "split",
         name: "Split Unit",
-        context: "general", 
+        context: "general",
         requiresNation: true
     },
     {
         id: "disband",
         name: "Disband Unit",
-        context: "general", 
+        context: "general",
+        requiresNation: true
+    },
+    {
+        id: "forces",
+        name: "Forces",
+        context: "general",
+        requiresNation: true
+    },
+    {
+        id: "army",
+        name: "Army",
+        context: "general",
+        requiresNation: true
+    },
+    {
+        id: "navy",
+        name: "Navy",
+        context: "general",
+        requiresNation: true
+    },
+    {
+        id: "airforce",
+        name: "Air Force",
+        context: "general",
         requiresNation: true
     }
 ];

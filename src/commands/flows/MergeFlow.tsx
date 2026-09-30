@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { merge } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
 
-function MergeFlow({territory}: {territory: string | null}) {
+function MergeFlow({ territory }: { territory: string | null }) {
     const [units, setUnits] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
@@ -23,18 +23,27 @@ function MergeFlow({territory}: {territory: string | null}) {
         setLoading(true);
         setSuccess("");
         setError("");
-        setMilitaryReset(value => value + 1);
 
         try {
             const resp = await merge(units);
 
             if (resp["success"]) {
                 setSuccess("Units merged successfully.");
+
+                // Clear all selected units after a successful merge
+                setUnits([]);
+
+                // Reset/refresh the military view
+                setMilitaryReset(value => value + 1);
             } else {
                 setError(resp["detail"] ?? "Failed to merge units.");
             }
         } catch (error) {
-            setError(error instanceof Error ? error.message : "Failed to merge units.");
+            setError(
+                error instanceof Error
+                    ? error.message
+                    : "Failed to merge units."
+            );
         } finally {
             setLoading(false);
         }
@@ -44,25 +53,23 @@ function MergeFlow({territory}: {territory: string | null}) {
         <div className="merge-flow">
             <div className="command-form">
                 <div>
-                  <label className="unit-header">
-                      Units
-                  </label>
-                  <label className="unit-labels">
-                      {
-                        units.length === 0 ? "None Selected" : units.map((unit) => 
-                          <span className="unit-label"> {unit} </span>
-                        ) 
-                      } 
-                  </label>
+                    <label className="unit-header">
+                        Units Selected
+                    </label>
+
+                    <label className="unit-labels">
+                        {units.length === 0
+                            ? "None Selected"
+                            : units.map((unit) => (
+                                <span
+                                    className="unit-label"
+                                    key={unit}
+                                >
+                                    {unit}
+                                </span>
+                            ))}
+                    </label>
                 </div>
-                
-                <MilitaryView
-                    selectedUnits={units}
-                    setSelectedUnits={setUnits}
-                    canSelectMultiple={true}
-                    territory={territory}
-                    resetKey={militaryReset}
-                />
 
                 <button
                     className="action-button"
@@ -71,6 +78,14 @@ function MergeFlow({territory}: {territory: string | null}) {
                 >
                     {loading ? "Merging..." : "Merge"}
                 </button>
+
+                <MilitaryView
+                    selectedUnits={units}
+                    setSelectedUnits={setUnits}
+                    canSelectMultiple={true}
+                    territory={territory}
+                    resetKey={militaryReset}
+                />
             </div>
 
             {success && (

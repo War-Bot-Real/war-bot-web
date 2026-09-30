@@ -4,8 +4,16 @@ import { buy, getBalance, getShop } from "../../api";
 import type { Shop, ShopItem } from "../../types/Shop";
 import type { Nation } from "../../types/Nation";
 
+import ironIcon from "../../assets/iron.png";
+import steelIcon from "../../assets/steel.png";
+
 interface ShopFlowProps {
   nation: Nation | null;
+}
+
+interface ResourceShopItem extends ShopItem {
+  Iron?: number;
+  Steel?: number;
 }
 
 function ShopFlow({ nation }: ShopFlowProps) {
@@ -17,6 +25,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
   const [message, setMessage] = useState("");
 
   const purchaseSound = useRef(new Audio("/purchase.mp3"));
+
   const canPurchase = nation !== null;
 
   useEffect(() => {
@@ -47,11 +56,18 @@ function ShopFlow({ nation }: ShopFlowProps) {
       const updated = { ...current };
 
       for (const items of Object.values(shop)) {
-        for (const [item, itemData] of Object.entries(items)) {
-          const maxQuantity = Math.floor(balance / (itemData as ShopItem).Money);
+        for (const [item, rawItemData] of Object.entries(items)) {
+          const itemData = rawItemData as ResourceShopItem;
+          const maxQuantity = Math.floor(
+            balance / itemData.Money
+          );
 
-          if (updated[item] !== undefined && updated[item] > maxQuantity) {
-            updated[item] = maxQuantity > 0 ? 1 : 0;
+          if (
+            updated[item] !== undefined &&
+            updated[item] > maxQuantity
+          ) {
+            updated[item] =
+              maxQuantity > 0 ? 1 : 0;
           }
         }
       }
@@ -60,170 +76,376 @@ function ShopFlow({ nation }: ShopFlowProps) {
     });
   }, [balance, shop, canPurchase]);
 
-  const handleQuantityChange = (item: string, quantity: number, maxQuantity: number) => {
-    const newQuantity = Math.max(0, Math.min(quantity, maxQuantity));
+  const getMaxQuantity = (
+    itemData: ResourceShopItem
+  ) => {
+    if (balance === null) return 0;
 
-    setQuantities((current) => ({ ...current, [item]: newQuantity }));
+    return Math.floor(
+      balance / itemData.Money
+    );
+  };
+
+  const handleQuantityChange = (
+    item: string,
+    quantity: number,
+    maxQuantity: number
+  ) => {
+    const newQuantity = Math.max(
+      0,
+      Math.min(quantity, maxQuantity)
+    );
+
+    setQuantities((current) => ({
+      ...current,
+      [item]: newQuantity,
+    }));
+
     setMessage("");
   };
 
-  const handleBuy = async (item: string, price: number) => {
+  const handleBuy = async (
+    item: string,
+    itemData: ResourceShopItem
+  ) => {
     if (balance === null || !canPurchase) return;
 
-    const maxQuantity = Math.floor(balance / price);
-    const quantity = quantities[item] ?? (maxQuantity > 0 ? 1 : 0);
+    const maxQuantity =
+      getMaxQuantity(itemData);
 
-    if (quantity < 1 || maxQuantity < 1) return;
+    const quantity =
+      quantities[item] ??
+      (maxQuantity > 0 ? 1 : 0);
+
+    if (quantity < 1 || maxQuantity < 1) {
+      return;
+    }
 
     setBuying(item);
     setMessage("");
 
     try {
-      const response = await buy(item, quantity);
+      const response = await buy(
+        item,
+        quantity
+      );
 
       if (response["success"]) {
-        purchaseSound.current.play();
+        try {
+          await purchaseSound.current.play();
+        } catch (error) {
+          console.warn(
+            "Purchase sound could not play:",
+            error
+          );
+        }
 
-        const newBalance = response["result"]["New Balance"];
-        setBalance(newBalance);
+        const balanceData =
+          await getBalance();
 
-        const newMaxQuantity = Math.floor(newBalance / price);
+        setBalance(
+          balanceData["Balance"]
+        );
 
         setQuantities((current) => ({
           ...current,
-          [item]: newMaxQuantity > 0 ? 1 : 0,
+          [item]: 1,
         }));
 
         setMessage(
-          `Successfully bought ${quantity.toLocaleString()} ${item} for $${response["result"]["price"]["Money"].toLocaleString()}.`,
+          `Successfully bought ${quantity.toLocaleString()} ${item}.`
         );
       } else {
-        setMessage(response["detail"] ?? "Failed to purchase item.");
+        setMessage(
+          response["detail"] ??
+            "Failed to purchase item."
+        );
       }
     } catch (error) {
-      console.error("Failed to buy item:", error);
+      console.error(
+        "Failed to buy item:",
+        error
+      );
 
-      setMessage(error instanceof Error ? error.message : "Failed to purchase item.");
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Failed to purchase item."
+      );
     } finally {
       setBuying(null);
     }
   };
 
-  if (loading) return <p>Loading shop...</p>;
+  const renderPrice = (
+    itemData: ResourceShopItem
+  ) => (
+    <div className="shop-price">
+      <span>
+        ${itemData.Money.toLocaleString()} / unit
+      </span>
+
+      {itemData.Iron !== undefined &&
+        itemData.Iron > 0 && (
+          <span className="shop-resource">
+            <img
+              src={ironIcon}
+              alt="Iron"
+              className="shop-resource-icon"
+            />
+            {itemData.Iron}
+          </span>
+        )}
+
+      {itemData.Steel !== undefined &&
+        itemData.Steel > 0 && (
+          <span className="shop-resource">
+            <img
+              src={steelIcon}
+              alt="Steel"
+              className="shop-resource-icon"
+            />
+            {itemData.Steel}
+          </span>
+        )}
+    </div>
+  );
+
+  if (loading) {
+    return <p>Loading shop...</p>;
+  }
 
   if (!shop) {
-    return <p>{message || "Failed to load shop."}</p>;
+    return (
+      <p>
+        {message ||
+          "Failed to load shop."}
+      </p>
+    );
   }
 
   return (
     <div className="shop-flow">
-      {canPurchase && balance !== null && (
-        <p>
-          Balance: $
-          {balance.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
-        </p>
-      )}
+      {canPurchase &&
+        balance !== null && (
+          <p>
+            Balance: $
+            {balance.toLocaleString(
+              undefined,
+              {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }
+            )}
+          </p>
+        )}
 
-      <p>{message}</p>
+      {message && <p>{message}</p>}
 
-      {Object.entries(shop).map(([category, items]) => (
-        <section key={category}>
-          <h3>{category}</h3>
+      {Object.entries(shop).map(
+        ([category, items]) => (
+          <section key={category}>
+            <h3>{category}</h3>
 
-          {Object.entries(items).map(([item, itemData]) => {
-            const price = (itemData as ShopItem).Money;
+            {Object.entries(items).map(
+              ([item, rawItemData]) => {
+                const itemData =
+                  rawItemData as ResourceShopItem;
 
-            /*
-             * Guests only browse items.
-             */
-            if (!canPurchase) {
-              return (
-                <div className="shop-item" key={item}>
-                  <div className="shop-item-info">
-                    <span>{item}</span>
-                    <span>${price.toLocaleString()} / unit</span>
-                  </div>
-                </div>
-              );
-            }
+                if (!canPurchase) {
+                  return (
+                    <div
+                      className="shop-item"
+                      key={item}
+                    >
+                      <div className="shop-item-info">
+                        <span>{item}</span>
 
-            const maxQuantity = Math.floor((balance ?? 0) / price);
-            const quantity = quantities[item] ?? (maxQuantity > 0 ? 1 : 0);
+                        {renderPrice(
+                          itemData
+                        )}
+                      </div>
+                    </div>
+                  );
+                }
 
-            const canBuy = maxQuantity > 0 && quantity > 0 && quantity <= maxQuantity;
+                const maxQuantity =
+                  getMaxQuantity(
+                    itemData
+                  );
 
-            return (
-              <div className="shop-item" key={item}>
-                <div className="shop-item-info">
-                  <span>{item}</span>
-                  <span>${price.toLocaleString()} / unit</span>
-                </div>
+                const quantity =
+                  quantities[item] ??
+                  (maxQuantity > 0
+                    ? 1
+                    : 0);
 
-                <input
-                  type="range"
-                  min={maxQuantity > 0 ? 1 : 0}
-                  max={Math.max(maxQuantity, 1)}
-                  value={quantity}
-                  onChange={(event) =>
-                    handleQuantityChange(item, Number(event.target.value), maxQuantity)
-                  }
-                  disabled={maxQuantity < 1 || buying !== null}
-                />
+                const canBuy =
+                  maxQuantity > 0 &&
+                  quantity > 0 &&
+                  quantity <=
+                    maxQuantity;
 
-                <div className="shop-item-quantity">
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(item, Math.max(1, quantity - 1), maxQuantity)}
-                    disabled={quantity <= 1 || buying !== null}
+                return (
+                  <div
+                    className="shop-item"
+                    key={item}
                   >
-                    −
-                  </button>
+                    <div className="shop-item-info">
+                      <span>{item}</span>
 
-                  <input
-                    type="number"
-                    min="0"
-                    max={maxQuantity}
-                    value={quantity}
-                    onChange={(event) => {
-                      const value = event.target.value;
+                      {renderPrice(
+                        itemData
+                      )}
+                    </div>
 
-                      if (value === "") {
-                        setQuantities((current) => ({ ...current, [item]: 0 }));
-                        return;
+                    <input
+                      type="range"
+                      min={
+                        maxQuantity > 0
+                          ? 1
+                          : 0
                       }
+                      max={Math.max(
+                        maxQuantity,
+                        1
+                      )}
+                      value={quantity}
+                      onChange={(
+                        event
+                      ) =>
+                        handleQuantityChange(
+                          item,
+                          Number(
+                            event.target
+                              .value
+                          ),
+                          maxQuantity
+                        )
+                      }
+                      disabled={
+                        maxQuantity < 1 ||
+                        buying !== null
+                      }
+                    />
 
-                      const number = Number(value);
+                    <div className="shop-item-quantity">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item,
+                            Math.max(
+                              1,
+                              quantity - 1
+                            ),
+                            maxQuantity
+                          )
+                        }
+                        disabled={
+                          quantity <= 1 ||
+                          buying !== null
+                        }
+                      >
+                        −
+                      </button>
 
-                      if (Number.isNaN(number)) return;
+                      <input
+                        type="number"
+                        min="0"
+                        max={
+                          maxQuantity
+                        }
+                        value={quantity}
+                        onChange={(
+                          event
+                        ) => {
+                          const value =
+                            event.target
+                              .value;
 
-                      handleQuantityChange(item, number, maxQuantity);
-                    }}
-                    disabled={maxQuantity < 1 || buying !== null}
-                  />
+                          if (
+                            value === ""
+                          ) {
+                            setQuantities(
+                              (
+                                current
+                              ) => ({
+                                ...current,
+                                [item]: 0,
+                              })
+                            );
 
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(item, quantity + 1, maxQuantity)}
-                    disabled={quantity >= maxQuantity || maxQuantity < 1 || buying !== null}
-                  >
-                    +
-                  </button>
-                </div>
+                            return;
+                          }
 
-                <button
-                  onClick={() => handleBuy(item, price)}
-                  disabled={!canBuy || buying !== null}
-                >
-                  {buying === item ? "Buying..." : "Purchase"}
-                </button>
-              </div>
-            );
-          })}
-        </section>
-      ))}
+                          const number =
+                            Number(value);
+
+                          if (
+                            Number.isNaN(
+                              number
+                            )
+                          ) {
+                            return;
+                          }
+
+                          handleQuantityChange(
+                            item,
+                            number,
+                            maxQuantity
+                          );
+                        }}
+                        disabled={
+                          maxQuantity <
+                            1 ||
+                          buying !== null
+                        }
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleQuantityChange(
+                            item,
+                            quantity + 1,
+                            maxQuantity
+                          )
+                        }
+                        disabled={
+                          quantity >=
+                            maxQuantity ||
+                          maxQuantity < 1 ||
+                          buying !== null
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        handleBuy(
+                          item,
+                          itemData
+                        )
+                      }
+                      disabled={
+                        !canBuy ||
+                        buying !== null
+                      }
+                    >
+                      {buying === item
+                        ? "Buying..."
+                        : "Purchase"}
+                    </button>
+                  </div>
+                );
+              }
+            )}
+          </section>
+        )
+      )}
     </div>
   );
 }

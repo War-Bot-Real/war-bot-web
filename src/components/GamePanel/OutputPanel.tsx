@@ -21,6 +21,7 @@ import MergeFlow from "../../commands/flows/MergeFlow";
 import DisbandFlow from "../../commands/flows/DisbandFlow";
 import SplitFlow from "../../commands/flows/SplitFlow";
 import AttackFlow from "../../commands/flows/AttackFlow";
+import ForcesFlow from "../../commands/flows/ForcesFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -51,32 +52,80 @@ function OutputPanel({
                 <IncomeFlow />
             ) : activeCommand === "buy" ? (
                 <BuyFlow />
-            ) :  activeCommand === "wars" ? (
+            ) : activeCommand === "wars" ? (
                 <WarsFlow />
             ) : activeCommand === "deploy" ? (
                 <DeployFlow
-                    territory={selection?.type === "territory" ? selection.territory : null}
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory
+                            : null
+                    }
                 />
             ) : activeCommand === "ally" ? (
                 <AllyFlow
-                    nation={selection?.type === "nation" ? selection.nation : null}
+                    nation={
+                        selection?.type === "nation"
+                            ? selection.nation
+                            : null
+                    }
                 />
             ) : activeCommand === "declarewar" ? (
                 <DeclareWarFlow
-                    nation={selection?.type === "nation" ? selection.nation : null}
+                    nation={
+                        selection?.type === "nation"
+                            ? selection.nation
+                            : null
+                    }
                 />
             ) : activeCommand === "give" ? (
                 <GiveFlow
-                    nation={selection?.type === "nation" ? selection.nation : null}
+                    nation={
+                        selection?.type === "nation"
+                            ? selection.nation
+                            : null
+                    }
                 />
             ) : activeCommand === "merge" ? (
-                <MergeFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
+                <MergeFlow
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory.Name
+                            : null
+                    }
+                />
             ) : activeCommand === "split" ? (
-                <SplitFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
+                <SplitFlow
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory.Name
+                            : null
+                    }
+                />
             ) : activeCommand === "disband" ? (
-                <DisbandFlow territory={selection?.type === "territory" ? selection.territory.Name : null}/>
+                <DisbandFlow
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory.Name
+                            : null
+                    }
+                />
             ) : activeCommand === "attack" ? (
-                <AttackFlow terrInput={selection?.type === "territory" ? selection.territory : null}/>
+                <AttackFlow
+                    terrInput={
+                        selection?.type === "territory"
+                            ? selection.territory
+                            : null
+                    }
+                />
+            ) : activeCommand === "forces" ? (
+                <ForcesFlow />
+            ) : activeCommand === "army" ? (
+                <ForcesFlow domain="ground" />
+            ) : activeCommand === "navy" ? (
+                <ForcesFlow domain="naval" />
+            ) : activeCommand === "airforce" ? (
+                <ForcesFlow domain="air" />
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow
                     territory={selection.territory}
@@ -90,8 +139,7 @@ function OutputPanel({
                     <h2>Welcome</h2>
 
                     <p>
-                        Select a territory or nation
-                        on the map.
+                        Select a territory or nation on the map.
                     </p>
 
                     <br />
