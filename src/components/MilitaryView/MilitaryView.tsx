@@ -135,7 +135,7 @@ function MilitaryView({
                 className="action-button"
                 onClick={() => setOpen(!open)}
             >
-                {open ? "Hide Select Military" : "Select Military"}
+                {open ? "Hide Military" : "Select from Military"}
             </button>
 
             {open && (

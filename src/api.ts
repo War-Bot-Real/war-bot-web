@@ -3,7 +3,7 @@ import type { MapData } from "./types/MapData";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://war-bot-api.vercel.app";
 
 async function fetchRequest(request: string, method: HttpMethod = "GET", body?: object) {
     const { data: { session } } = await supabase.auth.getSession();
