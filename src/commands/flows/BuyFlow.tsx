@@ -48,7 +48,7 @@ function BuyFlow() {
 
             if (resp["success"]) {
                 setSuccess(
-                    `Successfully bought ${quan.toLocaleString()} ${item} for $${resp["result"]["price"]}. You have $${resp["result"]["New Balance"]} remaining.`
+                    `Successfully bought ${quan.toLocaleString()} ${item} for $${resp["result"]["price"]}. You have $${resp["result"]["newBalance"]} remaining.`
                 );
             } else {
                 setError(resp["detail"] ?? "Failed to buy item.");

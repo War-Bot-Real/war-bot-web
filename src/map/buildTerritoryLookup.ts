@@ -35,7 +35,7 @@ export function buildTerritoryLookup(
     const queueY = new Int32Array(width * height);
 
     territories.forEach((territory, territoryIndex) => {
-        const seeds = parseLocation(territory.Location);
+        const seeds = parseLocation(territory.location);
 
         for (const [startX, startY] of seeds) {
             if (
@@ -45,7 +45,7 @@ export function buildTerritoryLookup(
                 startY >= height
             ) {
                 console.warn(
-                    `Invalid location for ${territory.Name}:`,
+                    `Invalid location for ${territory.name}:`,
                     startX,
                     startY,
                 );
@@ -62,7 +62,7 @@ export function buildTerritoryLookup(
             // The seed should be inside a white region.
             if (!isWhite(data, startIndex * 4)) {
                 console.warn(
-                    `Location for ${territory.Name} is not white:`,
+                    `Location for ${territory.name} is not white:`,
                     startX,
                     startY,
                 );

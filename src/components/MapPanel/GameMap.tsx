@@ -299,8 +299,8 @@ function GameMap({
                         const nation =
                             nations.find(
                                 (nation: Nation) =>
-                                    nation.Name ===
-                                    territory.Nation,
+                                    nation.name ===
+                                    territory.nation,
                             );
 
                         if (nation) {

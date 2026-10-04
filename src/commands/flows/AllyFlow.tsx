@@ -8,13 +8,13 @@ interface AllyFlowProps {
 }
 
 function AllyFlow({ nation }: AllyFlowProps) {
-    const [nationName, setNationName] = useState(nation?.Name ?? "");
+    const [nationName, setNationName] = useState(nation?.name ?? "");
     const [accepted, setAccepted] = useState<boolean | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setNationName(nation?.Name ?? "");
+        setNationName(nation?.name ?? "");
         setAccepted(null);
         setError(null);
     }, [nation]);
@@ -42,7 +42,7 @@ function AllyFlow({ nation }: AllyFlowProps) {
                     Nation
                     <input
                         type="text"
-                        value={nation ? nation.Name : nationName}
+                        value={nation ? nation.name : nationName}
                         onChange={(event) =>
                             setNationName(event.target.value)
                         }
@@ -63,8 +63,8 @@ function AllyFlow({ nation }: AllyFlowProps) {
             {accepted !== null && nation !== null && (
                 <p className="command-success">
                     {accepted
-                        ? `You have accepted ${nation.Name}'s offer of an alliance. Good luck to you both, and may this alliance last.`
-                        : `Sent an ally request to ${nation.Name}`}
+                        ? `You have accepted ${nation.name}'s offer of an alliance. Good luck to you both, and may this alliance last.`
+                        : `Sent an ally request to ${nation.name}`}
                 </p>
             )}
 

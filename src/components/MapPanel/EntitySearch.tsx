@@ -39,14 +39,14 @@ function searchEntities(
     const results: SearchResult[] = [
         ...territories.map((territory) => ({
             type: "territory" as const,
-            name: territory.Name,
-            subtitle: territory.Nation,
+            name: territory.name,
+            subtitle: territory.nation,
             territory,
         })),
 
         ...nations.map((nation) => ({
             type: "nation" as const,
-            name: nation.Name,
+            name: nation.name,
             subtitle: "NATION" as const,
             nation,
         })),

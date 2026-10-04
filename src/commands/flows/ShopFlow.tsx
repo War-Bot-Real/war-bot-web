@@ -11,11 +11,6 @@ interface ShopFlowProps {
   nation: Nation | null;
 }
 
-interface ResourceShopItem extends ShopItem {
-  Iron?: number;
-  Steel?: number;
-}
-
 function ShopFlow({ nation }: ShopFlowProps) {
   const [shop, setShop] = useState<Shop | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
@@ -36,7 +31,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
         if (canPurchase) {
           const balanceData = await getBalance();
-          setBalance(balanceData["Balance"]);
+          setBalance(balanceData.balance);
         }
       } catch (error) {
         console.error("Failed to load shop:", error);
@@ -57,7 +52,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
       for (const items of Object.values(shop)) {
         for (const [item, rawItemData] of Object.entries(items)) {
-          const itemData = rawItemData as ResourceShopItem;
+          const itemData = rawItemData as ShopItem;
           const maxQuantity = Math.floor(
             balance / itemData.Money
           );
@@ -77,7 +72,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
   }, [balance, shop, canPurchase]);
 
   const getMaxQuantity = (
-    itemData: ResourceShopItem
+    itemData: ShopItem
   ) => {
     if (balance === null) return 0;
 
@@ -106,7 +101,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
   const handleBuy = async (
     item: string,
-    itemData: ResourceShopItem
+    itemData: ShopItem
   ) => {
     if (balance === null || !canPurchase) return;
 
@@ -144,7 +139,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
           await getBalance();
 
         setBalance(
-          balanceData["Balance"]
+          balanceData.balance
         );
 
         setQuantities((current) => ({
@@ -178,13 +173,13 @@ function ShopFlow({ nation }: ShopFlowProps) {
   };
 
   const renderPrice = (
-    itemData: ResourceShopItem
+    itemData: ShopItem
   ) => (
     <div className="shop-price">
       <span>
         ${itemData.Money.toLocaleString()} / unit
       </span>
-
+s
       {itemData.Iron !== undefined &&
         itemData.Iron > 0 && (
           <span className="shop-resource">
@@ -250,7 +245,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
             {Object.entries(items).map(
               ([item, rawItemData]) => {
                 const itemData =
-                  rawItemData as ResourceShopItem;
+                  rawItemData as ShopItem;
 
                 if (!canPurchase) {
                   return (

@@ -17,20 +17,20 @@ function BordersFlow({ selection }: { selection: Selection }) {
         const loadBorders = async () => {
             try {
                 if (selection.type === "territory") {
-                    setName(selection.territory.Name);
+                    setName(selection.territory.name);
                     setBorders(
-                        (await getBorders(selection.territory.Name)).Bordering
+                        (await getBorders(selection.territory.name)).Bordering
                     );
                 } else {
-                    setName(selection.nation.Name);
+                    setName(selection.nation.name);
 
                     const nationBorders = await getNationBorders(
-                        selection.nation.Name
+                        selection.nation.name
                     );
 
                     const borders = nationBorders.map(
                         (terr: Territory) =>
-                            terr.Name + ", " + terr.Nation
+                            terr.name + ", " + terr.nation
                     );
 
                     setBorders(borders);

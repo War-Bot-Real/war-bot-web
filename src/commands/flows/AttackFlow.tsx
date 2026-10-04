@@ -21,7 +21,7 @@ function AttackFlow({terrInput}: {terrInput: Territory | null}) {
     useEffect(() => {
         console.log(militaryOpen);
         if (!militaryOpen) {
-            setTerritory(terrInput ? terrInput.Name : "");
+            setTerritory(terrInput ? terrInput.name : "");
         }
     }, [terrInput])
 
@@ -92,7 +92,7 @@ function AttackFlow({terrInput}: {terrInput: Territory | null}) {
                     selectedUnits={selectedUnits}
                     setSelectedUnits={setSelectedUnits}
                     canSelectMultiple={true}
-                    territory={terrInput?.Name}
+                    territory={terrInput?.name}
                     resetKey={militaryReset}
                     onOpenChange={setMilitaryOpen}
                 />

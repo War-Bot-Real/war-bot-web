@@ -21,7 +21,7 @@ export function buildTerrainMap(
 
         const territory = lookup.territories[territoryIndex];
 
-        const terrain = mapData.Terrains[territory.Terrain - 1];
+        const terrain = mapData.Terrains[territory.terrain - 1];
 
         if (!terrain) {
             continue;

@@ -90,7 +90,7 @@ function OutputPanel({
                 <MergeFlow
                     territory={
                         selection?.type === "territory"
-                            ? selection.territory.Name
+                            ? selection.territory.name
                             : null
                     }
                 />
@@ -98,7 +98,7 @@ function OutputPanel({
                 <SplitFlow
                     territory={
                         selection?.type === "territory"
-                            ? selection.territory.Name
+                            ? selection.territory.name
                             : null
                     }
                 />
@@ -106,7 +106,7 @@ function OutputPanel({
                 <DisbandFlow
                     territory={
                         selection?.type === "territory"
-                            ? selection.territory.Name
+                            ? selection.territory.name
                             : null
                     }
                 />

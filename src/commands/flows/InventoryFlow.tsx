@@ -8,7 +8,7 @@ function InventoryFlow() {
         const loadInventory = async () => {
             try {
                 const data = await getInventory();
-                setInventory(data.Inventory);
+                setInventory(data.inventory);
             } catch (error) {
                 console.error("Failed to load inventory:", error);
             }

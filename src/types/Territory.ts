@@ -1,18 +1,18 @@
 export interface Territory {
-    Name: string;
-    Nation: string;
-    Population: number;
-    Bordering: string[];
-    Buildings: unknown[];
-    Location: string[][];
-    Coast: string[];
-    Integrated: number;
-    Area: number;
-    Terrain: number;
-    Coal: number;
-    Oil: number;
-    Devastation: number;
-    Rails: number | null;
+    name: string;
+    nation: string;
+    population: number;
+    bordering: string[];
+    buildings: unknown[];
+    location: string[][];
+    coast: string[];
+    integrated: number;
+    area: number;
+    terrain: number;
+    coal: number;
+    oil: number;
+    devastation: number;
+    rails: number | null;
     game: unknown;
 }
 

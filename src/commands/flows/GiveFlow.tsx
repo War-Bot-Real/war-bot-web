@@ -8,14 +8,14 @@ interface GiveFlowProps {
 
 function GiveFlow({ nation }: GiveFlowProps) {
     const [amount, setAmount] = useState(0);
-    const [nationName, setNationName] = useState(nation?.Name ?? "");
+    const [nationName, setNationName] = useState(nation?.name ?? "");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
 
     useEffect(() => {
-        setNationName(nation?.Name ?? "");
+        setNationName(nation?.name ?? "");
         setAmount(0);
         setMessage("");
         setSuccess("");
@@ -61,7 +61,7 @@ function GiveFlow({ nation }: GiveFlowProps) {
                     Nation
                     <input
                         type="text"
-                        value={nation ? nation.Name : nationName}
+                        value={nation ? nation.name : nationName}
                         onChange={(event) => {
                             setNationName(event.target.value);
                             setError("");

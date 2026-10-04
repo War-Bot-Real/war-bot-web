@@ -10,9 +10,9 @@ function BalanceFlow() {
         const loadBalance = async () => {
             try {
                 const data = await getBalance();
-                setBalance(data["Balance"]);
-                setPolPow(data["Political Power"]);
-                setStability(data["Stability"]);
+                setBalance(data.balance);
+                setPolPow(data.political_power);
+                setStability(data.stability);
             } catch (error) {
                 console.error("Failed to load balance:", error);
             }

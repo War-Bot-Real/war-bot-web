@@ -8,7 +8,7 @@ interface DeclareWarFlowProps {
 }
 
 function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
-    const [nationName, setNationName] = useState(nation?.Name ?? "");
+    const [nationName, setNationName] = useState(nation?.name ?? "");
     const [result, setResult] = useState<{
         target: string;
         cost: number;
@@ -19,7 +19,7 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
     const sound = useRef(new Audio("declare_war.mp3"));
 
     useEffect(() => {
-        setNationName(nation?.Name ?? "");
+        setNationName(nation?.name ?? "");
         setResult(null);
         setError(null);
     }, [nation]);
@@ -58,7 +58,7 @@ function DeclareWarFlow({ nation }: DeclareWarFlowProps) {
                     Target Nation
                     <input
                         type="text"
-                        value={nation ? nation.Name : nationName}
+                        value={nation ? nation.name : nationName}
                         onChange={(event) => setNationName(event.target.value)}
                         placeholder="Enter nation"
                         disabled={nation !== null}

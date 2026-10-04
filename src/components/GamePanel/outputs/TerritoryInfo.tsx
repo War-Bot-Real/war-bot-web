@@ -9,41 +9,41 @@ function TerritoryFlow({
 }: TerritoryFlowProps) {
     return (
         <>
-            <h2>{territory.Name}</h2>
+            <h2>{territory.name}</h2>
 
             <p>
                 <strong>Nation:</strong>{" "}
-                {territory.Nation}
+                {territory.nation}
             </p>
 
             <p>
                 <strong>Population:</strong>{" "}
-                {territory.Population.toLocaleString()}
+                {territory.population.toLocaleString()}
             </p>
 
             <p>
                 <strong>Area:</strong>{" "}
-                {territory.Area.toLocaleString()}
+                {territory.area.toLocaleString()}
             </p>
 
             <p>
                 <strong>Terrain:</strong>{" "}
-                {territory.Terrain}
+                {territory.terrain}
             </p>
 
             <p>
                 <strong>Coal:</strong>{" "}
-                {territory.Coal}
+                {territory.coal}
             </p>
 
             <p>
                 <strong>Oil:</strong>{" "}
-                {territory.Oil}
+                {territory.oil}
             </p>
 
             <p>
                 <strong>Devastation:</strong>{" "}
-                {territory.Devastation}
+                {territory.devastation}
             </p>
         </>
     );

@@ -11,18 +11,18 @@ function NationFlow({
     return (
         <>
             <h2>
-              <Flag code={nation.Flag}></Flag> 
-              {nation.Name}
+              <Flag code={nation.flag}></Flag> 
+              {nation.name}
             </h2>
 
             <p>
                 <strong>Ideology:</strong>{" "}
-                {nation.Ideology}
+                {nation.ideology}
             </p>
 
             <p>
                 <strong>Capital:</strong>{" "}
-                {nation.Capital}
+                {nation.capital}
             </p>
         </>
     );

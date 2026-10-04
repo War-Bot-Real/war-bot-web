@@ -16,7 +16,7 @@ export function buildPoliticalMap(
     const nationsByName = new Map<string, Nation>();
 
     for (const nation of nations) {
-        nationsByName.set(nation.Name, nation);
+        nationsByName.set(nation.name, nation);
     }
 
     for (let i = 0; i < territoryIds.length; i++) {
@@ -29,7 +29,7 @@ export function buildPoliticalMap(
 
         const territory = territories[territoryIndex];
 
-        const nation = nationsByName.get(territory.Nation);
+        const nation = nationsByName.get(territory.nation);
 
         if (!nation) {
             pixels[i * 4 + 3] = 0;
@@ -43,14 +43,14 @@ export function buildPoliticalMap(
 
         if (selection?.type === "territory") {
             selected =
-                territory.Name === selection.territory.Name;
+                territory.name === selection.territory.name;
         } else if (selection?.type === "nation") {
             selected =
-                territory.Nation === selection.nation.Name;
+                territory.nation === selection.nation.name;
         }
 
         if (selected) {
-            const [r, g, b] = nation.Color;
+            const [r, g, b] = nation.color;
 
             pixels[i * 4] = r;
             pixels[i * 4 + 1] = g;

@@ -18,7 +18,7 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
         const territoryName =
             territory === null
                 ? terrInput
-                : territory.Name;
+                : territory.name;
 
         try {
             const data = await deploy(
@@ -83,7 +83,7 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
                         value={
                             territory === null
                                 ? terrInput
-                                : territory.Name
+                                : territory.name
                         }
                     />
                 </label>

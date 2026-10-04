@@ -88,7 +88,7 @@ function GamePage({ onAccount }: GamePageProps) {
     useEffect(() => {
         if (!nation) return;
 
-        const channel = supabase.channel(`${nation.Name}:events`, {
+        const channel = supabase.channel(`${nation.name}:events`, {
             config: { private: true, }}
             ).on(
                 "broadcast",
@@ -106,7 +106,7 @@ function GamePage({ onAccount }: GamePageProps) {
                     setEvents(current => [payload.payload, ...current]);
                 }
             ).subscribe((status) => {
-                console.log(`Realtime ${nation.Name}:events:`, status);
+                console.log(`Realtime ${nation.name}:events:`, status);
             });
 
         return () => {
