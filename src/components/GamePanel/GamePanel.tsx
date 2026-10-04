@@ -36,6 +36,7 @@ function GamePanel({
                 <h2>{commandName}</h2>
 
                 <NotificationBar
+                    nation={nation}
                     messages={messages}
                     popup={notifPopup}
                     setPopup={setNotifPopup}

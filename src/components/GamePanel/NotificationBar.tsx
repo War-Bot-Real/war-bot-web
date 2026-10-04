@@ -5,14 +5,16 @@ import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";
 import type { Unread } from "../../types/Read";
 import { getLastRead, readCategory } from "../../api";
+import type { Nation } from "../../types/Nation";
 
 interface NotificationBarProps {
+    nation: Nation | null,
     messages: Message[];
     popup: NotificationPopup;
     setPopup: (command: NotificationPopup) => void;
 }
 
-function NotificationBar({ messages, popup, setPopup }: NotificationBarProps) {
+function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarProps) {
     const [unread, setUnread] = useState<Unread>({
         notifications: false,
         messages: false,
@@ -29,6 +31,7 @@ function NotificationBar({ messages, popup, setPopup }: NotificationBarProps) {
         const loadRead = async () => {
             try {
                 const read = await getLastRead();
+                console.log(playerMessages);
 
                 setUnread({
                     notifications: notifications.some(
@@ -111,9 +114,12 @@ function NotificationBar({ messages, popup, setPopup }: NotificationBarProps) {
                         <p>No world news.</p>
                     ) : (
                         news.map(message => (
-                            <p key={message.id}>
-                                {message.message}
-                            </p>
+                            <div key={message.id} className="notification-item">
+                                <div className="timestamp">
+                                    {new Date(message.time).toLocaleString("en-US", dateFormat)}
+                                </div>
+                                <p className="message-content">{message.message}</p>
+                            </div>
                         ))
                     )}
                 </div>
@@ -127,9 +133,14 @@ function NotificationBar({ messages, popup, setPopup }: NotificationBarProps) {
                         <p>No messages.</p>
                     ) : (
                         playerMessages.map(message => (
-                            <p key={message.id}>
-                                <strong>{message.sender}:</strong> {message.message}
-                            </p>
+                            <div key={message.id} className="notification-item">
+                                <div className="timestamp">
+                                    {new Date(message.time).toLocaleString("en-US", dateFormat)}
+                                </div>
+                                <p className="message-content">
+                                    <strong>{message.sender === nation?.name ? `To ${message.recipient}` : `From ${message.sender}`}:</strong> {message.message}
+                                </p>
+                            </div>
                         ))
                     )}
                 </div>
