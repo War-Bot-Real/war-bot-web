@@ -1,9 +1,9 @@
 export interface Unit {
-    Name: string;
-    Type: string;
-    Quantity: number;
-    Nation: string;
-    Location: string;
-    TiredUntil: number;
-    Active: boolean;
+    name: string;
+    type: string;
+    quantity: number;
+    nation: string;
+    location: string;
+    tiredUntil: number;
+    active: boolean;
 }

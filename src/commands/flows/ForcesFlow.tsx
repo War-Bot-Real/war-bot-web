@@ -90,14 +90,14 @@ function ForcesFlow({ domain }: ForcesFlowProps) {
                         {units.map((unit) => (
                             <div
                                 className="command-row"
-                                key={unit.Name}
+                                key={unit.name}
                             >
                                 <span>
-                                    {unit.Name} — {unit.Type}
+                                    {unit.name} — {unit.type}
                                 </span>
 
                                 <span>
-                                    {unit.Quantity.toLocaleString()}
+                                    {unit.quantity.toLocaleString()}
                                 </span>
                             </div>
                         ))}

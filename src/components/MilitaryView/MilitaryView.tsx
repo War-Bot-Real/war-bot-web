@@ -99,7 +99,7 @@ function MilitaryView({
 
     const locations = [
         "All",
-        ...Array.from(new Set(units.map(unit => unit.Location))),
+        ...Array.from(new Set(units.map(unit => unit.location))),
         ...(territory ? [territory] : [])
     ];
 
@@ -107,11 +107,11 @@ function MilitaryView({
 
     const groupedUnits = units.reduce<Record<string, Unit[]>>(
         (groups, unit) => {
-            if (selectedTerritory !== "All" && unit.Location !== selectedTerritory) {
+            if (selectedTerritory !== "All" && unit.location !== selectedTerritory) {
               return groups;
             }
 
-            (groups[unit.Location] ??= []).push(unit);
+            (groups[unit.location] ??= []).push(unit);
             return groups;
         },
         {}
@@ -225,23 +225,23 @@ function MilitaryView({
                                                 <h4>{locationName}</h4>
                                                 <div className="military-units">
                                                     {locationUnits.map(unit => {
-                                                        const selected = selectedUnits.includes(unit.Name);
+                                                        const selected = selectedUnits.includes(unit.name);
 
                                                         return (
                                                             <div
                                                                 className={`military-unit ${selected ? "selected" : ""}`}
-                                                                key={unit.Name}
-                                                                onClick={() => toggleUnit(unit.Name)}
+                                                                key={unit.name}
+                                                                onClick={() => toggleUnit(unit.name)}
                                                             >
                                                                 <div>
                                                                     <strong>
-                                                                        {unit.Name}
+                                                                        {unit.name}
                                                                     </strong>
 
                                                                     <span>
-                                                                        {unit.Type}{" "}
+                                                                        {unit.type}{" "}
                                                                         —{" "}
-                                                                        {unit.Quantity.toLocaleString()}
+                                                                        {unit.quantity.toLocaleString()}
                                                                     </span>
                                                                 </div>
                                                             </div>
