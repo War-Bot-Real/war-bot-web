@@ -168,6 +168,6 @@ export async function disband(unit: string) {
     return fetchRequest(`disband/${unit}`, "POST");
 }
 
-export async function attack(territory: string, units: string[]) {
-    return fetchRequest(`attack`, "POST", {territory, units});
+export async function attack(target: string, units: string[]) {
+    return fetchRequest(`attack`, "POST", {target, units});
 }
