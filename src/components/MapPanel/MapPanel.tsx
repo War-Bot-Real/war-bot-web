@@ -87,7 +87,9 @@ function MapPanel({
     
     useEffect(() => {
         const channel = supabase
-            .channel("map-changes")
+            .channel("map-changes", {
+                config: { private: true },
+            })
             .on(
                 "postgres_changes",
                 {

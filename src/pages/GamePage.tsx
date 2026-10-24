@@ -94,7 +94,6 @@ function GamePage({ onAccount }: GamePageProps) {
                 "broadcast",
                 {event: "notification"},
                 (payload) => {
-                    console.log(payload.payload.type)
                     getEventMusic(payload.payload.type).play();
                     setEvents(current => [payload.payload, ...current]);
                 }
