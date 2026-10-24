@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import GameMap from "./GameMap";
 import MapModeBar, { type MapMode } from "./MapModeBar";
 import EntitySearch from "./EntitySearch";
+import { supabase } from "../../lib/supabase";
 
 import { getTerritories, getNations } from "../../api";
 
 import type { Selection } from "../../types/Selection";
 import type { Territory } from "../../types/Territory";
 import type { Nation } from "../../types/Nation";
+import MapUpdatePopup from "./MapUpdatePopup";
 
 interface MapPanelProps {
     selection: Selection;
@@ -22,45 +24,29 @@ function MapPanel({
     mapMode,
     setMapMode,
 }: MapPanelProps) {
-    const [territories, setTerritories] =
-        useState<Territory[]>([]);
+    const [territories, setTerritories] = useState<Territory[]>([]);
+    const [nations, setNations] = useState<Nation[]>([]);
+    const [mapChanged, setMapChanged] = useState(false);
 
-    const [nations, setNations] =
-        useState<Nation[]>([]);
+    const [mapDimensions, setMapDimensions] = useState({ width: 847, height: 672 });
+    const [mapPanelWidth, setMapPanelWidth] = useState(600);
+    const [shrink, setShrink] = useState(false);
+      
+    const loadEntities = async () => {
+        try {
+            const [territories, nations] = await Promise.all([getTerritories(), getNations()]);
 
-    const [mapDimensions, setMapDimensions] =
-        useState({
-            width: 847,
-            height: 672,
-        });
-
-    const [mapPanelWidth, setMapPanelWidth] =
-        useState(600);
-
-    const [shrink, setShrink] =
-        useState(false);
+            setTerritories(territories);
+            setNations(nations);
+        } catch (error) {
+            console.error(
+                "Failed to load entities:",
+                error,
+            );
+        }
+    };
 
     useEffect(() => {
-        const loadEntities = async () => {
-            try {
-                const [
-                    territories,
-                    nations,
-                ] = await Promise.all([
-                    getTerritories(),
-                    getNations(),
-                ]);
-
-                setTerritories(territories);
-                setNations(nations);
-            } catch (error) {
-                console.error(
-                    "Failed to load entities:",
-                    error,
-                );
-            }
-        };
-
         loadEntities();
     }, []);
 
@@ -98,6 +84,36 @@ function MapPanel({
         };
     }, [mapDimensions]);
 
+    
+    useEffect(() => {
+        const channel = supabase
+            .channel("map-changes")
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "map_changes",
+                },
+                (payload) => {
+                    setMapChanged(true);
+                }
+            )
+            .subscribe((status, err) => {
+                console.log("Map changes:", status);
+                if (err) console.error("Realtime error:", err);
+            });
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
+
+    async function updateMap() {
+      setMapChanged(false);
+      await loadEntities();
+    }
+
     return (
         <section
             className="map-panel"
@@ -110,6 +126,8 @@ function MapPanel({
             />
 
             <div className="map-container">
+                {mapChanged ? <MapUpdatePopup onUpdate={updateMap}/> : <></>}
+
                 <GameMap
                     territories={territories}
                     nations={nations}

@@ -105,8 +105,9 @@ function GamePage({ onAccount }: GamePageProps) {
                     getEventMusic(payload.payload.type).play();
                     setEvents(current => [payload.payload, ...current]);
                 }
-            ).subscribe((status) => {
+            ).subscribe((status, err) => {
                 console.log(`Realtime ${nation.name}:events:`, status);
+                if (err) console.error("Realtime error details:", err);
             });
 
         return () => {

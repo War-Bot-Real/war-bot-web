@@ -1,0 +1,28 @@
+.map-update-popup {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+
+    padding-block: 5px;
+    padding-inline: 300px;
+    background: #fcde6a;
+    color: #222;
+    border: 1px solid black;
+    border-radius: 2px;
+
+    white-space: nowrap;
+}
+
+.map-update-popup a {
+    font-weight: 600;
+    cursor: pointer;
+    color: #0066CC ;
+    text-decoration: underline;
+}
