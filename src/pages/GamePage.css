@@ -142,3 +142,107 @@ body,
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
+
+/* Phone portrait: map above, game panel below */
+@media (max-width: 768px) and (orientation: portrait) {
+    .game {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .map-panel {
+        width: 100% !important;
+        flex: 0 0 56%;
+    }
+
+    .game-panel {
+        flex: 1;
+        border-left: 0;
+        border-top: 1px solid black;
+    }
+
+    .output-panel,
+    .command-panel {
+        padding: 10px;
+    }
+
+    .output-header {
+        padding: 0 10px;
+    }
+
+    .map-mode-bar {
+        gap: 2px;
+        padding: 6px;
+    }
+
+    .map-mode-bar button {
+        min-width: 0;
+        padding-inline: 2px;
+        font-size: 12px;
+    }
+}
+
+/* Phone landscape: map left, game panel right */
+@media (max-width: 900px) and (orientation: landscape) {
+    .game {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        min-height: 0;
+    }
+
+    .map-panel {
+        width: auto !important;
+        min-height: 0;
+    }
+
+    .game-panel {
+        border-left: 1px solid black;
+        border-top: 0;
+        grid-template-rows: 42px minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .entity-search {
+        height: 42px;
+        padding: 4px;
+    }
+
+    .map-mode-bar {
+        height: 42px;
+        gap: 2px;
+        padding: 4px;
+    }
+
+    .map-mode-bar button {
+        min-width: 0;
+        padding: 3px 2px;
+        font-size: 11px;
+    }
+
+    .output-panel,
+    .command-panel {
+        padding: 8px;
+    }
+
+    .output-header {
+        padding: 0 8px;
+    }
+
+    .output-header h2 {
+        font-size: 14px;
+    }
+
+    .commands {
+        gap: 4px;
+        margin-top: 8px;
+    }
+
+    .commands button {
+        padding: 5px 8px;
+    }
+
+    .map-reload {
+        top: 8px;
+        left: 8px;
+    }
+}
