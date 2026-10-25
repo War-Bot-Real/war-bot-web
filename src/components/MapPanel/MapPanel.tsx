@@ -31,7 +31,6 @@ function MapPanel({
 
     const [mapDimensions, setMapDimensions] = useState({ width: 847, height: 672 });
     const [mapPanelWidth, setMapPanelWidth] = useState(600);
-    const [shrink, setShrink] = useState(false);
       
     const loadEntities = async () => {
         try {
@@ -54,19 +53,11 @@ function MapPanel({
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
-            const mapHeight =
-                window.innerHeight - 60 - 50 - 50;
+            const mapHeight = window.innerHeight - 60 - 50 - 50;
 
-            const aspectRatio =
-                mapDimensions.width /
-                mapDimensions.height;
+            const aspectRatio = mapDimensions.width / mapDimensions.height;
 
-            const mapWidth =
-                mapHeight * aspectRatio;
-
-            setShrink(
-                (mapHeight / mapDimensions.height) < 0.9,
-            );
+            const mapWidth = mapHeight * aspectRatio;
 
             setMapPanelWidth(mapWidth);
         };
@@ -156,7 +147,6 @@ function MapPanel({
                             height,
                         })
                     }
-                    shrink={shrink}
                     mapMode={mapMode}
                     gameTime={gameTime}
                 />

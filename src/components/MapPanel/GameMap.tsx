@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Application, Assets, Sprite, Texture } from "pixi.js";
+import { Application, Assets, Sprite, Texture, Graphics } from "pixi.js";
 
 import "./GameMap.css";
-
 import { getMapUrl, getMapData } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
 import { buildPoliticalMap } from "../../map/buildPoliticalMap";
@@ -20,7 +19,6 @@ interface GameMapProps {
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
     onMapDimensions: (width: number, height: number) => void;
-    shrink: boolean;
     mapMode: MapMode;
     gameTime: number;
 }
@@ -32,7 +30,6 @@ function GameMap({
     territorySelected,
     nationSelected,
     onMapDimensions,
-    shrink,
     mapMode,
     gameTime
 }: GameMapProps) {
@@ -77,7 +74,7 @@ function GameMap({
                 container.appendChild(pixiApp.canvas);
                 pixiApp.canvas.style.visibility = "hidden";
 
-                const [mapUrl, mapData] = await Promise.all([getMapUrl(shrink), getMapData()]);
+                const [mapUrl, mapData] = await Promise.all([getMapUrl(), getMapData()]);
                 mapDataRef.current = mapData;
 
                 if (cancelled) return;
@@ -183,35 +180,50 @@ function GameMap({
 
                 pixiApp.stage.addChild(mapModeSprite);
 
+                const borders = new Graphics();
+                const { width, height, territoryIds } = lookup;
+
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const index = y * width + x;
+                        const id = territoryIds[index];
+
+                        if (id === -1) continue;
+
+                        if (x < width - 1 && territoryIds[index + 1] !== id) {
+                            borders.moveTo(x + 1, y);
+                            borders.lineTo(x + 1, y + 1);
+                        }
+
+                        if (y < height - 1 && territoryIds[index + width] !== id) {
+                            borders.moveTo(x, y + 1);
+                            borders.lineTo(x + 1, y + 1);
+                        }
+                    }
+                }
+
+                borders.stroke({ color: 0x000000, pixelLine: true });
+                pixiApp.stage.addChild(borders);
+
                 /*
                  * Resize both map layers so that the
                  * entire map fits inside the container
                  * while preserving its aspect ratio.
                  */
                 const resizeMap = () => {
-                    const containerWidth =
-                        container.clientWidth;
+                    const containerWidth = container.clientWidth;
 
-                    const containerHeight =
-                        container.clientHeight;
+                    const containerHeight = container.clientHeight;
 
-                    if (
-                        containerWidth <= 0 ||
-                        containerHeight <= 0
-                    ) {
+                    if (containerWidth <= 0 || containerHeight <= 0) {
                         return;
                     }
 
-                    const scaleX =
-                        containerWidth / lookup.width;
+                    const scaleX = containerWidth / lookup.width;
 
-                    const scaleY =
-                        containerHeight / lookup.height;
+                    const scaleY = containerHeight / lookup.height;
 
-                    const scale = Math.min(
-                        scaleX,
-                        scaleY,
-                    );
+                    const scale = Math.min(scaleX, scaleY);
 
                     const mapWidth =
                         lookup.width * scale;
@@ -230,6 +242,9 @@ function GameMap({
 
                     mapModeSprite.scale.set(scale);
                     mapModeSprite.position.set(x, y);
+
+                    borders.scale.set(scale);
+                    borders.position.set(x, y);
 
                     if (!mapIsReady && readyFrame === null) {
                         readyFrame = requestAnimationFrame(() => {
@@ -356,7 +371,7 @@ function GameMap({
                 app = null;
             }
         };
-    }, [shrink, territories, nations]);
+    }, [territories, nations]);
 
     useEffect(() => {
         let cancelled = false;
