@@ -15,7 +15,6 @@ interface GamePanelProps {
     activeCommand: string | null;
     nation: Nation | null;
     messages: Message[];
-    mapData: MapData
     notifPopup: NotificationPopup;
     setActiveCommand: (command: string | null) => void;
     setNotifPopup: (command: NotificationPopup) => void;
@@ -26,7 +25,6 @@ function GamePanel({
     activeCommand,
     nation,
     messages,
-    mapData,
     notifPopup,
     setActiveCommand,
     setNotifPopup
@@ -50,7 +48,6 @@ function GamePanel({
                 selection={selection}
                 activeCommand={activeCommand}
                 nation={nation}
-                mapData={mapData}
             />
 
             <CommandPanel

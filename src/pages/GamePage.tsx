@@ -12,7 +12,6 @@ import type { Nation } from "../types/Nation";
 import type { Message } from "../types/Messages";
 import type { NotificationPopup } from "../types/NotificationPopup";
 import EventPopup from "../components/EventPopup/EventPopup";
-import type { MapData } from "../types/MapData";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -35,7 +34,6 @@ function GamePage({ onAccount }: GamePageProps) {
         return eventSounds.current.default;
     }
 
-    const [mapData, setMapData] = useState<MapData>();
     const [mapMode, setMapMode] = useState<MapMode>("political");
 
     useEffect(() => {
@@ -84,12 +82,7 @@ function GamePage({ onAccount }: GamePageProps) {
             }
         };
 
-        const initMapData = async () => {
-            setMapData(await getMapData());
-        }
-
         loadUser();
-        initMapData();
     }, []);
 
     useEffect(() => {
@@ -134,7 +127,6 @@ function GamePage({ onAccount }: GamePageProps) {
                 setSelection={setSelection}
                 mapMode={mapMode}
                 setMapMode={setMapMode}
-                mapData={mapData}
             />
 
             <GamePanel
@@ -145,7 +137,6 @@ function GamePage({ onAccount }: GamePageProps) {
                 notifPopup={notifPopup}
                 setActiveCommand={setActiveCommand}
                 setNotifPopup={setNotifPopup}
-                mapData={mapData}
             />
         </main>
       </div>

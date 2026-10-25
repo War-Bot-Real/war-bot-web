@@ -10,22 +10,19 @@ import type { Selection } from "../../types/Selection";
 import type { Territory } from "../../types/Territory";
 import type { Nation } from "../../types/Nation";
 import MapUpdatePopup from "./MapUpdatePopup";
-import type { MapData } from "../../types/MapData";
 
 interface MapPanelProps {
     selection: Selection;
     setSelection: (selection: Selection) => void;
     mapMode: MapMode;
     setMapMode: (mode: MapMode) => void;
-    mapData: MapData
 }
 
 function MapPanel({
     selection,
     setSelection,
     mapMode,
-    setMapMode,
-    mapData
+    setMapMode
 }: MapPanelProps) {
     const [territories, setTerritories] = useState<Territory[]>([]);
     const [nations, setNations] = useState<Nation[]>([]);
@@ -162,7 +159,6 @@ function MapPanel({
                     shrink={shrink}
                     mapMode={mapMode}
                     gameTime={gameTime}
-                    mapData={mapData}
                 />
             </div>
 

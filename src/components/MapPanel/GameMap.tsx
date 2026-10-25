@@ -23,7 +23,6 @@ interface GameMapProps {
     shrink: boolean;
     mapMode: MapMode;
     gameTime: number;
-    mapData: MapData
 }
 
 function GameMap({
@@ -35,8 +34,7 @@ function GameMap({
     onMapDimensions,
     shrink,
     mapMode,
-    gameTime,
-    mapData
+    gameTime
 }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
@@ -79,7 +77,7 @@ function GameMap({
                 container.appendChild(pixiApp.canvas);
                 pixiApp.canvas.style.visibility = "hidden";
 
-                const mapUrl = await getMapUrl(shrink);
+                const [mapUrl, mapData] = await Promise.all([getMapUrl(shrink), getMapData()]);
                 mapDataRef.current = mapData;
 
                 if (cancelled) return;

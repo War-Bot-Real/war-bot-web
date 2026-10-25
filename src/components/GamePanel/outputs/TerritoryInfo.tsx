@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import type { MapData } from "../../../types/MapData";
 import type { Territory } from "../../../types/Territory";
-import { getGameTime } from "../../../api";
+import { getGameTime, getMapData } from "../../../api";
 import { formatTime } from "../../../utils";
 
 interface TerritoryFlowProps {
     territory: Territory;
-    mapData: MapData
 }
 
-function TerritoryFlow({territory, mapData}: TerritoryFlowProps) {
+function TerritoryFlow({territory}: TerritoryFlowProps) {
     const [gameTime, setGameTime] = useState(0);
+    const [mapData, setMapData] = useState<MapData>();
+
     useEffect(() => {
-      async function fetchGameTime() {
-        const time = await getGameTime();
+      async function fetchProps() {
+        const [time, mapData] = await Promise.all([getGameTime(), getMapData()]);
         setGameTime(time);
+        setMapData(mapData);
       }
 
-      fetchGameTime();
+      fetchProps();
     }, [territory]);
 
     return (
@@ -41,7 +43,7 @@ function TerritoryFlow({territory, mapData}: TerritoryFlowProps) {
 
             <p>
                 <strong>Terrain:</strong>{" "}
-                {mapData.Terrains[territory.terrain - 1].Name}
+                {mapData ? mapData.Terrains[territory.terrain - 1].Name : "Loading Terrain..."}
             </p>
 
             <p>

@@ -22,20 +22,17 @@ import DisbandFlow from "../../commands/flows/DisbandFlow";
 import SplitFlow from "../../commands/flows/SplitFlow";
 import AttackFlow from "../../commands/flows/AttackFlow";
 import ForcesFlow from "../../commands/flows/ForcesFlow";
-import type { MapData } from "../../types/MapData";
 
 interface OutputPanelProps {
     selection: Selection;
     activeCommand: string | null;
     nation: Nation | null;
-    mapData: MapData;
 }
 
 function OutputPanel({
     selection,
     activeCommand,
     nation,
-    mapData
 }: OutputPanelProps) {
     return (
         <section className="output-panel">
@@ -130,14 +127,9 @@ function OutputPanel({
             ) : activeCommand === "airforce" ? (
                 <ForcesFlow domain="air" />
             ) : selection?.type === "territory" ? (
-                <TerritoryFlow
-                    territory={selection.territory}
-                    mapData={mapData}
-                />
+                <TerritoryFlow territory={selection.territory}/>
             ) : selection?.type === "nation" ? (
-                <NationFlow
-                    nation={selection.nation}
-                />
+                <NationFlow nation={selection.nation}/>
             ) : (
                 <>
                     <h2>Welcome</h2>
