@@ -7,7 +7,7 @@ import GamePanel from "../components/GamePanel/GamePanel";
 import Navbar from "../components/NavBar/NavBar";
 import type { Selection } from "../types/Selection";
 import type { MapMode } from "../components/MapPanel/MapModeBar";
-import { me, getNation, getMessages } from "../api";
+import { me, getNation, getMessages, getMapData } from "../api";
 import type { Nation } from "../types/Nation";
 import type { Message } from "../types/Messages";
 import type { NotificationPopup } from "../types/NotificationPopup";
@@ -16,6 +16,8 @@ import EventPopup from "../components/EventPopup/EventPopup";
 interface GamePageProps {
     onAccount: () => void;
 }
+
+const mapData = await getMapData();
 
 function GamePage({ onAccount }: GamePageProps) {
     const [selection, setSelection] = useState<Selection>(null);
@@ -127,6 +129,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 setSelection={setSelection}
                 mapMode={mapMode}
                 setMapMode={setMapMode}
+                mapData={mapData}
             />
 
             <GamePanel
@@ -137,6 +140,7 @@ function GamePage({ onAccount }: GamePageProps) {
                 notifPopup={notifPopup}
                 setActiveCommand={setActiveCommand}
                 setNotifPopup={setNotifPopup}
+                mapData={mapData}
             />
         </main>
       </div>
