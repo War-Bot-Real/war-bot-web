@@ -1,40 +1,32 @@
 import { useEffect, useState } from "react";
 import { getBorders, getNationBorders } from "../../api";
 import type { Selection } from "../../types/Selection";
-import type { Territory } from "../../types/Territory";
+import type { TerritoryAsBorder } from "../../types/Territory";
+import Flag from "../../components/Flag";
 
 function BordersFlow({ selection }: { selection: Selection }) {
-    const [borders, setBorders] = useState<string[] | null>(null);
+    const [borders, setBorders] = useState<TerritoryAsBorder[] | null>(null);
     const [name, setName] = useState<string | null>(null);
 
     useEffect(() => {
+        setBorders(null);
+        setName(null);
+
         if (selection === null) {
-            setBorders(null);
-            setName(null);
             return;
         }
 
         const loadBorders = async () => {
             try {
-                if (selection.type === "territory") {
-                    setName(selection.territory.name);
-                    setBorders(
-                        (await getBorders(selection.territory.name)).Bordering
-                    );
-                } else {
+                  let response: TerritoryAsBorder[];
+                  if (selection.type === 'nation') {
                     setName(selection.nation.name);
-
-                    const nationBorders = await getNationBorders(
-                        selection.nation.name
-                    );
-
-                    const borders = nationBorders.map(
-                        (terr: Territory) =>
-                            terr.name + ", " + terr.nation
-                    );
-
-                    setBorders(borders);
-                }
+                    response = await getNationBorders(selection.nation.name);
+                  } else {
+                    setName(selection.territory.name);
+                    response = await getBorders(selection.territory.name);
+                  }
+                  setBorders(response);
             } catch (error) {
                 console.error("Failed to get borders:", error);
             }
@@ -59,16 +51,15 @@ function BordersFlow({ selection }: { selection: Selection }) {
 
     return (
         <div className="borders-flow">
-            <h2>Borders</h2>
-
-            <p className="command-subtitle">
-                Borders of <strong>{name}</strong>
-            </p>
+            <h2>Borders of {name}</h2>
 
             <div className="command-list">
                 {borders.map((bordering) => (
-                    <div className="command-row" key={bordering}>
-                        <span>{bordering}</span>
+                    <div className="command-row" key={bordering.Name}>
+                        <span>
+                            {bordering.NationFlag ? <Flag code={bordering.NationFlag}></Flag> : <></>}
+                            <strong>{bordering.Name}</strong>, {bordering.Nation}
+                        </span>
                     </div>
                 ))}
             </div>

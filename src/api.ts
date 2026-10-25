@@ -1,5 +1,6 @@
 import { supabase } from "./lib/supabase";
 import type { MapData } from "./types/MapData";
+import type { TerritoryAsBorder } from "./types/Territory";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
@@ -85,11 +86,11 @@ export async function getInventory() {
     return fetchRequest(`inv`);
 }
 
-export async function getBorders(territory: string) {
+export async function getBorders(territory: string): Promise<TerritoryAsBorder[]> {
     return fetchRequest(`borders/terr/${territory}`);
 }
 
-export async function getNationBorders(nation: string) {
+export async function getNationBorders(nation: string): Promise<TerritoryAsBorder[]> {
     return fetchRequest(`borders/nation/${nation}`);
 }
 

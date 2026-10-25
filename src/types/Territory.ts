@@ -22,3 +22,9 @@ export interface TerritoryPixelLookup {
     territoryIds: Int32Array;
     territories: Territory[];
 }
+
+export interface TerritoryAsBorder {
+  Name: string  
+  Nation: string;
+  NationFlag?: string;
+}
