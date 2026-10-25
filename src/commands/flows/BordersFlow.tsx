@@ -58,7 +58,7 @@ function BordersFlow({ selection }: { selection: Selection }) {
                     <div className="command-row" key={bordering.Name}>
                         <div className="command-content">
                             {bordering.NationFlag && (
-                                <Flag code={bordering.NationFlag} className="flag" />
+                                <Flag code={bordering.NationFlag} className="borders-flag" />
                             )}
                             <span>
                                 <strong>{bordering.Name}</strong>, {bordering.Nation}

@@ -98,9 +98,9 @@
     align-items: center;
 }
 
-.flag {
+.borders-flag, .forces-flag {
     display: block;
-    width: 20px;
+    width: 21px;
     height: auto;
     flex-shrink: 0;
 }
