@@ -154,7 +154,7 @@ function GameMap({
 
                 if (cancelled) return;
 
-                const terrainImage = buildTerrainMap(lookup, mapData);
+                const terrainImage = buildTerrainMap(lookup, mapData, selection);
 
                 const mapModeImage = mapMode === "terrain" ? terrainImage : politicalImage;
 
@@ -371,7 +371,7 @@ function GameMap({
         }
 
         const updateMapMode = () => {
-            const image = mapMode === "terrain" ? buildTerrainMap(lookup, mapData) : buildPoliticalMap(lookup, nations, selection, gameTime);
+            const image = mapMode === "terrain" ? buildTerrainMap(lookup, mapData, selection) : buildPoliticalMap(lookup, nations, selection, gameTime);
 
             if (cancelled) return;
 

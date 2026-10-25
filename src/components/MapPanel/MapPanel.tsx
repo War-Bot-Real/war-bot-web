@@ -114,7 +114,6 @@ function MapPanel({
     }, []);
 
     async function updateMap() {
-      setGameTime(await getGameTime());
       await loadEntities();
       setMapChanged(false);
     }

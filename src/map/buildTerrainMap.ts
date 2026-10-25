@@ -1,11 +1,12 @@
 
 import type { TerritoryPixelLookup } from "../types/Territory";
 import type { MapData } from "../types/MapData";
-import type { Territory } from "../types/Territory";
+import type { Selection } from "../types/Selection";
 
 export function buildTerrainMap(
     lookup: TerritoryPixelLookup,
     mapData: MapData,
+    selection: Selection
 ): ImageData {
     const imageData = new ImageData(
         lookup.width,
@@ -28,10 +29,18 @@ export function buildTerrainMap(
         }
 
         const pixel = i * 4;
+        
+        let r, g, b: number;
 
-        imageData.data[pixel] = terrain.Color[0];
-        imageData.data[pixel + 1] = terrain.Color[1];
-        imageData.data[pixel + 2] = terrain.Color[2];
+        if (selection?.type === "territory" && selection.territory.name !== territory.name || selection?.type === "nation" && selection.nation.name !== territory.nation) {
+          [r, g, b] = [255, 255, 255]
+        } else {
+          [r, g, b] = terrain.Color;
+        }
+        
+        imageData.data[pixel] = r;
+        imageData.data[pixel + 1] = g;
+        imageData.data[pixel + 2] = b;
         imageData.data[pixel + 3] = 255;
     }
 
