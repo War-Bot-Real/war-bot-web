@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Application, Assets, Sprite, Texture } from "pixi.js";
+
+import "./GameMap.css";
 
 import { getMapUrl, getMapData } from "../../api";
 import { buildTerritoryLookup } from "../../map/buildTerritoryLookup";
@@ -32,15 +34,12 @@ function GameMap({
     shrink,
     mapMode
 }: GameMapProps) {
-    if (territories.length === 0 || nations.length === 0) {
-        return;
-    }
-
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
     const mapModeRef = useRef<Sprite | null>(null);
     const mapDataRef = useRef<MapData | null>(null);
     const clickSound = useRef(new Audio("/click_territory.wav"));
+    const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
     useEffect(() => {
         let app: Application | null = null;
@@ -50,25 +49,29 @@ function GameMap({
         const initialize = async () => {
             const container = containerRef.current;
 
-            if (!container) return;
-
-            const pixiApp = new Application();
-
-            await pixiApp.init({
-                resizeTo: container,
-                background: "white",
-            });
-
-            if (cancelled) {
-                pixiApp.destroy(true);
+            if (!container || territories.length === 0 || nations.length === 0) {
                 return;
             }
 
-            app = pixiApp;
-            app.renderer.background.color = '#F5F5F5'
-            container.appendChild(pixiApp.canvas);
+            const pixiApp = new Application();
+
+            setStatus("loading");
 
             try {
+                await pixiApp.init({
+                    resizeTo: container,
+                    background: "white",
+                });
+
+                if (cancelled) {
+                    pixiApp.destroy(true);
+                    return;
+                }
+
+                app = pixiApp;
+                app.renderer.background.color = '#F5F5F5'
+                container.appendChild(pixiApp.canvas);
+
                 const [mapUrl, mapData] = await Promise.all([getMapUrl(shrink), getMapData()]);
                 mapDataRef.current = mapData;
 
@@ -312,11 +315,16 @@ function GameMap({
                         clickSound.current.play();
                     }
                 });
+
+                setStatus("ready");
             } catch (error) {
                 console.error(
                     "Failed to load map:",
                     error,
                 );
+                if (!cancelled) {
+                    setStatus("error");
+                }
             }
         };
 
@@ -342,7 +350,7 @@ function GameMap({
         const mapModeSprite = mapModeRef.current;
         const mapData = mapDataRef.current;
 
-        if (!lookup || !mapModeSprite || !mapData || nations.length === 0) {
+        if (status !== "ready" || !lookup || !mapModeSprite || !mapData || nations.length === 0) {
             return;
         }
 
@@ -371,16 +379,28 @@ function GameMap({
         mapModeSprite.texture = texture;
 
         oldTexture.destroy(true);
-    }, [selection, mapMode]);
+    }, [selection, mapMode, status]);
 
     return (
         <div
             ref={containerRef}
+            className="game-map"
             style={{
                 width: "100%",
                 height: "100%",
             }}
-        />
+        >
+            {status === "loading" && (
+                <div className="game-map-loading" role="status" aria-label="Loading map">
+                    <img src="/spinning_globe.gif" alt="Loading Map..." width="100px"/>
+                </div>
+            )}
+            {status === "error" && (
+                <div className="game-map-error" role="alert">
+                    Unable to load the map. Try reloading.
+                </div>
+            )}
+        </div>
     );
 }
 
