@@ -53,28 +53,23 @@ function MapPanel({
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
+            const isPortraitMobile = window.matchMedia(
+                "(max-width: 768px) and (orientation: portrait)"
+            ).matches;
+
+            if (isPortraitMobile) {
+                setMapPanelWidth(window.innerWidth);
+                return;
+            }
+
             const mapHeight = window.innerHeight - 60 - 50 - 50;
-
             const aspectRatio = mapDimensions.width / mapDimensions.height;
-
-            const mapWidth = mapHeight * aspectRatio;
-
-            setMapPanelWidth(mapWidth);
+            setMapPanelWidth(mapHeight * aspectRatio);
         };
 
         updateMapPanelWidth();
-
-        window.addEventListener(
-            "resize",
-            updateMapPanelWidth,
-        );
-
-        return () => {
-            window.removeEventListener(
-                "resize",
-                updateMapPanelWidth,
-            );
-        };
+        window.addEventListener("resize", updateMapPanelWidth);
+        return () => window.removeEventListener("resize", updateMapPanelWidth);
     }, [mapDimensions]);
 
     

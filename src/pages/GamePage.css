@@ -149,38 +149,28 @@ body,
     .game {
         display: flex;
         flex-direction: column;
+        flex: 1;
         min-height: 0;
+        overflow: hidden;
     }
 
     .map-panel {
         width: 100% !important;
-        flex: 0 0 56%;
+        flex: 0 0 auto;
+        min-height: 0;
+    }
+
+    .map-container {
+        flex: 0 0 auto;
+        height: auto;
+        aspect-ratio: 847 / 672;
     }
 
     .game-panel {
-        flex: 1;
+        flex: 1 1 0;
+        min-height: 0;
         border-left: 0;
         border-top: 1px solid black;
-    }
-
-    .output-panel,
-    .command-panel {
-        padding: 10px;
-    }
-
-    .output-header {
-        padding: 0 10px;
-    }
-
-    .map-mode-bar {
-        gap: 2px;
-        padding: 6px;
-    }
-
-    .map-mode-bar button {
-        min-width: 0;
-        padding-inline: 2px;
-        font-size: 12px;
     }
 }
 
