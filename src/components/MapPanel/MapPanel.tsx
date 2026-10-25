@@ -4,7 +4,7 @@ import MapModeBar, { type MapMode } from "./MapModeBar";
 import EntitySearch from "./EntitySearch";
 import { supabase } from "../../lib/supabase";
 
-import { getTerritories, getNations } from "../../api";
+import { getTerritories, getNations, getGameTime } from "../../api";
 
 import type { Selection } from "../../types/Selection";
 import type { Territory } from "../../types/Territory";
@@ -27,6 +27,7 @@ function MapPanel({
     const [territories, setTerritories] = useState<Territory[]>([]);
     const [nations, setNations] = useState<Nation[]>([]);
     const [mapChanged, setMapChanged] = useState(false);
+    const [gameTime, setGameTime] = useState(0);
 
     const [mapDimensions, setMapDimensions] = useState({ width: 847, height: 672 });
     const [mapPanelWidth, setMapPanelWidth] = useState(600);
@@ -34,10 +35,11 @@ function MapPanel({
       
     const loadEntities = async () => {
         try {
-            const [territories, nations] = await Promise.all([getTerritories(), getNations()]);
+            const [territories, nations, gameTime] = await Promise.all([getTerritories(), getNations(), getGameTime()]);
 
             setTerritories(territories);
             setNations(nations);
+            setGameTime(gameTime);
         } catch (error) {
             console.error(
                 "Failed to load entities:",
@@ -112,8 +114,9 @@ function MapPanel({
     }, []);
 
     async function updateMap() {
-      setMapChanged(false);
+      setGameTime(await getGameTime());
       await loadEntities();
+      setMapChanged(false);
     }
 
     return (
@@ -129,6 +132,8 @@ function MapPanel({
 
             <div className="map-container">
                 {mapChanged ? <MapUpdatePopup onUpdate={updateMap}/> : <></>}
+
+                <button className="map-reload" onClick={updateMap}>⟳</button>
 
                 <GameMap
                     territories={territories}
@@ -154,6 +159,7 @@ function MapPanel({
                     }
                     shrink={shrink}
                     mapMode={mapMode}
+                    gameTime={gameTime}
                 />
             </div>
 

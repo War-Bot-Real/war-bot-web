@@ -1,16 +1,13 @@
-import { getGameTime } from "../api";
 import type { Nation } from "../types/Nation";
 import type { Selection } from "../types/Selection";
 import type { TerritoryPixelLookup } from "../types/Territory";
 
-export async function buildPoliticalMap(lookup: TerritoryPixelLookup, nations: Nation[], selection: Selection): Promise<ImageData> {
+export function buildPoliticalMap(lookup: TerritoryPixelLookup, nations: Nation[], selection: Selection, gameTime: number): ImageData {
     const { width, height, territoryIds, territories } = lookup;
 
     const pixels = new Uint8ClampedArray(width * height * 4,);
 
     const nationsByName = new Map<string, Nation>();
-
-    const gameTime = await getGameTime();
 
     for (const nation of nations) {
         nationsByName.set(nation.name, nation);

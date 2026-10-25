@@ -56,6 +56,21 @@ body,
     font-weight: bold;
 }
 
+.map-reload {
+  position: absolute;
+  z-index: 100;
+  top: 20px;
+  left: 20px;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.map-reload:hover {
+  background: lightgray;
+}
+
 .game-panel {
     display: grid;
     grid-template-rows: 52px minmax(0, 1fr) minmax(0, 1fr);

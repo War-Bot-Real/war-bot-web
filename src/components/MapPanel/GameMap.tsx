@@ -21,7 +21,8 @@ interface GameMapProps {
     nationSelected: (nation: Nation) => void;
     onMapDimensions: (width: number, height: number) => void;
     shrink: boolean;
-    mapMode: MapMode
+    mapMode: MapMode;
+    gameTime: number;
 }
 
 function GameMap({
@@ -32,7 +33,8 @@ function GameMap({
     nationSelected,
     onMapDimensions,
     shrink,
-    mapMode
+    mapMode,
+    gameTime
 }: GameMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
@@ -148,18 +150,11 @@ function GameMap({
                 /*
                  * Build the map mode images.
                  */
-                const politicalImage = await buildPoliticalMap(
-                    lookup,
-                    nations,
-                    selection,
-                );
+                const politicalImage = buildPoliticalMap(lookup, nations, selection, gameTime);
 
                 if (cancelled) return;
 
-                const terrainImage = buildTerrainMap(
-                    lookup,
-                    mapData,
-                );
+                const terrainImage = buildTerrainMap(lookup, mapData);
 
                 const mapModeImage = mapMode === "terrain" ? terrainImage : politicalImage;
 
@@ -375,8 +370,8 @@ function GameMap({
             };
         }
 
-        const updateMapMode = async () => {
-            const image = mapMode === "terrain" ? buildTerrainMap(lookup, mapData) : await buildPoliticalMap(lookup, nations, selection);
+        const updateMapMode = () => {
+            const image = mapMode === "terrain" ? buildTerrainMap(lookup, mapData) : buildPoliticalMap(lookup, nations, selection, gameTime);
 
             if (cancelled) return;
 
@@ -400,17 +395,12 @@ function GameMap({
             oldTexture.destroy(true);
         };
 
-        void updateMapMode().catch((error: unknown) => {
-            if (!cancelled) {
-                console.error("Failed to update map mode:", error);
-                setStatus("error");
-            }
-        });
+        void updateMapMode();
 
         return () => {
             cancelled = true;
         };
-    }, [selection, mapMode, status, nations]);
+    }, [selection, mapMode, status, nations, gameTime]);
 
     return (
         <div
@@ -428,7 +418,7 @@ function GameMap({
             )}
             {status === "error" && (
                 <div className="game-map-error" role="alert">
-                    Unable to load the map. Try reloading.
+                    Unable to load the map. Try reloading the page.
                 </div>
             )}
         </div>
