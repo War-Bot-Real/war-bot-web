@@ -4,9 +4,10 @@ import "./NavBar.css"
 
 interface NavbarProps {
     onAccount: () => void;
+    onAdmin: () => void;
 }
 
-function Navbar({ onAccount }: NavbarProps) {
+function Navbar({ onAccount, onAdmin }: NavbarProps) {
     const clickSound = useRef(new Audio("/click_default.wav"));
 
     const handleLogout = async () => {
@@ -23,6 +24,10 @@ function Navbar({ onAccount }: NavbarProps) {
             <h1>War Bot Web</h1>
 
             <div className="navbar-actions">
+                <button onClick={onAdmin}>
+                    Admin
+                </button>
+
                 <button onClick={onAccount}>
                     Account
                 </button>

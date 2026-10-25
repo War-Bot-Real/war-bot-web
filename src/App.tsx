@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import GamePage from "./pages/GamePage";
 import AccountPage from "./pages/AccountPage";
 import SignUpPage from "./pages/SignUpPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
     const [session, setSession] = useState<Session | null>(null);
@@ -61,18 +62,33 @@ function App() {
 
             <Route
                 path="/home"
-                element={session
-                    ? <GamePage onAccount={() => {
+                element={session ?
+                  <GamePage
+                    onAccount={() => {
                         playClickSound();
                         navigate("/account");
-                    }} />
-                    : <Navigate to="/login" replace />}
+                    }} 
+                    onAdmin={() => {
+                        playClickSound();
+                        navigate("/admin");
+                    }}
+                  /> : <Navigate to="/login" replace />}
             />
 
             <Route
                 path="/account"
                 element={session
                     ? <AccountPage onBack={() => {
+                        playClickSound();
+                        navigate("/home");
+                    }} />
+                    : <Navigate to="/login" replace />}
+            />
+
+            <Route
+                path="/admin"
+                element={session
+                    ? <AdminPage onBack={() => {
                         playClickSound();
                         navigate("/home");
                     }} />
