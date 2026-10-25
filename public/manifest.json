@@ -1,0 +1,12 @@
+{
+  "name": "War Bot Mobile",
+  "short_name": "War Bot Mobile",
+  "icons": [
+    {
+      "src": "/app-icon.png",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone"
+}
