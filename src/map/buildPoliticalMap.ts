@@ -1,19 +1,16 @@
+import { getGameTime } from "../api";
 import type { Nation } from "../types/Nation";
 import type { Selection } from "../types/Selection";
 import type { TerritoryPixelLookup } from "../types/Territory";
 
-export function buildPoliticalMap(
-    lookup: TerritoryPixelLookup,
-    nations: Nation[],
-    selection: Selection,
-): ImageData {
+export async function buildPoliticalMap(lookup: TerritoryPixelLookup, nations: Nation[], selection: Selection): Promise<ImageData> {
     const { width, height, territoryIds, territories } = lookup;
 
-    const pixels = new Uint8ClampedArray(
-        width * height * 4,
-    );
+    const pixels = new Uint8ClampedArray(width * height * 4,);
 
     const nationsByName = new Map<string, Nation>();
+
+    const gameTime = await getGameTime();
 
     for (const nation of nations) {
         nationsByName.set(nation.name, nation);
@@ -42,19 +39,22 @@ export function buildPoliticalMap(
         let selected = true;
 
         if (selection?.type === "territory") {
-            selected =
-                territory.name === selection.territory.name;
+            selected = territory.name === selection.territory.name;
         } else if (selection?.type === "nation") {
-            selected =
-                territory.nation === selection.nation.name;
+            selected = territory.nation === selection.nation.name;
         }
 
         if (selected) {
             const [r, g, b] = nation.color;
+            let factor = 0;
 
-            pixels[i * 4] = r;
-            pixels[i * 4 + 1] = g;
-            pixels[i * 4 + 2] = b;
+            if (territory.integrated > gameTime) {
+                factor = 0.4;
+            }
+
+            pixels[i * 4]     = Math.round(r + (255 - r) * factor);
+            pixels[i * 4 + 1] = Math.round(g + (255 - g) * factor);
+            pixels[i * 4 + 2] = Math.round(b + (255 - b) * factor);
             pixels[i * 4 + 3] = 255;
         } else {
             /*

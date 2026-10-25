@@ -45,6 +45,8 @@ function GameMap({
         let app: Application | null = null;
         let resizeObserver: ResizeObserver | null = null;
         let cancelled = false;
+        let readyFrame: number | null = null;
+        let mapIsReady = false;
 
         const initialize = async () => {
             const container = containerRef.current;
@@ -71,6 +73,7 @@ function GameMap({
                 app = pixiApp;
                 app.renderer.background.color = '#F5F5F5'
                 container.appendChild(pixiApp.canvas);
+                pixiApp.canvas.style.visibility = "hidden";
 
                 const [mapUrl, mapData] = await Promise.all([getMapUrl(shrink), getMapData()]);
                 mapDataRef.current = mapData;
@@ -145,11 +148,13 @@ function GameMap({
                 /*
                  * Build the map mode images.
                  */
-                const politicalImage = buildPoliticalMap(
+                const politicalImage = await buildPoliticalMap(
                     lookup,
                     nations,
                     selection,
                 );
+
+                if (cancelled) return;
 
                 const terrainImage = buildTerrainMap(
                     lookup,
@@ -230,6 +235,17 @@ function GameMap({
 
                     mapModeSprite.scale.set(scale);
                     mapModeSprite.position.set(x, y);
+
+                    if (!mapIsReady && readyFrame === null) {
+                        readyFrame = requestAnimationFrame(() => {
+                            readyFrame = null;
+                            if (!cancelled) {
+                                mapIsReady = true;
+                                pixiApp.canvas.style.visibility = "visible";
+                                setStatus("ready");
+                            }
+                        });
+                    }
                 };
 
                 /*
@@ -316,7 +332,6 @@ function GameMap({
                     }
                 });
 
-                setStatus("ready");
             } catch (error) {
                 console.error(
                     "Failed to load map:",
@@ -332,6 +347,9 @@ function GameMap({
 
         return () => {
             cancelled = true;
+            if (readyFrame !== null) {
+                cancelAnimationFrame(readyFrame);
+            }
 
             if (resizeObserver) {
                 resizeObserver.disconnect();
@@ -346,40 +364,53 @@ function GameMap({
     }, [shrink, territories, nations]);
 
     useEffect(() => {
+        let cancelled = false;
         const lookup = lookupRef.current;
         const mapModeSprite = mapModeRef.current;
         const mapData = mapDataRef.current;
 
         if (status !== "ready" || !lookup || !mapModeSprite || !mapData || nations.length === 0) {
-            return;
+            return () => {
+                cancelled = true;
+            };
         }
 
-        let image: ImageData;
-        if (mapMode === "terrain") {
-            image = buildTerrainMap(lookup, mapData);
-        } else {
-            image = buildPoliticalMap(lookup, nations, selection);
-        }
+        const updateMapMode = async () => {
+            const image = mapMode === "terrain" ? buildTerrainMap(lookup, mapData) : await buildPoliticalMap(lookup, nations, selection);
 
-        const canvas = document.createElement("canvas");
-        canvas.width = lookup.width;
-        canvas.height = lookup.height;
+            if (cancelled) return;
 
-        const context = canvas.getContext("2d");
-        if (!context) {
-            return;
-        }
-        context.putImageData(image, 0, 0);
+            const canvas = document.createElement("canvas");
+            canvas.width = lookup.width;
+            canvas.height = lookup.height;
 
-        const texture = Texture.from(canvas);
-        texture.source.scaleMode = "nearest";
+            const context = canvas.getContext("2d");
+            if (!context) {
+                return;
+            }
+            context.putImageData(image, 0, 0);
 
-        const oldTexture = mapModeSprite.texture;
+            const texture = Texture.from(canvas);
+            texture.source.scaleMode = "nearest";
 
-        mapModeSprite.texture = texture;
+            const oldTexture = mapModeSprite.texture;
 
-        oldTexture.destroy(true);
-    }, [selection, mapMode, status]);
+            mapModeSprite.texture = texture;
+
+            oldTexture.destroy(true);
+        };
+
+        void updateMapMode().catch((error: unknown) => {
+            if (!cancelled) {
+                console.error("Failed to update map mode:", error);
+                setStatus("error");
+            }
+        });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [selection, mapMode, status, nations]);
 
     return (
         <div

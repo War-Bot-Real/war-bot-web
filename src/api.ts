@@ -171,3 +171,7 @@ export async function disband(unit: string) {
 export async function attack(target: string, units: string[]) {
     return fetchRequest(`attack`, "POST", {target, units});
 }
+
+export async function getGameTime() {
+  return fetchRequest("gametime")
+}
