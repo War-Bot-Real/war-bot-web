@@ -174,5 +174,5 @@ export async function attack(target: string, units: string[]) {
 }
 
 export async function getGameTime() {
-  return fetchRequest("gametime")
+  return fetchRequest("gametime");
 }
