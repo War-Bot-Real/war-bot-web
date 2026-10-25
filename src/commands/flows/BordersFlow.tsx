@@ -56,10 +56,14 @@ function BordersFlow({ selection }: { selection: Selection }) {
             <div className="command-list">
                 {borders.map((bordering) => (
                     <div className="command-row" key={bordering.Name}>
-                        <span>
-                            {bordering.NationFlag ? <Flag code={bordering.NationFlag}></Flag> : <></>}
-                            <strong>{bordering.Name}</strong>, {bordering.Nation}
-                        </span>
+                        <div className="command-content">
+                            {bordering.NationFlag && (
+                                <Flag code={bordering.NationFlag} className="flag" />
+                            )}
+                            <span>
+                                <strong>{bordering.Name}</strong>, {bordering.Nation}
+                            </span>
+                        </div>
                     </div>
                 ))}
             </div>

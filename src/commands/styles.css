@@ -93,6 +93,17 @@
     font-size: 14px;
 }
 
+.command-content {
+    display: flex;
+    align-items: center;
+}
+
+.flag {
+    display: block;
+    width: 20px;
+    height: auto;
+    flex-shrink: 0;
+}
 
 /* ========================================
    INFORMATION LISTS
