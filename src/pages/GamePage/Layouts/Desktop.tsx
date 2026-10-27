@@ -74,7 +74,7 @@ function Desktop({
 
     return (
         <>
-            <section className="map-area" style={{ width: `${mapPanelWidth}px` }}>
+            <section className="map-section" style={{ width: `${mapPanelWidth}px` }}>
                 <EntitySearch
                     territories={territories}
                     nations={nations}
@@ -107,7 +107,7 @@ function Desktop({
                 <MapModeBar mapMode={mapMode} setMapMode={setMapMode} />
             </section>
 
-            <section className="game-area">
+            <section className="game-section">
                 <div className="output-header">
                     <h2>{commandName}</h2>
                     <NotificationBar
