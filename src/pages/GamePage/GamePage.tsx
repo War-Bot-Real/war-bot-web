@@ -17,6 +17,8 @@ import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";
 import selectLayout from "./Layouts/selectLayout";
+import MobilePortrait from "./Layouts/MobilePortrait";
+import MobileLandscape from "./Layouts/MobileLandscape";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -73,6 +75,7 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     useEffect(() => {
         function updateLayout() {
             setLayout(selectLayout(window.innerWidth, window.innerHeight));
+            console.log(layout);
         }
 
         updateLayout();
@@ -128,6 +131,44 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
             <main className="game">
                 {layout === "desktop" &&
                     <Desktop
+                        selection={selection}
+                        setSelection={setSelection}
+                        activeCommand={activeCommand}
+                        setActiveCommand={setActiveCommand}
+                        notifPopup={notifPopup}
+                        setNotifPopup={setNotifPopup}
+                        nation={nation}
+                        messages={messages}
+                        territories={territories}
+                        nations={nations}
+                        gameTime={gameTime}
+                        mapChanged={mapChanged}
+                        updateMap={updateMap}
+                        mapMode={mapMode}
+                        setMapMode={setMapMode}
+                    />
+                }
+                {layout === "mobile-portrait" &&
+                    <MobilePortrait
+                        selection={selection}
+                        setSelection={setSelection}
+                        activeCommand={activeCommand}
+                        setActiveCommand={setActiveCommand}
+                        notifPopup={notifPopup}
+                        setNotifPopup={setNotifPopup}
+                        nation={nation}
+                        messages={messages}
+                        territories={territories}
+                        nations={nations}
+                        gameTime={gameTime}
+                        mapChanged={mapChanged}
+                        updateMap={updateMap}
+                        mapMode={mapMode}
+                        setMapMode={setMapMode}
+                    />
+                }
+                {layout === "mobile-landscape" &&
+                    <MobileLandscape
                         selection={selection}
                         setSelection={setSelection}
                         activeCommand={activeCommand}
