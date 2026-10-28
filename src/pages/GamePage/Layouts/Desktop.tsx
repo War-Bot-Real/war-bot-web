@@ -11,6 +11,7 @@ import CommandPanel from "../../../components/CommandPanel/CommandPanel";
 import NotificationBar from "../../../components/NotificationBar/NotificationBar";
 
 import { commands } from "../../../commands/commands";
+import { LAYOUT } from "./LayoutConstants";
 
 import type { Selection } from "../../../types/Selection";
 import type { Territory } from "../../../types/Territory";
@@ -58,7 +59,10 @@ function Desktop({
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
-            const mapHeight = window.innerHeight - 60 - 50 - 50;
+            const mapHeight = window.innerHeight
+                - LAYOUT.navbarHeight
+                - LAYOUT.entitySearchHeight
+                - LAYOUT.mapModeBarHeight;
             const aspectRatio = mapDimensions.width / mapDimensions.height;
             setMapPanelWidth(mapHeight * aspectRatio);
         };

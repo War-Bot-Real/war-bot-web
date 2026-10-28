@@ -1,7 +1,9 @@
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 
 import "./GamePage.css";
+import { LAYOUT } from "./Layouts/LayoutConstants";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/NavBar/NavBar";
 import EventPopup from "../../components/EventPopup/EventPopup";
@@ -21,6 +23,12 @@ interface GamePageProps {
 }
 
 function GamePage({ onAccount, onAdmin }: GamePageProps) {
+    const layoutStyle = {
+        "--navbar-height": `${LAYOUT.navbarHeight}px`,
+        "--entity-search-height": `${LAYOUT.entitySearchHeight}px`,
+        "--map-mode-bar-height": `${LAYOUT.mapModeBarHeight}px`,
+    } as CSSProperties;
+
     const [selection, setSelection] = useState<Selection>(null);
     const [activeCommand, setActiveCommand] = useState<string | null>(null);
     const [notifPopup, setNotifPopup] = useState<NotificationPopup>(null);
@@ -100,7 +108,7 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     }, [nation]);
 
     return (
-        <div className="game-page">
+        <div className="game-page" style={layoutStyle}>
             <Navbar onAccount={onAccount} onAdmin={onAdmin} />
 
             <EventPopup events={events} setEvents={setEvents} />

@@ -22,7 +22,7 @@ body,
 }
 
 .entity-search {
-    height: 50px;
+    height: var(--entity-search-height);
     padding: 8px;
     box-sizing: border-box;
 }
@@ -40,7 +40,7 @@ body,
 }
 
 .map-mode-bar {
-    height: 50px;
+    height: var(--map-mode-bar-height);
     display: flex;
     gap: 4px;
     padding: 8px;
