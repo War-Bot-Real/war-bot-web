@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 import "./GamePage.css";
-import { LAYOUT } from "./Layouts/LayoutConstants";
+import { LayoutConstants, type Layout } from "./Layouts/LayoutConstants";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/NavBar/NavBar";
 import EventPopup from "../../components/EventPopup/EventPopup";
@@ -16,6 +16,7 @@ import type { MapMode } from "../../components/MapModeBar/MapModeBar";
 import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";
+import selectLayout from "./Layouts/selectLayout";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -24,9 +25,9 @@ interface GamePageProps {
 
 function GamePage({ onAccount, onAdmin }: GamePageProps) {
     const layoutStyle = {
-        "--navbar-height": `${LAYOUT.navbarHeight}px`,
-        "--entity-search-height": `${LAYOUT.entitySearchHeight}px`,
-        "--map-mode-bar-height": `${LAYOUT.mapModeBarHeight}px`,
+        "--navbar-height": `${LayoutConstants.navbarHeight}px`,
+        "--entity-search-height": `${LayoutConstants.entitySearchHeight}px`,
+        "--map-mode-bar-height": `${LayoutConstants.mapModeBarHeight}px`,
     } as CSSProperties;
 
     const [selection, setSelection] = useState<Selection>(null);
@@ -36,6 +37,7 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [events, setEvents] = useState<Message[]>([]);
     const [mapMode, setMapMode] = useState<MapMode>("political");
+    const [layout, setLayout] = useState<Layout>();
 
     const { territories, nations, gameTime, mapChanged, updateMap } = useMapData();
 
@@ -67,6 +69,16 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [selection, activeCommand, notifPopup, events]);
+
+    useEffect(() => {
+        function updateLayout() {
+            setLayout(selectLayout(window.innerWidth, window.innerHeight));
+        }
+
+        updateLayout();
+        window.addEventListener("resize", updateLayout);
+        return () => window.removeEventListener("resize", updateLayout);
+    }, []);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -114,23 +126,25 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
             <EventPopup events={events} setEvents={setEvents} />
 
             <main className="game">
-                <Desktop
-                    selection={selection}
-                    setSelection={setSelection}
-                    activeCommand={activeCommand}
-                    setActiveCommand={setActiveCommand}
-                    notifPopup={notifPopup}
-                    setNotifPopup={setNotifPopup}
-                    nation={nation}
-                    messages={messages}
-                    territories={territories}
-                    nations={nations}
-                    gameTime={gameTime}
-                    mapChanged={mapChanged}
-                    updateMap={updateMap}
-                    mapMode={mapMode}
-                    setMapMode={setMapMode}
-                />
+                {layout === "desktop" &&
+                    <Desktop
+                        selection={selection}
+                        setSelection={setSelection}
+                        activeCommand={activeCommand}
+                        setActiveCommand={setActiveCommand}
+                        notifPopup={notifPopup}
+                        setNotifPopup={setNotifPopup}
+                        nation={nation}
+                        messages={messages}
+                        territories={territories}
+                        nations={nations}
+                        gameTime={gameTime}
+                        mapChanged={mapChanged}
+                        updateMap={updateMap}
+                        mapMode={mapMode}
+                        setMapMode={setMapMode}
+                    />
+                }
             </main>
         </div>
     );
