@@ -4,7 +4,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router";
 
 import { supabase } from "./lib/supabase";
 import LoginPage from "./pages/LoginPage";
-import GamePage from "./pages/GamePage";
+import GamePage from "./pages/GamePage/GamePage";
 import AccountPage from "./pages/AccountPage";
 import SignUpPage from "./pages/SignUpPage";
 import AdminPage from "./pages/AdminPage";

@@ -9,7 +9,7 @@ import { buildTerrainMap } from "../../map/buildTerrainMap";
 import type { TerritoryPixelLookup, Territory } from "../../types/Territory";
 import type { Nation } from "../../types/Nation";
 import type { Selection } from "../../types/Selection";
-import type { MapMode } from "./MapModeBar";
+import type { MapMode } from "../MapModeBar/MapModeBar";
 import type { MapData } from "../../types/MapData";
 
 interface GameMapProps {
