@@ -10,7 +10,7 @@ import { me, getNation, getMessages } from "../../api";
 import { useMapData } from "../../map/useMapData";
 
 import type { Selection } from "../../types/Selection";
-import type { MapMode } from "../../components/MapPanel/MapModeBar";
+import type { MapMode } from "../../components/MapModeBar/MapModeBar";
 import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";

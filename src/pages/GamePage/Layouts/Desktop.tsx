@@ -1,14 +1,14 @@
 
 import { useEffect, useState } from "react";
 
-import GameMap from "../../../components/MapPanel/GameMap";
-import EntitySearch from "../../../components/MapPanel/EntitySearch";
-import MapModeBar, { type MapMode } from "../../../components/MapPanel/MapModeBar";
-import MapUpdatePopup from "../../../components/MapPanel/MapUpdatePopup";
+import GameMap from "../../../components/GameMap/GameMap";
+import EntitySearch from "../../../components/EntitySearch/EntitySearch";
+import MapModeBar, { type MapMode } from "../../../components/MapModeBar/MapModeBar";
+import MapUpdatePopup from "../../../components/GameMap/MapUpdatePopup";
 
-import OutputPanel from "../../../components/GamePanel/OutputPanel";
-import CommandPanel from "../../../components/GamePanel/CommandPanel";
-import NotificationBar from "../../../components/GamePanel/NotificationBar";
+import OutputPanel from "../../../components/OutputPanel/OutputPanel";
+import CommandPanel from "../../../components/CommandPanel/CommandPanel";
+import NotificationBar from "../../../components/NotificationBar/NotificationBar";
 
 import { commands } from "../../../commands/commands";
 
