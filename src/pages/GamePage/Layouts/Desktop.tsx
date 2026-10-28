@@ -11,7 +11,7 @@ import CommandPanel from "../../../components/CommandPanel/CommandPanel";
 import NotificationBar from "../../../components/NotificationBar/NotificationBar";
 
 import { commands } from "../../../commands/commands";
-import { LayoutConstants, type LayoutProps } from "./LayoutConstants";
+import { LayoutConstants, type LayoutProps } from "./selectLayout";
 
 function Desktop({
     selection,

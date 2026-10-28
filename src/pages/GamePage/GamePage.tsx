@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 import "./GamePage.css";
-import { LayoutConstants, type Layout } from "./Layouts/LayoutConstants";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/NavBar/NavBar";
 import EventPopup from "../../components/EventPopup/EventPopup";
@@ -16,7 +15,7 @@ import type { MapMode } from "../../components/MapModeBar/MapModeBar";
 import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
 import type { NotificationPopup } from "../../types/NotificationPopup";
-import selectLayout from "./Layouts/selectLayout";
+import selectLayout, { LayoutConstants, type Layout } from "./Layouts/selectLayout";
 import MobilePortrait from "./Layouts/MobilePortrait";
 import MobileLandscape from "./Layouts/MobileLandscape";
 
