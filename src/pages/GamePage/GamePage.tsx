@@ -18,6 +18,7 @@ import type { NotificationPopup } from "../../types/NotificationPopup";
 import selectLayout, { LayoutConstants, type Layout } from "./Layouts/selectLayout";
 import MobilePortrait from "./Layouts/MobilePortrait";
 import MobileLandscape from "./Layouts/MobileLandscape";
+import { commands } from "../../commands/commands";
 
 interface GamePageProps {
     onAccount: () => void;
@@ -74,7 +75,6 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     useEffect(() => {
         function updateLayout() {
             setLayout(selectLayout(window.innerWidth, window.innerHeight));
-            console.log(layout);
         }
 
         updateLayout();
@@ -121,6 +121,24 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
         };
     }, [nation]);
 
+    const layoutProps = {
+        selection,
+        setSelection,
+        activeCommand,
+        setActiveCommand,
+        notifPopup,
+        setNotifPopup,
+        nation,
+        messages,
+        territories,
+        nations,
+        gameTime,
+        mapChanged,
+        updateMap,
+        mapMode,
+        setMapMode
+    };
+
     return (
         <div className={`game-page ${layout}`} style={layoutStyle}>
             <Navbar onAccount={onAccount} onAdmin={onAdmin} />
@@ -128,63 +146,9 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
             <EventPopup events={events} setEvents={setEvents} />
 
             <main className="game">
-                {layout === "desktop" &&
-                    <Desktop
-                        selection={selection}
-                        setSelection={setSelection}
-                        activeCommand={activeCommand}
-                        setActiveCommand={setActiveCommand}
-                        notifPopup={notifPopup}
-                        setNotifPopup={setNotifPopup}
-                        nation={nation}
-                        messages={messages}
-                        territories={territories}
-                        nations={nations}
-                        gameTime={gameTime}
-                        mapChanged={mapChanged}
-                        updateMap={updateMap}
-                        mapMode={mapMode}
-                        setMapMode={setMapMode}
-                    />
-                }
-                {layout === "mobile-portrait" &&
-                    <MobilePortrait
-                        selection={selection}
-                        setSelection={setSelection}
-                        activeCommand={activeCommand}
-                        setActiveCommand={setActiveCommand}
-                        notifPopup={notifPopup}
-                        setNotifPopup={setNotifPopup}
-                        nation={nation}
-                        messages={messages}
-                        territories={territories}
-                        nations={nations}
-                        gameTime={gameTime}
-                        mapChanged={mapChanged}
-                        updateMap={updateMap}
-                        mapMode={mapMode}
-                        setMapMode={setMapMode}
-                    />
-                }
-                {layout === "mobile-landscape" &&
-                    <MobileLandscape
-                        selection={selection}
-                        setSelection={setSelection}
-                        activeCommand={activeCommand}
-                        setActiveCommand={setActiveCommand}
-                        notifPopup={notifPopup}
-                        setNotifPopup={setNotifPopup}
-                        nation={nation}
-                        messages={messages}
-                        territories={territories}
-                        nations={nations}
-                        gameTime={gameTime}
-                        mapChanged={mapChanged}
-                        updateMap={updateMap}
-                        mapMode={mapMode}
-                        setMapMode={setMapMode}
-                    />
-                }
+                {layout === "desktop" && <Desktop {...layoutProps} />}
+                {layout === "mobile-portrait" && <MobilePortrait {...layoutProps} />}
+                {layout === "mobile-landscape" && <MobileLandscape {...layoutProps} />}
             </main>
         </div>
     );
