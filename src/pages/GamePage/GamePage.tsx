@@ -122,7 +122,7 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     }, [nation]);
 
     return (
-        <div className="game-page" style={layoutStyle}>
+        <div className={`game-page ${layout}`} style={layoutStyle}>
             <Navbar onAccount={onAccount} onAdmin={onAdmin} />
 
             <EventPopup events={events} setEvents={setEvents} />

@@ -1,59 +1,61 @@
-.game {
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-    min-height: 0;
-}
+.mobile-landscape {
+  .game {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      min-height: 0;
+  }
 
-.map-section {
-    width: auto !important;
-    min-height: 0;
-}
+  .map-section {
+      width: auto !important;
+      min-height: 0;
+  }
 
-.game-section {
-    border-left: 1px solid black;
-    border-top: 0;
-    grid-template-rows: 42px minmax(0, 1fr) minmax(0, 1fr);
-}
+  .game-section {
+      border-left: 1px solid black;
+      border-top: 0;
+      grid-template-rows: 42px minmax(0, 1fr) minmax(0, 1fr);
+  }
 
-.entity-search {
-    height: 42px;
-    padding: 4px;
-}
+  .entity-search {
+      height: 42px;
+      padding: 4px;
+  }
 
-.map-mode-bar {
-    height: 42px;
-    gap: 2px;
-    padding: 4px;
-}
+  .map-mode-bar {
+      height: 42px;
+      gap: 2px;
+      padding: 4px;
+  }
 
-.map-mode-bar button {
-    min-width: 0;
-    padding: 3px 2px;
-    font-size: 11px;
-}
+  .map-mode-bar button {
+      min-width: 0;
+      padding: 3px 2px;
+      font-size: 11px;
+  }
 
-.output-panel,
-.command-panel {
-    padding: 8px;
-}
+  .output-panel,
+  .command-panel {
+      padding: 8px;
+  }
 
-.output-header {
-    padding: 0 8px;
-}
+  .output-header {
+      padding: 0 8px;
+  }
 
-.output-header h2 {
-    font-size: 14px;
-}
+  .output-header h2 {
+      font-size: 14px;
+  }
 
-.commands {
-    gap: 4px;
-    margin-top: 8px;
-}
+  .commands {
+      gap: 4px;
+      margin-top: 8px;
+  }
 
-.commands button {
-    padding: 5px 8px;
-}
+  .commands button {
+      padding: 5px 8px;
+  }
 
-.map-reload {
-    top: 8px;
-    left: 8px;
+  .map-reload {
+      top: 8px;
+      left: 8px;
+  }
 }

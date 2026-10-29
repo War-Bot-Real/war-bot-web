@@ -1,31 +1,33 @@
-.game {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-}
+.mobile-portrait {
+  .game {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+  }
 
-.map-section {
-    width: 100% !important;
-    flex: 0 0 auto;
-    min-height: 0;
-}
+  .map-section {
+      width: 100% !important;
+      flex: 0 0 auto;
+      min-height: 0;
+  }
 
-.map-container {
-    flex: 0 0 auto;
-    height: auto;
-    aspect-ratio: 847 / 672;
-}
+  .map-container {
+      flex: 0 0 auto;
+      height: auto;
+      aspect-ratio: 847 / 672;
+  }
 
-.game-section {
-    flex: 1 1 0;
-    min-height: 0;
-    border-left: 0;
-    border-top: 1px solid black;
-}
+  .game-section {
+      flex: 1 1 0;
+      min-height: 0;
+      border-left: 0;
+      border-top: 1px solid black;
+  }
 
-.infobar {
-    display: flex;
-    place-items: center;
+  .infobar {
+      display: flex;
+      place-items: center;
+  }
 }
