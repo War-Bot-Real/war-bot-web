@@ -24,3 +24,8 @@
     border-left: 0;
     border-top: 1px solid black;
 }
+
+.infobar {
+    display: flex;
+    place-items: center;
+}

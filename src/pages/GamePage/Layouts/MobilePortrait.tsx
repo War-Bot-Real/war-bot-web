@@ -53,11 +53,19 @@ function MobilePortrait({
     return (
         <>
             <section className="map-section" style={{ width: `${mapPanelWidth}px` }}>
-                <EntitySearch
-                    territories={territories}
-                    nations={nations}
-                    setSelection={setSelection}
-                />
+                <section className="infobar">
+                    <EntitySearch
+                        territories={territories}
+                        nations={nations}
+                        setSelection={setSelection}
+                    />
+                    <NotificationBar
+                        nation={nation}
+                        messages={messages}
+                        popup={notifPopup}
+                        setPopup={setNotifPopup}
+                    />
+                </section>
 
                 <div className="map-container">
                     {mapChanged && <MapUpdatePopup onUpdate={updateMap} />}
@@ -88,12 +96,6 @@ function MobilePortrait({
             <section className="game-section">
                 <div className="output-header">
                     <h2>{commandName}</h2>
-                    <NotificationBar
-                        nation={nation}
-                        messages={messages}
-                        popup={notifPopup}
-                        setPopup={setNotifPopup}
-                    />
                 </div>
 
                 <OutputPanel
