@@ -36,7 +36,7 @@ function MobileLandscape({
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
-            const mapHeight = window.innerHeight - LayoutConstants.navbarHeight - LayoutConstants.entitySearchHeight - LayoutConstants.mapModeBarHeight;
+            const mapHeight = window.innerHeight - LayoutConstants.navbarHeight - LayoutConstants.entitySearchHeight;
             const aspectRatio = mapDimensions.width / mapDimensions.height;
             setMapPanelWidth(mapHeight * aspectRatio);
         };
@@ -52,7 +52,7 @@ function MobileLandscape({
 
     return (
         <>
-            <section className="map-section" style={{ width: `${mapPanelWidth}px` }}>
+            <section className="map-section">
                 <EntitySearch
                     territories={territories}
                     nations={nations}
@@ -61,25 +61,26 @@ function MobileLandscape({
 
                 <div className="map-container">
                     {mapChanged && <MapUpdatePopup onUpdate={updateMap} />}
+                    <div className="map" style={{ width: `${mapPanelWidth}px` }}>
+                        <button className="map-reload" onClick={updateMap}>⟳</button>
 
-                    <button className="map-reload" onClick={updateMap}>⟳</button>
-
-                    <GameMap
-                        territories={territories}
-                        nations={nations}
-                        selection={selection}
-                        territorySelected={territory =>
-                            setSelection({ type: "territory", territory })
-                        }
-                        nationSelected={nation =>
-                            setSelection({ type: "nation", nation })
-                        }
-                        onMapDimensions={(width, height) =>
-                            setMapDimensions({ width, height })
-                        }
-                        mapMode={mapMode}
-                        gameTime={gameTime}
-                    />
+                        <GameMap
+                            territories={territories}
+                            nations={nations}
+                            selection={selection}
+                            territorySelected={territory =>
+                                setSelection({ type: "territory", territory })
+                            }
+                            nationSelected={nation =>
+                                setSelection({ type: "nation", nation })
+                            }
+                            onMapDimensions={(width, height) =>
+                                setMapDimensions({ width, height })
+                            }
+                            mapMode={mapMode}
+                            gameTime={gameTime}
+                        />  
+                    </div>
                 </div>
 
                 <MapModeBar mapMode={mapMode} setMapMode={setMapMode} />

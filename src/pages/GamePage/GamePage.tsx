@@ -18,7 +18,6 @@ import type { NotificationPopup } from "../../types/NotificationPopup";
 import selectLayout, { LayoutConstants, type Layout } from "./Layouts/selectLayout";
 import MobilePortrait from "./Layouts/MobilePortrait";
 import MobileLandscape from "./Layouts/MobileLandscape";
-import { commands } from "../../commands/commands";
 
 interface GamePageProps {
     onAccount: () => void;
