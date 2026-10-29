@@ -94,15 +94,17 @@ function MobilePortrait({
             </section>
 
             <section className="game-section">
-                <div className="output-header">
-                    <h2>{commandName}</h2>
-                </div>
+                <div className="output-section">
+                    <div className="output-header">
+                        <h2>{commandName}</h2>
+                    </div>
 
-                <OutputPanel
-                    selection={selection}
-                    activeCommand={activeCommand}
-                    nation={nation}
-                />
+                    <OutputPanel
+                        selection={selection}
+                        activeCommand={activeCommand}
+                        nation={nation}
+                    />
+                </div>
 
                 <CommandPanel
                     selection={selection}
