@@ -68,18 +68,29 @@ function MobileLandscape({
                             territories={territories}
                             nations={nations}
                             selection={selection}
+                            nationSelectMode={activeCommand === "nation"}
                             territorySelected={territory =>
-                                setSelection({ type: "territory", territory })
+                                setSelection(
+                                    selection?.type === "territory" &&
+                                        selection.territory.name === territory.name
+                                        ? null
+                                        : { type: "territory", territory }
+                                )
                             }
                             nationSelected={nation =>
-                                setSelection({ type: "nation", nation })
+                                setSelection(
+                                    selection?.type === "nation" &&
+                                        selection.nation.name === nation.name
+                                        ? null
+                                        : { type: "nation", nation }
+                                )
                             }
                             onMapDimensions={(width, height) =>
                                 setMapDimensions({ width, height })
                             }
                             mapMode={mapMode}
                             gameTime={gameTime}
-                        />  
+                        />
                     </div>
                 </div>
 

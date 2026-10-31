@@ -16,6 +16,7 @@ interface GameMapProps {
     territories: Territory[];
     nations: Nation[];
     selection: Selection;
+    nationSelectMode: boolean;
     territorySelected: (territory: Territory) => void;
     nationSelected: (nation: Nation) => void;
     onMapDimensions: (width: number, height: number) => void;
@@ -28,6 +29,7 @@ function GameMap({
     nations,
     selection,
     territorySelected,
+    nationSelectMode,
     nationSelected,
     onMapDimensions,
     mapMode,
@@ -38,7 +40,18 @@ function GameMap({
     const mapModeRef = useRef<Sprite | null>(null);
     const mapDataRef = useRef<MapData | null>(null);
     const clickSound = useRef(new Audio("/click_territory.wav"));
+
+    const nationSelectModeRef = useRef(nationSelectMode);
+    const territorySelectedRef = useRef(territorySelected);
+    const nationSelectedRef = useRef(nationSelected);
+
     const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+
+    useEffect(() => {
+        nationSelectModeRef.current = nationSelectMode;
+        territorySelectedRef.current = territorySelected;
+        nationSelectedRef.current = nationSelected;
+    }, [nationSelectMode, territorySelected, nationSelected]);
 
     useEffect(() => {
         let app: Application | null = null;
@@ -322,6 +335,7 @@ function GameMap({
                         ];
 
                     if (
+                        nationSelectModeRef.current ||
                         event.shiftKey ||
                         event.ctrlKey
                     ) {
@@ -333,11 +347,11 @@ function GameMap({
                             );
 
                         if (nation) {
-                            nationSelected(nation);
+                            nationSelectedRef.current(nation);
                             clickSound.current.play();
                         }
                     } else {
-                        territorySelected(territory);
+                        territorySelectedRef.current(territory);
                         clickSound.current.play();
                     }
                 });

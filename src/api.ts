@@ -43,6 +43,10 @@ export async function getTerritories() {
     return fetchRequest('territories');
 }
 
+export async function getNationTerritories(nation: string) {
+    return fetchRequest(`territories/${nation}`);
+}
+
 export interface MapResponse {
     url: {
         signedURL: string;

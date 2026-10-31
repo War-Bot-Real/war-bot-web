@@ -22,6 +22,7 @@ import DisbandFlow from "../../commands/flows/DisbandFlow";
 import SplitFlow from "../../commands/flows/SplitFlow";
 import AttackFlow from "../../commands/flows/AttackFlow";
 import ForcesFlow from "../../commands/flows/ForcesFlow";
+import TerritoriesFlow from "../../commands/flows/TerritoriesFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -126,6 +127,14 @@ function OutputPanel({
                 <ForcesFlow domain="naval" />
             ) : activeCommand === "airforce" ? (
                 <ForcesFlow domain="air" />
+            ) : activeCommand === "territories" ? (
+                <TerritoriesFlow
+                    nation={
+                        selection?.type === "nation"
+                        ? selection.nation.name
+                        : null
+                    }
+                />
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow territory={selection.territory}/>
             ) : selection?.type === "nation" ? (
