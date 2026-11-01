@@ -5,6 +5,7 @@ import GameMap from "../../../components/GameMap/GameMap";
 import EntitySearch from "../../../components/EntitySearch/EntitySearch";
 import MapModeBar from "../../../components/MapModeBar/MapModeBar";
 import MapUpdatePopup from "../../../components/GameMap/MapUpdatePopup";
+import SelectionModeToggle from "../../../components/GameMap/SelectionModeToggle";
 
 import OutputPanel from "../../../components/OutputPanel/OutputPanel";
 import CommandPanel from "../../../components/CommandPanel/CommandPanel";
@@ -32,6 +33,7 @@ function Desktop({
 }: LayoutProps) {
     const [mapDimensions, setMapDimensions] = useState({ width: 847, height: 672 });
     const [mapPanelWidth, setMapPanelWidth] = useState(600);
+    const [nationSelectMode, setNationSelectMode] = useState(false);
 
     useEffect(() => {
         const updateMapPanelWidth = () => {
@@ -63,27 +65,31 @@ function Desktop({
 
                     <button className="map-reload" onClick={updateMap}>⟳</button>
 
+                    <SelectionModeToggle
+                        nationMode={nationSelectMode}
+                        setNationMode={setNationSelectMode}
+                    />
                     <GameMap
                         territories={territories}
                         nations={nations}
                         selection={selection}
-                        nationSelectMode={activeCommand === "nation"}
+                        nationSelectMode={nationSelectMode}
                         territorySelected={territory =>
-                        setSelection(
-                            selection?.type === "territory" &&
-                            selection.territory.name === territory.name
-                                ? null
-                                : { type: "territory", territory }
-                            )   
+                            setSelection(
+                                selection?.type === "territory" &&
+                                    selection.territory.name === territory.name
+                                    ? null
+                                    : { type: "territory", territory }
+                            )
                         }
                         nationSelected={nation =>
                             setSelection(
                                 selection?.type === "nation" &&
-                                selection.nation.name === nation.name
+                                    selection.nation.name === nation.name
                                     ? null
                                     : { type: "nation", nation }
                             )
-                        
+
                         }
                         onMapDimensions={(width, height) =>
                             setMapDimensions({ width, height })

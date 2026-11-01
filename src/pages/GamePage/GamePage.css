@@ -57,18 +57,26 @@ body,
 }
 
 .map-reload {
-  position: absolute;
-  z-index: 100;
-  top: 20px;
-  left: 20px;
-  font-size: 20px;
-  border-radius: 4px;
-  border: 1px solid black;
-  cursor: pointer;
+    position: absolute;
+    z-index: 100;
+
+    top: 8px;
+    left: 8px;
+
+    width: 40px;
+    height: 40px;
+    padding: 0;
+
+    font-size: 20px;
+    line-height: 1;
+
+    border-radius: 6px;
+    border: 1px solid #777;
+    cursor: pointer;
 }
 
 .map-reload:hover {
-  background: lightgray;
+    background: lightgray;
 }
 
 .game-section {

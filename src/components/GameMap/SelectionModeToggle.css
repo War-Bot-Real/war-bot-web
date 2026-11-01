@@ -1,0 +1,71 @@
+.selection-mode-toggle {
+    position: absolute;
+    top: 8px;
+    left: 58px;
+    z-index: 10;
+
+    height: 40px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 0 10px;
+
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #777;
+    border-radius: 6px;
+
+    font-size: 14px;
+    color: #222;
+
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.selection-mode-label {
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.selection-mode-switch {
+    position: relative;
+
+    width: 42px;
+    height: 22px;
+    flex-shrink: 0;
+
+    padding: 0;
+    border: 1px solid #666;
+    border-radius: 12px;
+
+    background: #d0d0d0;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.selection-mode-switch.nation {
+    background: #555;
+}
+
+.selection-mode-knob {
+    position: absolute;
+
+    top: 2px;
+    left: 2px;
+
+    width: 16px;
+    height: 16px;
+
+    background: white;
+    border-radius: 50%;
+
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+
+    transition: transform 0.2s ease;
+}
+
+.selection-mode-switch.nation .selection-mode-knob {
+    transform: translateX(20px);
+}

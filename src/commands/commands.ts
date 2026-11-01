@@ -2,12 +2,6 @@ import type { Command } from "./types";
 
 export const commands: Command[] = [
     {
-    id: "nation",
-    name: "Nation",
-    context: "general",
-    requiresNation: false
-    },
-    {
         id: "shop",
         name: "Shop",
         context: "general",
