@@ -98,13 +98,6 @@
     align-items: center;
 }
 
-.borders-flag, .forces-flag {
-    display: block;
-    width: 21px;
-    height: auto;
-    flex-shrink: 0;
-}
-
 /* ========================================
    INFORMATION LISTS
    Income / Balance / Inventory / Borders

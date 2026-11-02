@@ -21,7 +21,7 @@ function Flag({ code, className = "" }: FlagProps) {
         return (
             <img
                 src={customFlag}
-                className={`flag ${className}`}
+                className={`flag custom ${className}`}
             />
         );
     }
