@@ -1,10 +1,34 @@
 .mobile-portrait {
+    /* Base mobile font size:
+       scales with screen width, but has sensible min/max sizes */
+    font-size: clamp(10px, 2.5vw, 14px);
+
     .game {
         display: flex;
         flex-direction: column;
         flex: 1;
         min-height: 0;
         overflow: hidden;
+    }
+
+    /* Make normal controls inherit the responsive mobile font size */
+    button,
+    input,
+    select,
+    textarea {
+        font-size: inherit;
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    h3 {
+        font-size: 1.2em;
     }
 
     .map-section {
@@ -19,16 +43,57 @@
         aspect-ratio: 847 / 672;
     }
 
+    .map-reload {
+        top: 6px;
+        left: 6px;
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        font-size: 1.1em;
+        border-radius: 5px;
+    }
+
+    .selection-mode-toggle {
+        top: 6px;
+        left: 38px;
+        height: 26px;
+        padding: 0 5px;
+        gap: 4px;
+        font-size: 0.8em;
+    }
+
+    .selection-mode-switch {
+        width: 28px;
+        height: 16px;
+    }
+
+    .selection-mode-knob {
+        top: 2px;
+        left: 2px;
+        width: 10px;
+        height: 10px;
+    }
+
+    .selection-mode-switch.nation .selection-mode-knob {
+        transform: translateX(12px);
+    }
+
+
+    /* Bottom game area */
     .game-section {
         flex: 1 1 0;
         min-height: 0;
         min-width: 0;
+
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         grid-template-rows: minmax(0, 1fr);
+
         border-left: 0;
         border-top: 1px solid black;
         overflow: hidden;
+
+        font-size: 1em;
     }
 
     .output-section {
@@ -41,20 +106,70 @@
     }
 
     .output-header {
-        flex: 0 0 52px;
+        flex: 0 0 42px;
+        font-size: 1em;
     }
 
-    .output-panel, .command-panel {
+    .output-header h2 {
+        font-size: 1.25em;
+    }
+
+    .output-panel,
+    .command-panel {
         flex: 1 1 0;
         min-width: 0;
         min-height: 0;
+
+        padding: 8px;
+        box-sizing: border-box;
+
         overflow-y: auto;
         overflow-x: hidden;
-        box-sizing: border-box;
+
+        font-size: 1em;
+    }
+
+    .output-panel p {
+        font-size: 1em;
+    }
+
+    /* Commands */
+    .commands {
+        gap: 5px;
+        margin-top: 6px;
+    }
+
+    .commands button {
+        font-size: 1em;
+        padding: 6px 8px;
+    }
+
+    .command-panel input {
+        font-size: 1em;
+        padding: 6px;
+    }
+
+    .map-mode-bar button {
+        font-size: 0.8em;
+        padding: 4px 2px;
+        min-height: 30px;
     }
 
     .infobar {
         display: flex;
         place-items: center;
+        font-size: 1em;
+    }
+
+    .entity-search {
+        font-size: 1em;
+    }
+
+    .notification-bar {
+        font-size: 1em;
+    }
+
+    .selection-mode-prefix {
+        display: none;
     }
 }
