@@ -157,16 +157,23 @@
 
     .infobar {
         display: flex;
-        place-items: center;
-        font-size: 1em;
+        align-items: center;
+        width: 100%;
+        min-width: 0;
     }
 
     .entity-search {
         font-size: 1em;
+        flex: 1 1 0;
+        min-width: 0;
+        margin: 0;
     }
 
     .notification-bar {
         font-size: 1em;
+        flex: 0 0 auto;
+        width: max-content;
+        margin-right: 10px;
     }
 
     .selection-mode-prefix {
