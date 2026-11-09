@@ -180,3 +180,7 @@ export async function attack(target: string, units: string[]) {
 export async function getGameTime() {
   return fetchRequest("gametime");
 }
+
+export async function move(target: string, units: string[]) {
+    return fetchRequest(`move`, "POST", {target, units});
+}

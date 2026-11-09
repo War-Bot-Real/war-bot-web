@@ -21,6 +21,7 @@ import MergeFlow from "../../commands/flows/MergeFlow";
 import DisbandFlow from "../../commands/flows/DisbandFlow";
 import SplitFlow from "../../commands/flows/SplitFlow";
 import AttackFlow from "../../commands/flows/AttackFlow";
+import MoveFlow from "../../commands/flows/MoveFlow";
 import ForcesFlow from "../../commands/flows/ForcesFlow";
 import TerritoriesFlow from "../../commands/flows/TerritoriesFlow";
 
@@ -114,6 +115,14 @@ function OutputPanel({
             ) : activeCommand === "attack" ? (
                 <AttackFlow
                     terrInput={
+                        selection?.type === "territory"
+                            ? selection.territory
+                            : null
+                    }
+                />
+            ) : activeCommand === "move" ? (
+                <MoveFlow
+                    territory={
                         selection?.type === "territory"
                             ? selection.territory
                             : null

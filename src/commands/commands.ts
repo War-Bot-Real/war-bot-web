@@ -86,6 +86,12 @@ export const commands: Command[] = [
         requiresNation: true
     },
     {
+        id: "move",
+        name: "Move Units",
+        context: "territory",
+        requiresNation: true
+    },
+    {
         id: "give",
         name: "Give",
         context: "nation",
