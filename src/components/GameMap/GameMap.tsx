@@ -75,6 +75,8 @@ function GameMap({
                 await pixiApp.init({
                     resizeTo: container,
                     background: "white",
+                    resolution: Math.min(window.devicePixelRatio || 1, 2),
+                    autoDensity: true
                 });
 
                 if (cancelled) {
