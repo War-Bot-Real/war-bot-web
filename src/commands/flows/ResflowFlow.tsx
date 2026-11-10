@@ -66,10 +66,6 @@ function ResflowFlow() {
     return (
         <div className="resflow-flow">
             <h2>Resource Flow</h2>
-            <p className="command-subtitle">
-                Production and demand per {formatTime(flow.period)}.
-                A negative difference means production falls short of ideal demand.
-            </p>
 
             {resources.length === 0 ? (
                 <p className="command-empty">No resource flow data available.</p>
