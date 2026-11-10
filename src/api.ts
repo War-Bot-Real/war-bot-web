@@ -184,3 +184,7 @@ export async function getGameTime() {
 export async function move(target: string, units: string[]) {
     return fetchRequest(`move`, "POST", {target, units});
 }
+
+export async function resflow() {
+    return fetchRequest(`resflow`);
+}

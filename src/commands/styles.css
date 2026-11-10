@@ -12,6 +12,7 @@
 .deploy-flow,
 .ally-flow 
 .declare-war-flow,
+.resflow-flow,
 .war {
     width: 100%;
     max-width: 1050px;
@@ -49,6 +50,7 @@
 .borders-flow > h2,
 .buy-flow > h2,
 .deploy-flow > h2,
+.resflow-flow > h2,
 .ally-flow > h2 {
     margin: 0 0 18px;
     padding-bottom: 10px;
@@ -157,6 +159,37 @@
     text-align: right;
 
     white-space: nowrap;
+}
+
+.resflow-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1.4fr) repeat(3, minmax(80px, 1fr));
+    gap: 12px;
+}
+
+.resflow-row > span:not(:first-child) {
+    text-align: right;
+}
+
+.resflow-header {
+    background: #c3c3c3;
+    color: #454545;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.resflow-header:hover {
+    background: #c3c3c3;
+}
+
+.resflow-shortage > span:last-child {
+    color: #a32626;
+}
+
+.resflow-surplus > span:last-child {
+    color: #28643a;
 }
 
 
@@ -551,6 +584,10 @@
         padding: 16px;
     }
 
+    .resflow-flow {
+        padding: 16px;
+    }
+
     .shop-item {
         grid-template-columns: 1fr;
 
@@ -571,6 +608,13 @@
 
     .command-row {
         gap: 12px;
+    }
+
+    .resflow-row {
+        grid-template-columns: minmax(90px, 1.2fr) repeat(3, minmax(55px, 1fr));
+        gap: 6px;
+        padding: 10px 8px;
+        font-size: 12px;
     }
 }
 

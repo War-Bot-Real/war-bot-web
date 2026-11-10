@@ -156,5 +156,11 @@ export const commands: Command[] = [
         name: "Air Force",
         context: "general",
         requiresNation: true
+    },
+    {
+        id: "resflow",
+        name: "Resource Flow",
+        context: "general",
+        requiresNation: true
     }
 ];
