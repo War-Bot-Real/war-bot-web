@@ -1,5 +1,5 @@
 import { supabase } from "./lib/supabase";
-import type { IncomeResponse } from "./types/Income";
+import type { CollectResponse } from "./types/Collect";
 import type { MapData } from "./types/MapData";
 import type { TerritoryAsBorder } from "./types/Territory";
 
@@ -99,11 +99,11 @@ export async function getNationBorders(nation: string): Promise<TerritoryAsBorde
     return fetchRequest(`borders/nation/${nation}`);
 }
 
-export async function collect(): Promise<IncomeResponse> {
+export async function collect(): Promise<CollectResponse> {
     return fetchRequest(`collect`, "POST");
 }
 
-export async function getIncome(): Promise<IncomeResponse> {
+export async function getIncome() {
     return fetchRequest(`income`);
 }
 

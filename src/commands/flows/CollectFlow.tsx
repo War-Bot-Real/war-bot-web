@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collect } from "../../api";
-import type { IncomeResult } from "../../types/Income";
+import type { CollectResult } from "../../types/Collect";
 import { formatTime } from "../../utils";
 
 const resourceEmojis: Record<string, string> = {
@@ -12,7 +12,7 @@ const resourceEmojis: Record<string, string> = {
 };
 
 function CollectFlow() {
-    const [result, setResult] = useState<IncomeResult | null>(null);
+    const [result, setResult] = useState<CollectResult | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

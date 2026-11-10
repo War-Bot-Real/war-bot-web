@@ -1,4 +1,4 @@
-export interface IncomeResult {
+export interface CollectResult {
     Income: number;
     "War Debts": number;
     Balance: number;
@@ -15,4 +15,4 @@ export interface IncomeResult {
     "Collected Until": number;
 }
 
-export type IncomeResponse = { success: true; result: IncomeResult } | { success: false; detail?: string };
+export type CollectResponse = { success: true; result: CollectResult } | { success: false; detail?: string };
