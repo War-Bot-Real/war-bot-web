@@ -191,5 +191,9 @@ export async function resflow() {
 }
 
 export async function build(territory: string, building: string) {
-    return fetchRequest(`build/${territory}/${building}`);
+    return fetchRequest(`build/${territory}/${building}`, "POST");
+}
+
+export async function loadCarrier(carrierId: string, unitIds: string[]) {
+    return fetchRequest(`load`, "POST", {carrier: carrierId, units: unitIds});
 }

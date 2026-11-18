@@ -10,6 +10,8 @@ interface MilitaryViewProps {
     territory?: string | null;
     resetKey?: number;
     onOpenChange?: (open: boolean) => void;
+    initialDomain?: MilitaryBranch;
+    lockBranch?: boolean;
 }
 
 interface Military {
@@ -27,11 +29,13 @@ function MilitaryView({
     canSelectMultiple,
     territory = null,
     resetKey = 0,
-    onOpenChange
+    onOpenChange,
+    initialDomain = "forces",
+    lockBranch = false
 }: MilitaryViewProps) {
     const [open, setOpenState] = useState(false);
     const [military, setMilitary] = useState<Military>({});
-    const [domain, setDomain] = useState<MilitaryBranch>("forces");
+    const [domain, setDomain] = useState<MilitaryBranch>(initialDomain);
     const [location, setLocation] = useState("All");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -93,7 +97,8 @@ function MilitaryView({
         setOpen(false);
         setMilitary({});
         setLocation("All");
-    }, [resetKey]);
+        setDomain(initialDomain);
+    }, [resetKey, initialDomain]);
 
     const units = military[domain] ?? [];
 
@@ -130,7 +135,7 @@ function MilitaryView({
     };
 
     return (
-        <div className="military-view">
+        <div className={`military-view${open ? " military-view-open" : ""}`}>
             <button
                 className="action-button"
                 onClick={() => setOpen(!open)}
@@ -163,6 +168,7 @@ function MilitaryView({
                                     setDomain(value);
                                     setLocation("All");
                                 }}
+                                disabled={lockBranch}
                             >
                                 <option value="forces">All</option>
                                 <option value="ground">Army</option>

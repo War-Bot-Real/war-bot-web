@@ -162,5 +162,11 @@ export const commands: Command[] = [
         name: "Resource Flow",
         context: "general",
         requiresNation: true
+    },
+    {
+        id: "loadcarrier",
+        name: "Load Carrier",
+        context: "general",
+        requiresNation: true
     }
 ];
