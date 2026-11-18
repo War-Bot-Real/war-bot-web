@@ -10,7 +10,8 @@
 .borders-flow,
 .buy-flow,
 .deploy-flow,
-.ally-flow 
+.build-flow,
+.ally-flow,
 .declare-war-flow,
 .resflow-flow,
 .war {
@@ -50,6 +51,7 @@
 .borders-flow > h2,
 .buy-flow > h2,
 .deploy-flow > h2,
+.build-flow > h2,
 .resflow-flow > h2,
 .ally-flow > h2 {
     margin: 0 0 18px;

@@ -189,3 +189,7 @@ export async function move(target: string, units: string[]) {
 export async function resflow() {
     return fetchRequest(`resflow`);
 }
+
+export async function build(territory: string, building: string) {
+    return fetchRequest(`build/${territory}/${building}`);
+}

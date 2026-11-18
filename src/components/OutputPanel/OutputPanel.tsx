@@ -25,6 +25,7 @@ import MoveFlow from "../../commands/flows/MoveFlow";
 import ForcesFlow from "../../commands/flows/ForcesFlow";
 import TerritoriesFlow from "../../commands/flows/TerritoriesFlow";
 import ResflowFlow from "../../commands/flows/ResflowFlow";
+import BuildFlow from "../../commands/flows/BuildFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -133,6 +134,14 @@ function OutputPanel({
                 <ForcesFlow />
             ) : activeCommand === "resflow" ? (
                 <ResflowFlow />
+            ) : activeCommand === "build" ? (
+                <BuildFlow
+                    territory={
+                        selection?.type === "territory"
+                            ? selection.territory
+                            : null
+                    }
+                />
             ) : activeCommand === "army" ? (
                 <ForcesFlow domain="ground" />
             ) : activeCommand === "navy" ? (
