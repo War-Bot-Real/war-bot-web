@@ -64,8 +64,8 @@ function ResflowFlow() {
     });
 
     return (
-        <div className="resflow-flow">
-            <h2>Resource Flow</h2>
+        <div className="command-flow resflow-flow">
+            <h2 className="command-title">Resource Flow</h2>
 
             {resources.length === 0 ? (
                 <p className="command-empty">No resource flow data available.</p>

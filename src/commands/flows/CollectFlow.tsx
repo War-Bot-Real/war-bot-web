@@ -46,8 +46,8 @@ function CollectFlow() {
     }
 
     return (
-        <div className="income-flow">
-            <h2>Income Collected</h2>
+        <div className="command-flow income-flow">
+            <h2 className="command-title">Income Collected</h2>
             <div className="command-list">
                 <div className="command-row">
                     <span>Income</span>
@@ -89,7 +89,7 @@ function CollectFlow() {
                 </div>
             </div>
 
-            <h3>Resources Collected</h3>
+            <h3 className="command-section-title">Resources Collected</h3>
             <div className="command-list">
                 {Object.entries(result.Resources).map(([resource, amount]) => (
                     <div className="command-row" key={resource}>

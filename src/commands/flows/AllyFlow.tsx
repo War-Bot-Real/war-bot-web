@@ -36,7 +36,7 @@ function AllyFlow({ nation }: AllyFlowProps) {
     };
 
     return (
-        <div className="ally-flow">
+        <div className="command-flow ally-flow">
             <div className="command-form">
                 <label>
                     Nation

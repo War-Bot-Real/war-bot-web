@@ -46,7 +46,7 @@ function SplitFlow({territory}: {territory: string | null}) {
     };
 
     return (
-        <div className="split-flow">
+        <div className="command-flow split-flow">
             <div className="command-form">
                 <div>
                   <label className="unit-header">

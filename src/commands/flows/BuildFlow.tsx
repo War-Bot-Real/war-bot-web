@@ -67,7 +67,7 @@ function BuildFlow({ territory }: { territory: Territory | null }) {
     };
 
     return (
-        <div className="build-flow">
+        <div className="command-flow build-flow">
             <p className="command-subtitle">
                 Build a structure in a territory you own.
             </p>

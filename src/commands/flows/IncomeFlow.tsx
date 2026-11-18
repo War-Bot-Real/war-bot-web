@@ -22,8 +22,8 @@ function IncomeFlow() {
     }
 
     return (
-        <div className="income-flow">
-            <h2>Income by Territory</h2>
+        <div className="command-flow income-flow">
+            <h2 className="command-title">Income by Territory</h2>
 
             <div className="command-list">
                 {Object.entries(income).map(([region, amount]) => (

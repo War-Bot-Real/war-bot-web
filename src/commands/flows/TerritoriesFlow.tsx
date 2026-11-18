@@ -56,7 +56,7 @@ function TerritoriesFlow({ nation }: TerritoriesFlowProps) {
     }
 
     return (
-        <div className="territories-flow">
+        <div className="command-flow territories-flow">
             {territories.map((territory) => (
                 <div className="territory-list-item" key={territory.name}>
                     <strong>{territory.name}</strong>

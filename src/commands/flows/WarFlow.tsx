@@ -30,8 +30,8 @@ function WarsFlow() {
                 </p>
             ) : (
                 wars.map((war) => (
-                    <div className="war" key={war.name}>
-                        <h3>{war.name}</h3>
+                    <div className="command-flow war" key={war.name}>
+                        <h3 className="command-section-title">{war.name}</h3>
 
                         <div className="war-sides">
                             <div className="war-side">

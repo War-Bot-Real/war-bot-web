@@ -37,7 +37,7 @@ function BordersFlow({ selection }: { selection: Selection }) {
 
     if (selection === null) {
         return (
-            <div className="borders-flow">
+            <div className="command-flow borders-flow">
                 <p className="command-empty">
                     Select a territory or nation on the map to see its borders.
                 </p>
@@ -50,8 +50,8 @@ function BordersFlow({ selection }: { selection: Selection }) {
     }
 
     return (
-        <div className="borders-flow">
-            <h2>Borders of {name}</h2>
+        <div className="command-flow borders-flow">
+            <h2 className="command-title">Borders of {name}</h2>
 
             <div className="command-list">
                 {borders.map((bordering) => (

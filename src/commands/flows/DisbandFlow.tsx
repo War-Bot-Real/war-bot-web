@@ -43,7 +43,7 @@ function DisbandFlow({territory}: {territory: string | null}) {
     };
 
     return (
-        <div className="disband-flow">
+        <div className="command-flow disband-flow">
             <div className="command-form">
                 <div>
                   <label className="unit-header">

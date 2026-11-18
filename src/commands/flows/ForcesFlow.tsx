@@ -56,7 +56,7 @@ function ForcesFlow({ domain }: ForcesFlowProps) {
 
     if (error) {
         return (
-            <div className="forces-flow">
+            <div className="command-flow forces-flow">
                 <p className="command-empty">{error}</p>
             </div>
         );
@@ -64,7 +64,7 @@ function ForcesFlow({ domain }: ForcesFlowProps) {
 
     if (forces === null) {
         return (
-            <div className="forces-flow">
+            <div className="command-flow forces-flow">
                 <p>{loadingText}</p>
             </div>
         );
@@ -74,17 +74,17 @@ function ForcesFlow({ domain }: ForcesFlowProps) {
 
     if (territories.length === 0) {
         return (
-            <div className="forces-flow">
+            <div className="command-flow forces-flow">
                 <p className="command-empty">No forces found.</p>
             </div>
         );
     }
 
     return (
-        <div className="forces-flow">
+        <div className="command-flow forces-flow">
             {territories.map(([territory, units]) => (
                 <div key={territory}>
-                    <h3>{territory}</h3>
+                    <h3 className="command-section-title">{territory}</h3>
 
                     <div className="command-list">
                         {units.map((unit) => (

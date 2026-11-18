@@ -220,7 +220,7 @@ s
   }
 
   return (
-    <div className="shop-flow">
+    <div className="command-flow shop-flow">
       {canPurchase &&
         balance !== null && (
           <p>
@@ -240,7 +240,7 @@ s
       {Object.entries(shop).map(
         ([category, items]) => (
           <section key={category}>
-            <h3>{category}</h3>
+            <h3 className="command-section-title">{category}</h3>
 
             {Object.entries(items).map(
               ([item, rawItemData]) => {

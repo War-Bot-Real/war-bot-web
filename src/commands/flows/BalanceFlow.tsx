@@ -26,7 +26,7 @@ function BalanceFlow() {
     }
 
     return (
-        <div className="balance-flow">
+        <div className="command-flow balance-flow">
             <div className="command-list">
                 <div className="command-row">
                     <span>Balance</span>
