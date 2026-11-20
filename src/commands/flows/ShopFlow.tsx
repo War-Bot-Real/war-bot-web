@@ -1,5 +1,6 @@
+
 import { useEffect, useRef, useState } from "react";
-import { buy, getBalance, getShop } from "../../api";
+import { buy, getBalance, getInventory, getShop } from "../../api";
 
 import type { Shop, ShopItem } from "../../types/Shop";
 import type { Nation } from "../../types/Nation";
@@ -14,6 +15,7 @@ interface ShopFlowProps {
 function ShopFlow({ nation }: ShopFlowProps) {
   const [shop, setShop] = useState<Shop | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
+  const [inventory, setInventory] = useState<Record<string, number> | null>(null);
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [buying, setBuying] = useState<string | null>(null);
@@ -32,6 +34,17 @@ function ShopFlow({ nation }: ShopFlowProps) {
         if (canPurchase) {
           const balanceData = await getBalance();
           setBalance(balanceData.balance);
+
+          try {
+            const inventoryData = await getInventory();
+            setInventory(inventoryData.inventory);
+          } catch (error) {
+            console.error("Failed to load resource balances:", error);
+            setInventory(null);
+          }
+        } else {
+          setBalance(null);
+          setInventory(null);
         }
       } catch (error) {
         console.error("Failed to load shop:", error);
@@ -43,6 +56,19 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
     loadShop();
   }, [canPurchase]);
+
+  const getResourceBalance = (resource: string): number | null => {
+    if (inventory === null) return null;
+
+    const entry = Object.entries(inventory).find(
+      ([name]) => name.toLowerCase() === resource.toLowerCase()
+    );
+
+    return entry ? entry[1] : 0;
+  };
+
+  const ironBalance = getResourceBalance("Iron");
+  const steelBalance = getResourceBalance("Steel");
 
   useEffect(() => {
     if (balance === null || !shop || !canPurchase) return;
@@ -135,12 +161,23 @@ function ShopFlow({ nation }: ShopFlowProps) {
           );
         }
 
-        const balanceData =
-          await getBalance();
+        const [balanceResult, inventoryResult] = await Promise.allSettled([
+          getBalance(),
+          getInventory(),
+        ]);
 
-        setBalance(
-          balanceData.balance
-        );
+        if (balanceResult.status === "fulfilled") {
+          setBalance(balanceResult.value.balance);
+        } else {
+          console.error("Failed to refresh money balance:", balanceResult.reason);
+        }
+
+        if (inventoryResult.status === "fulfilled") {
+          setInventory(inventoryResult.value.inventory);
+        } else {
+          console.error("Failed to refresh resource balances:", inventoryResult.reason);
+          setInventory(null);
+        }
 
         setQuantities((current) => ({
           ...current,
@@ -179,7 +216,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
       <span>
         ${itemData.Money.toLocaleString()} / unit
       </span>
-s
+
       {itemData.Iron !== undefined &&
         itemData.Iron > 0 && (
           <span className="shop-resource">
@@ -223,16 +260,31 @@ s
     <div className="command-flow shop-flow">
       {canPurchase &&
         balance !== null && (
-          <p>
-            Balance: $
-            {balance.toLocaleString(
-              undefined,
-              {
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "18px",
+              margin: "10px 0 18px",
+              fontWeight: 700,
+            }}
+          >
+            <span>
+              Balance: ${balance.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
-              }
-            )}
-          </p>
+              })}
+            </span>
+            <span className="shop-resource">
+              <img src={ironIcon} alt="Iron" className="shop-resource-icon" />
+              Iron: {ironBalance === null ? "Unavailable" : ironBalance.toLocaleString()}
+            </span>
+            <span className="shop-resource">
+              <img src={steelIcon} alt="Steel" className="shop-resource-icon" />
+              Steel: {steelBalance === null ? "Unavailable" : steelBalance.toLocaleString()}
+            </span>
+          </div>
         )}
 
       {message && <p>{message}</p>}
