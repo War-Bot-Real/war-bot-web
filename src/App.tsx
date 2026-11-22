@@ -21,6 +21,7 @@ function App() {
     const [user, setUser] = useState<Player | null>(null);
     const clickSound = useRef<HTMLAudioElement | null>(null);
     const navigate = useNavigate();
+    const authUserId = session?.user.id ?? null;
 
     useEffect(() => {
         const audio = new Audio("/click_default.wav");
@@ -34,38 +35,58 @@ function App() {
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
-            (_event, session) => setSession(session)
+            (_event, session) => {
+                setNation(null);
+                setMessages([]);
+                setUser(null);
+                setSession(session);
+            }
         );
 
         return () => subscription.unsubscribe();
     }, []);
 
     useEffect(() => {
-        if (!session) {
-            setNation(null);
-            setMessages([]);
+        setNation(null);
+        setMessages([]);
+        setUser(null);
+
+        if (!authUserId) {
             return;
         }
 
+        let cancelled = false;
+
         const loadUser = async () => {
             try {
-                const user = await me();
-                setUser(user);
+                const nextUser = await me();
 
-                if (user.nation) {
-                    setNation(await getNation(user.nation));
-                    setMessages((await getMessages())["result"]);
-                } else {
-                    setNation(null);
-                    setMessages([]);
+                if (cancelled) return;
+                setUser(nextUser);
+
+                if (nextUser.nation) {
+                    const [nextNation, messageResponse] = await Promise.all([
+                        getNation(nextUser.nation),
+                        getMessages()
+                    ]);
+
+                    if (cancelled) return;
+                    setNation(nextNation);
+                    setMessages(messageResponse["result"]);
                 }
             } catch (error) {
-                console.error("Failed to load user:", error);
+                if (!cancelled) {
+                    console.error("Failed to load user:", error);
+                }
             }
         };
 
         void loadUser();
-    }, [session]);
+
+        return () => {
+            cancelled = true;
+        };
+    }, [authUserId]);
 
     const playClickSound = () => {
         if (clickSound.current) {
@@ -78,25 +99,25 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={<Navigate to={session ? "/home" : "/login"} replace />} />
+            <Route path="/" element={<Navigate to={authUserId ? "/home" : "/login"} replace />} />
 
             <Route
                 path="/login"
-                element={session
+                element={authUserId
                     ? <Navigate to="/home" replace />
                     : <LoginPage onSignup={() => navigate("/signup")} />}
             />
 
             <Route
                 path="/signup"
-                element={session
+                element={authUserId
                     ? <Navigate to="/home" replace />
                     : <SignUpPage onLogin={() => navigate("/login")} />}
             />
 
             <Route
                 path="/home"
-                element={session ?
+                element={authUserId ?
                   <GamePage
                     onAccount={() => {
                         playClickSound();
@@ -113,7 +134,7 @@ function App() {
 
             <Route
                 path="/account"
-                element={session
+                element={authUserId
                     ? <AccountPage user={user} onBack={() => {
                         playClickSound();
                         navigate("/home");
@@ -123,7 +144,7 @@ function App() {
 
             <Route
                 path="/admin"
-                element={session
+                element={authUserId
                     ? <AdminPage onBack={() => {
                         playClickSound();
                         navigate("/home");
