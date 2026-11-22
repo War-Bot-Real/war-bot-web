@@ -8,10 +8,17 @@ import GamePage from "./pages/GamePage/GamePage";
 import AccountPage from "./pages/AccountPage";
 import SignUpPage from "./pages/SignUpPage";
 import AdminPage from "./pages/AdminPage";
+import { me, getNation, getMessages } from "./api";
+import type { Nation } from "./types/Nation";
+import type { Message } from "./types/Messages";
+import type { Player } from "./types/Player";
 
 function App() {
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
+    const [nation, setNation] = useState<Nation | null>(null);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [user, setUser] = useState<Player | null>(null);
     const clickSound = useRef<HTMLAudioElement | null>(null);
     const navigate = useNavigate();
 
@@ -32,6 +39,33 @@ function App() {
 
         return () => subscription.unsubscribe();
     }, []);
+
+    useEffect(() => {
+        if (!session) {
+            setNation(null);
+            setMessages([]);
+            return;
+        }
+
+        const loadUser = async () => {
+            try {
+                const user = await me();
+                setUser(user);
+
+                if (user.nation) {
+                    setNation(await getNation(user.nation));
+                    setMessages((await getMessages())["result"]);
+                } else {
+                    setNation(null);
+                    setMessages([]);
+                }
+            } catch (error) {
+                console.error("Failed to load user:", error);
+            }
+        };
+
+        void loadUser();
+    }, [session]);
 
     const playClickSound = () => {
         if (clickSound.current) {
@@ -72,13 +106,15 @@ function App() {
                         playClickSound();
                         navigate("/admin");
                     }}
+                    nation={nation}
+                    messages={messages}
                   /> : <Navigate to="/login" replace />}
             />
 
             <Route
                 path="/account"
                 element={session
-                    ? <AccountPage onBack={() => {
+                    ? <AccountPage user={user} onBack={() => {
                         playClickSound();
                         navigate("/home");
                     }} />

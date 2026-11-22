@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { generateDiscordLink } from "../api";
 import "./AccountPage.css";
+import type { Player } from "../types/Player";
 
 type AccountPageProps = {
     onBack: () => void;
+    user: Player | null;
 };
 
-function AccountPage({ onBack }: AccountPageProps) {
-    const [email, setEmail] = useState("");
+function AccountPage({ onBack, user }: AccountPageProps) {
+    const [email, setEmail] = useState<string | null>(null);
     const [linkingDiscord, setLinkingDiscord] = useState(false);
     const [discordCode, setDiscordCode] = useState<string | null>(null);
     const [discordExpiresAt, setDiscordExpiresAt] = useState<string | null>(null);
@@ -22,6 +24,8 @@ function AccountPage({ onBack }: AccountPageProps) {
 
             if (user?.email) {
                 setEmail(user.email);
+            } else {
+                setEmail("Guest Account");
             }
         };
 
@@ -60,18 +64,18 @@ function AccountPage({ onBack }: AccountPageProps) {
             <section className="account-info">
                 <div>
                     <strong>Email</strong>
-                    <p>{email}</p>
+                    <p>{email ?? 'Loading...'}</p>
                 </div>
 
                 <div>
                     <strong>Username</strong>
-                    <p>Not set yet</p>
+                    <p>{user ? user.username : 'Guest Account'}</p>
                 </div>
 
                 <div>
                     <strong>Discord</strong>
 
-                    {!discordCode ? (
+                    {!discordCode && !user?.discord_id ? (
                         <>
                             <p>Not connected</p>
 
@@ -88,6 +92,14 @@ function AccountPage({ onBack }: AccountPageProps) {
                                 <p>{discordError}</p>
                             )}
                         </>
+                    ) : user?.discord_id ? (
+                      <>
+                        <p>
+                          Discord account connected. Account ID:
+                          <br/>
+                          <strong>{user.discord_id}</strong>
+                        </p>
+                      </>
                     ) : (
                         <>
                             <p>

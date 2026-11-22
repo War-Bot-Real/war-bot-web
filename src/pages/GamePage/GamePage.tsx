@@ -7,7 +7,6 @@ import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/NavBar/NavBar";
 import EventPopup from "../../components/EventPopup/EventPopup";
 import Desktop from "./Layouts/Desktop";
-import { me, getNation, getMessages } from "../../api";
 import { useMapData } from "../../map/useMapData";
 
 import type { Selection } from "../../types/Selection";
@@ -22,9 +21,11 @@ import MobileLandscape from "./Layouts/MobileLandscape";
 interface GamePageProps {
     onAccount: () => void;
     onAdmin: () => void;
+    nation: Nation | null;
+    messages: Message[];
 }
 
-function GamePage({ onAccount, onAdmin }: GamePageProps) {
+function GamePage({ onAccount, onAdmin, nation, messages }: GamePageProps) {
     const layoutStyle = {
         "--navbar-height": `${LayoutConstants.navbarHeight}px`,
         "--entity-search-height": `${LayoutConstants.entitySearchHeight}px`,
@@ -34,8 +35,6 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
     const [selection, setSelection] = useState<Selection>(null);
     const [activeCommand, setActiveCommand] = useState<string | null>(null);
     const [notifPopup, setNotifPopup] = useState<NotificationPopup>(null);
-    const [nation, setNation] = useState<Nation | null>(null);
-    const [messages, setMessages] = useState<Message[]>([]);
     const [events, setEvents] = useState<Message[]>([]);
     const [mapMode, setMapMode] = useState<MapMode>("political");
     const [layout, setLayout] = useState<Layout>();
@@ -79,22 +78,6 @@ function GamePage({ onAccount, onAdmin }: GamePageProps) {
         updateLayout();
         window.addEventListener("resize", updateLayout);
         return () => window.removeEventListener("resize", updateLayout);
-    }, []);
-
-    useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const user = await me();
-                if (user.nation) {
-                    setNation(await getNation(user.nation));
-                    setMessages((await getMessages())["result"]);
-                }
-            } catch (error) {
-                console.error("Failed to load user:", error);
-            }
-        };
-
-        loadUser();
     }, []);
 
     useEffect(() => {
