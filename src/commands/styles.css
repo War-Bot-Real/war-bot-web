@@ -2,17 +2,7 @@
    SHARED COMMAND STYLES
    ======================================== */
 
-.shop-flow,
-.set-tax-flow,
-.income-flow,
-.balance-flow,
-.inventory-flow,
-.borders-flow,
-.buy-flow,
-.deploy-flow,
-.ally-flow 
-.declare-war-flow,
-.war {
+.command-flow {
     width: 100%;
     max-width: 1050px;
     min-width: 0;
@@ -41,15 +31,7 @@
    SHARED HEADINGS
    ======================================== */
 
-.shop-flow > h2,
-.set-tax-flow > h2,
-.income-flow > h2,
-.balance-flow > h2,
-.inventory-flow > h2,
-.borders-flow > h2,
-.buy-flow > h2,
-.deploy-flow > h2,
-.ally-flow > h2 {
+.command-title {
     margin: 0 0 18px;
     padding-bottom: 10px;
 
@@ -62,6 +44,16 @@
     font-weight: 700;
 
     letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.command-section-title {
+    margin: 18px 0 10px;
+    color: #343434;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
 }
 
@@ -157,6 +149,37 @@
     text-align: right;
 
     white-space: nowrap;
+}
+
+.resflow-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1.4fr) repeat(3, minmax(80px, 1fr));
+    gap: 12px;
+}
+
+.resflow-row > span:not(:first-child) {
+    text-align: right;
+}
+
+.resflow-header {
+    background: #c3c3c3;
+    color: #454545;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.resflow-header:hover {
+    background: #c3c3c3;
+}
+
+.resflow-shortage > span:last-child {
+    color: #a32626;
+}
+
+.resflow-surplus > span:last-child {
+    color: #28643a;
 }
 
 
@@ -539,15 +562,7 @@
    ======================================== */
 
 @media (max-width: 750px) {
-    .shop-flow,
-    .set-tax-flow,
-    .income-flow,
-    .balance-flow,
-    .inventory-flow,
-    .borders-flow,
-    .buy-flow,
-    .deploy-flow,
-    .ally-flow {
+    .command-flow {
         padding: 16px;
     }
 
@@ -571,6 +586,13 @@
 
     .command-row {
         gap: 12px;
+    }
+
+    .resflow-row {
+        grid-template-columns: minmax(90px, 1.2fr) repeat(3, minmax(55px, 1fr));
+        gap: 6px;
+        padding: 10px 8px;
+        font-size: 12px;
     }
 }
 
@@ -640,35 +662,4 @@
     object-fit: contain;
 
     image-rendering: auto;
-}
-
-/* ========================================
-   SHOP BALANCES / RESOURCES
-   ======================================== */
-/* ========================================
-   SHOP BALANCES / RESOURCES
-   ======================================== */
-
-.shop-price {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    color: #555555;
-    font-family: "Courier New", monospace;
-    font-size: 12px;
-}
-
-.shop-resource {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    color: #333333;
-    font-weight: 700;
-}
-
-.shop-resource-icon {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
 }

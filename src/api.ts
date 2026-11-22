@@ -1,4 +1,5 @@
 import { supabase } from "./lib/supabase";
+import type { CollectResponse } from "./types/Collect";
 import type { MapData } from "./types/MapData";
 import type { TerritoryAsBorder } from "./types/Territory";
 
@@ -98,12 +99,12 @@ export async function getNationBorders(nation: string): Promise<TerritoryAsBorde
     return fetchRequest(`borders/nation/${nation}`);
 }
 
-export async function collect() {
-    return fetchRequest(`income/collect`, "POST");
+export async function collect(): Promise<CollectResponse> {
+    return fetchRequest(`collect`, "POST");
 }
 
 export async function getIncome() {
-    return fetchRequest(`income/view`);
+    return fetchRequest(`income`);
 }
 
 export async function buy(item: string, quantity: number) {
@@ -183,4 +184,16 @@ export async function getGameTime() {
 
 export async function move(target: string, units: string[]) {
     return fetchRequest(`move`, "POST", {target, units});
+}
+
+export async function resflow() {
+    return fetchRequest(`resflow`);
+}
+
+export async function build(territory: string, building: string) {
+    return fetchRequest(`build/${territory}/${building}`, "POST");
+}
+
+export async function loadCarrier(carrierId: string, unitIds: string[]) {
+    return fetchRequest(`load`, "POST", {carrier: carrierId, units: unitIds});
 }

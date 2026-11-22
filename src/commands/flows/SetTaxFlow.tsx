@@ -39,7 +39,7 @@ function SetTaxFlow() {
     };
 
     return (
-        <div className="set-tax-flow">
+        <div className="command-flow set-tax-flow">
             <div className="command-form">
                 <label htmlFor="tax-rate">
                     Tax Rate (%)

@@ -52,7 +52,7 @@ function MoveFlow({ territory }: { territory: Territory | null }) {
     };
 
     return (
-        <div className="move-flow">
+        <div className="command-flow move-flow">
             <div className="command-form">
                 <label>
                     Destination

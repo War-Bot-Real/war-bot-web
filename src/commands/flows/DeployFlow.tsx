@@ -48,7 +48,7 @@ function DeployFlow({ territory }: { territory: Territory | null }) {
     };
 
     return (
-        <div className="deploy-flow">
+        <div className="command-flow deploy-flow">
             <p className="command-subtitle">
                 Deploy a unit in a territory you own.
             </p>

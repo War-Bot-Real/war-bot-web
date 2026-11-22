@@ -55,7 +55,7 @@ function GiveFlow({ nation }: GiveFlowProps) {
     };
 
     return (
-        <div className="give-flow">
+        <div className="command-flow give-flow">
             <div className="command-form">
                 <label>
                     Nation

@@ -50,7 +50,7 @@ function MergeFlow({ territory }: { territory: string | null }) {
     };
 
     return (
-        <div className="merge-flow">
+        <div className="command-flow merge-flow">
             <div className="command-form">
                 <div>
                     <label className="unit-header">

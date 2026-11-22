@@ -59,7 +59,7 @@ function AttackFlow({terrInput}: {terrInput: Territory | null}) {
     };
 
     return (
-        <div className="attack-flow">
+        <div className="command-flow attack-flow">
             <div className="command-form">
                 <label>
                     Territory
