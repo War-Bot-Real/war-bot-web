@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { generateDiscordLink } from "../api";
+import { generateDiscordLink, setUsername } from "../api";
 import "./AccountPage.css";
 import type { Player } from "../types/Player";
 
@@ -11,6 +11,11 @@ type AccountPageProps = {
 
 function AccountPage({ onBack, user }: AccountPageProps) {
     const [email, setEmail] = useState<string | null>(null);
+    const [username, setUsernameValue] = useState(user?.username ?? "");
+    const [editedUsername, setEditedUsername] = useState(user?.username ?? "");
+    const [savingUsername, setSavingUsername] = useState(false);
+    const [usernameError, setUsernameError] = useState("");
+
     const [linkingDiscord, setLinkingDiscord] = useState(false);
     const [discordCode, setDiscordCode] = useState<string | null>(null);
     const [discordExpiresAt, setDiscordExpiresAt] = useState<string | null>(null);
@@ -31,6 +36,31 @@ function AccountPage({ onBack, user }: AccountPageProps) {
 
         loadUser();
     }, []);
+
+    useEffect(() => {
+        const currentUsername = user?.username ?? "";
+        setUsernameValue(currentUsername);
+        setEditedUsername(currentUsername);
+    }, [user?.username]);
+
+    const handleSaveUsername = async () => {
+        const newUsername = editedUsername.trim();
+
+        if (!newUsername || newUsername === username) return;
+
+        setSavingUsername(true);
+        setUsernameError("");
+
+        try {
+            await setUsername(newUsername);
+            setUsernameValue(newUsername);
+            setEditedUsername(newUsername);
+        } catch (error) {
+            setUsernameError(error instanceof Error ? error.message : "Failed to update username.");
+        } finally {
+            setSavingUsername(false);
+        }
+    };
 
     const handleLinkDiscord = async () => {
         setLinkingDiscord(true);
@@ -64,12 +94,40 @@ function AccountPage({ onBack, user }: AccountPageProps) {
             <section className="account-info">
                 <div>
                     <strong>Email</strong>
-                    <p>{email ?? 'Loading...'}</p>
+                    <p>{email ?? "Loading..."}</p>
                 </div>
 
-                <div>
+                <div className="username-card">
                     <strong>Username</strong>
-                    <p>{user ? user.username : 'Guest Account'}</p>
+
+                    {user ? (
+                        <>
+                            <div className="username-edit">
+                                <input
+                                    type="text"
+                                    value={editedUsername}
+                                    onChange={(e) => {
+                                        setEditedUsername(e.target.value);
+                                        setUsernameError("");
+                                    }}
+                                    placeholder="Enter username"
+                                />
+
+                                {editedUsername.trim() !== username && (
+                                    <button
+                                        onClick={handleSaveUsername}
+                                        disabled={savingUsername || !editedUsername.trim()}
+                                    >
+                                        {savingUsername ? "Saving..." : "Save"}
+                                    </button>
+                                )}
+                            </div>
+
+                            {usernameError && <p className="username-error">{usernameError}</p>}
+                        </>
+                    ) : (
+                        <p>Guest Account</p>
+                    )}
                 </div>
 
                 <div>
@@ -88,18 +146,16 @@ function AccountPage({ onBack, user }: AccountPageProps) {
                                     : "Link Discord"}
                             </button>
 
-                            {discordError && (
-                                <p>{discordError}</p>
-                            )}
+                            {discordError && <p>{discordError}</p>}
                         </>
                     ) : user?.discord_id ? (
-                      <>
-                        <p>
-                          Discord account connected. Account ID:
-                          <br/>
-                          <strong>{user.discord_id}</strong>
-                        </p>
-                      </>
+                        <>
+                            <p>
+                                Discord account connected. Account ID:
+                                <br />
+                                <strong>{user.discord_id}</strong>
+                            </p>
+                        </>
                     ) : (
                         <>
                             <p>

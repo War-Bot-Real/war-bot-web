@@ -197,3 +197,7 @@ export async function build(territory: string, building: string) {
 export async function loadCarrier(carrierId: string, unitIds: string[]) {
     return fetchRequest(`load`, "POST", {carrier: carrierId, units: unitIds});
 }
+
+export async function setUsername(username: string) {
+    return fetchRequest(`username/${username}`, "PATCH");
+}

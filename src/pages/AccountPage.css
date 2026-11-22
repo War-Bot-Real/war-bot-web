@@ -400,6 +400,63 @@
         inset 0 0 8px rgba(0, 0, 0, 0.35);
 }
 
+/* ========================================
+   USERNAME EDITOR
+   ======================================== */
+
+.username-edit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.username-edit input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 2px;
+
+    background: transparent;
+    color: #fff;
+
+    border: none;
+    border-bottom: 2px solid #555752;
+    border-radius: 0;
+    outline: none;
+
+    font-family: "Courier New", Courier, monospace;
+    font-size: 15px;
+    line-height: 1.5;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.username-edit input:hover {
+    border-bottom-color: #85867f;
+}
+
+.username-edit input:focus {
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom-color: #aaa99f;
+}
+
+.username-edit input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.username-edit button {
+    flex: 0 0 auto;
+    margin-top: 0;
+}
+
+.username-error {
+    margin-top: 10px !important;
+    color: #d98b82 !important;
+    font-size: 13px !important;
+}
 
 /* ========================================
    MOBILE
