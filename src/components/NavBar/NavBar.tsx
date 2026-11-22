@@ -1,13 +1,15 @@
 import { supabase } from "../../lib/supabase";
 import { useRef } from "react";
 import "./NavBar.css"
+import type { Player } from "../../types/Player";
 
 interface NavbarProps {
     onAccount: () => void;
     onAdmin: () => void;
+    user: Player | null;
 }
 
-function Navbar({ onAccount, onAdmin }: NavbarProps) {
+function Navbar({ onAccount, onAdmin, user }: NavbarProps) {
     const clickSound = useRef(new Audio("/click_default.wav"));
 
     const handleLogout = async () => {
@@ -24,9 +26,11 @@ function Navbar({ onAccount, onAdmin }: NavbarProps) {
             <h1>War Bot Web</h1>
 
             <div className="navbar-actions">
-                <button onClick={onAdmin}>
-                    Admin
-                </button>
+                {user?.admin && 
+                  <button onClick={onAdmin}>
+                      Admin
+                  </button>
+                }
 
                 <button onClick={onAccount}>
                     Account

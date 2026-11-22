@@ -129,6 +129,7 @@ function App() {
                     }}
                     nation={nation}
                     messages={messages}
+                    user={user}
                   /> : <Navigate to="/login" replace />}
             />
 
@@ -144,12 +145,12 @@ function App() {
 
             <Route
                 path="/admin"
-                element={authUserId
+                element={user?.admin
                     ? <AdminPage onBack={() => {
                         playClickSound();
                         navigate("/home");
                     }} />
-                    : <Navigate to="/login" replace />}
+                    : <Navigate to="/home" replace />}
             />
 
             <Route path="*" element={<Navigate to="/" replace />} />

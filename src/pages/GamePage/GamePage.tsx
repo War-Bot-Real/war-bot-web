@@ -13,6 +13,7 @@ import type { Selection } from "../../types/Selection";
 import type { MapMode } from "../../components/MapModeBar/MapModeBar";
 import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
+import type { Player } from "../../types/Player";
 import type { NotificationPopup } from "../../types/NotificationPopup";
 import selectLayout, { LayoutConstants, type Layout } from "./Layouts/selectLayout";
 import MobilePortrait from "./Layouts/MobilePortrait";
@@ -23,9 +24,10 @@ interface GamePageProps {
     onAdmin: () => void;
     nation: Nation | null;
     messages: Message[];
+    user: Player | null;
 }
 
-function GamePage({ onAccount, onAdmin, nation, messages }: GamePageProps) {
+function GamePage({ onAccount, onAdmin, nation, messages, user }: GamePageProps) {
     const layoutStyle = {
         "--navbar-height": `${LayoutConstants.navbarHeight}px`,
         "--entity-search-height": `${LayoutConstants.entitySearchHeight}px`,
@@ -123,7 +125,7 @@ function GamePage({ onAccount, onAdmin, nation, messages }: GamePageProps) {
 
     return (
         <div className={`game-page ${layout}`} style={layoutStyle}>
-            <Navbar onAccount={onAccount} onAdmin={onAdmin} />
+            <Navbar onAccount={onAccount} onAdmin={onAdmin} user={user}/>
 
             <EventPopup events={events} setEvents={setEvents} />
 
