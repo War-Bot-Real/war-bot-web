@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { merge } from "../../api";
 import MilitaryView from "../../components/MilitaryView/MilitaryView";
@@ -15,6 +16,8 @@ function MergeFlow({ territory }: { territory: string | null }) {
     }, []);
 
     const handleMerge = async () => {
+        if (loading) return;
+
         if (units.length < 2) {
             setError("You must select at least two units to merge.");
             return;
@@ -30,10 +33,10 @@ function MergeFlow({ territory }: { territory: string | null }) {
             if (resp["success"]) {
                 setSuccess("Units merged successfully.");
 
-                // Clear all selected units after a successful merge
+                // Clear the selection after a successful merge.
                 setUnits([]);
 
-                // Reset/refresh the military view
+                // Close and refresh MilitaryView.
                 setMilitaryReset(value => value + 1);
             } else {
                 setError(resp["detail"] ?? "Failed to merge units.");
@@ -57,35 +60,41 @@ function MergeFlow({ territory }: { territory: string | null }) {
                         Units Selected
                     </label>
 
-                    <label className="unit-labels">
+                    <div className="unit-labels">
                         {units.length === 0
                             ? "None Selected"
-                            : units.map((unit) => (
+                            : units.map(unit => (
                                 <span
                                     className="unit-label"
                                     key={unit}
                                 >
                                     {unit}
                                 </span>
-                            ))}
-                    </label>
+                            ))
+                        }
+                    </div>
                 </div>
 
+                {/* Select units BEFORE merging. */}
+                <div className="merge-military-selector">
+                    <MilitaryView
+                        selectedUnits={units}
+                        setSelectedUnits={setUnits}
+                        canSelectMultiple={true}
+                        territory={territory}
+                        resetKey={militaryReset}
+                    />
+                </div>
+
+                {/* Merge button appears below the selector. */}
                 <button
+                    type="button"
                     className="action-button"
                     onClick={handleMerge}
-                    disabled={loading}
+                    disabled={loading || units.length < 2}
                 >
                     {loading ? "Merging..." : "Merge"}
                 </button>
-
-                <MilitaryView
-                    selectedUnits={units}
-                    setSelectedUnits={setUnits}
-                    canSelectMultiple={true}
-                    territory={territory}
-                    resetKey={militaryReset}
-                />
             </div>
 
             {success && (

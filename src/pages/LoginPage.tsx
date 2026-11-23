@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { playUiSound } from "../sounds";
+import { useState } from "react";
 import { supabase } from "../lib/supabase";
 import "./LoginPage.css";
 
@@ -10,13 +11,13 @@ function LoginPage({ onSignup }: LoginPageProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const clickSound = useRef(new Audio("/click_default.wav"));
+
 
     const handleLogin = async (
         event: React.FormEvent,
     ) => {
         event.preventDefault();
-        clickSound.current.play();
+        playUiSound("/click_default.wav");
 
         setError("");
 
@@ -32,7 +33,7 @@ function LoginPage({ onSignup }: LoginPageProps) {
     };
 
     const handleGuestLogin = async () => {
-        clickSound.current.play();
+        playUiSound("/click_default.wav");
 
         setError("");
 

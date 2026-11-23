@@ -10,9 +10,12 @@ interface ForcesResult {
 
 interface ForcesFlowProps {
     domain?: "ground" | "naval" | "air";
+    selectedTerritory?: string | null;
 }
 
-function ForcesFlow({ domain }: ForcesFlowProps) {
+function ForcesFlow({ domain, selectedTerritory }: ForcesFlowProps) {
+    const [territoryFilter, setTerritoryFilter] = useState("All");
+    const [theaterFilter, setTheaterFilter] = useState("");
     const [forces, setForces] = useState<ForcesResult | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -70,18 +73,23 @@ function ForcesFlow({ domain }: ForcesFlowProps) {
         );
     }
 
-    const territories = Object.entries(forces.territories);
-
-    if (territories.length === 0) {
-        return (
-            <div className="command-flow forces-flow">
-                <p className="command-empty">No forces found.</p>
-            </div>
-        );
-    }
+    const allTerritories = Object.entries(forces.territories);
+    const selectedFilter = territoryFilter === "All" ? (selectedTerritory ?? "All") : territoryFilter;
+    const territories = allTerritories.filter(([name]) =>
+        (selectedFilter === "All" || name === selectedFilter) &&
+        name.toLowerCase().includes(theaterFilter.toLowerCase())
+    );
 
     return (
         <div className="command-flow forces-flow">
+            <div className="forces-filters">
+                <label>Territory <select value={territoryFilter} onChange={event => setTerritoryFilter(event.target.value)}>
+                    <option value="All">{selectedTerritory ? `Selected on map: ${selectedTerritory}` : "All territories"}</option>
+                    {allTerritories.map(([name]) => <option key={name} value={name}>{name}</option>)}
+                </select></label>
+                <label>Search location / theater <input value={theaterFilter} onChange={event => setTheaterFilter(event.target.value)} placeholder="Filter locations..." /></label>
+            </div>
+            {territories.length === 0 && <p className="command-empty">No matching forces.</p>}
             {territories.map(([territory, units]) => (
                 <div key={territory}>
                     <h3 className="command-section-title">{territory}</h3>

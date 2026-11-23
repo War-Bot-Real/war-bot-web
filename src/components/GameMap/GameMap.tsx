@@ -1,3 +1,4 @@
+import { playUiSound } from "../../sounds";
 import { useEffect, useRef, useState } from "react";
 import { Application, Assets, Sprite, Texture, Graphics } from "pixi.js";
 
@@ -39,7 +40,7 @@ function GameMap({
     const lookupRef = useRef<TerritoryPixelLookup | null>(null);
     const mapModeRef = useRef<Sprite | null>(null);
     const mapDataRef = useRef<MapData | null>(null);
-    const clickSound = useRef(new Audio("/click_territory.wav"));
+
 
     const nationSelectModeRef = useRef(nationSelectMode);
     const territorySelectedRef = useRef(territorySelected);
@@ -350,11 +351,11 @@ function GameMap({
 
                         if (nation) {
                             nationSelectedRef.current(nation);
-                            clickSound.current.play();
+                            playUiSound("/click_territory.wav");
                         }
                     } else {
                         territorySelectedRef.current(territory);
-                        clickSound.current.play();
+                        playUiSound("/click_territory.wav");
                     }
                 });
 

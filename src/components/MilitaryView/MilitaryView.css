@@ -9,15 +9,24 @@
 
 .military-popup {
     position: absolute;
-    top: 45px;
+    top: calc(100% + 8px);
+    bottom: auto;
     left: 0;
+
     z-index: 1000;
+
     width: 500px;
+    max-width: 100%;
+    max-height: 45vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+
     background: white;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
 
 .military-content {
     padding: 10px;

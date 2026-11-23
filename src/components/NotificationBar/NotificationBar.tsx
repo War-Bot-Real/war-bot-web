@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { playUiSound } from "../../sounds";
+import { useEffect, useState } from "react";
 
 import "./NotificationBar.css";
 import type { Message } from "../../types/Messages";
@@ -15,6 +16,8 @@ interface NotificationBarProps {
 }
 
 function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarProps) {
+    const [search, setSearch] = useState("");
+    const [typeFilter, setTypeFilter] = useState("all");
     const [unread, setUnread] = useState<Unread>({
         notifications: false,
         messages: false,
@@ -24,7 +27,11 @@ function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarP
     const news = messages.filter(message => message.type === "news").sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
     const playerMessages = messages.filter(message => message.type === "message").sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
     const notifications = messages.filter(message => message.type !== "news" && message.type !== "message").sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
-    const buttonSound = useRef(new Audio("/click_default.wav"));
+
+    const filterMessages = (items: Message[]) => items.filter(message => {
+        const matchesSearch = [message.message, message.sender, message.recipient, message.type].some(value => value?.toLowerCase().includes(search.toLowerCase()));
+        return matchesSearch && (popup !== "notifications" || typeFilter === "all" || message.type === typeFilter);
+    });
     const dateFormat: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit", hour12: true, month: "short", day: "numeric"}
 
     useEffect(() => {
@@ -66,7 +73,7 @@ function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarP
     };
 
     const togglePopup = (name: NotificationPopup) => {
-        buttonSound.current.play();
+        playUiSound("/click_default.wav");
 
         if (name === popup) {
             setPopup(null);
@@ -109,11 +116,16 @@ function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarP
             {popup === "news" && (
                 <div className="notification-popup">
                     <h3>World News</h3>
+                    <div className="notification-search">
+                        <input aria-label="Search notifications" placeholder="Search..." value={search} onChange={event => setSearch(event.target.value)} />
+                        
+                    </div>
 
-                    {news.length === 0 ? (
+
+                    {filterMessages(news).length === 0 ? (
                         <p>No world news.</p>
                     ) : (
-                        news.map(message => (
+                        filterMessages(news).map(message => (
                             <div key={message.id} className="notification-item">
                                 <div className="timestamp">
                                     {new Date(message.time).toLocaleString("en-US", dateFormat)}
@@ -128,11 +140,16 @@ function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarP
             {popup === "messages" && (
                 <div className="notification-popup">
                     <h3>Messages</h3>
+                    <div className="notification-search">
+                        <input aria-label="Search notifications" placeholder="Search..." value={search} onChange={event => setSearch(event.target.value)} />
+                        
+                    </div>
 
-                    {playerMessages.length === 0 ? (
+
+                    {filterMessages(playerMessages).length === 0 ? (
                         <p>No messages.</p>
                     ) : (
-                        playerMessages.map(message => (
+                        filterMessages(playerMessages).map(message => (
                             <div key={message.id} className="notification-item">
                                 <div className="timestamp">
                                     {new Date(message.time).toLocaleString("en-US", dateFormat)}
@@ -149,11 +166,19 @@ function NotificationBar({ nation, messages, popup, setPopup }: NotificationBarP
             {popup === "notifications" && (
                 <div className="notification-popup">
                     <h3>Notifications</h3>
+                    <div className="notification-search">
+                        <input aria-label="Search notifications" placeholder="Search..." value={search} onChange={event => setSearch(event.target.value)} />
+                        {popup === "notifications" && <select aria-label="Filter notification type" value={typeFilter} onChange={event => setTypeFilter(event.target.value)}>
+                            <option value="all">All types</option>
+                            {[...new Set(notifications.map(message => message.type))].map(type => <option key={type} value={type}>{type}</option>)}
+                        </select>}
+                    </div>
 
-                    {notifications.length === 0 ? (
+
+                    {filterMessages(notifications).length === 0 ? (
                         <p>No notifications.</p>
                     ) : (
-                        notifications.map(message => (
+                        filterMessages(notifications).map(message => (
                             <div key={message.id} className="notification-item">
                                 <div className="timestamp">
                                     {new Date(message.time).toLocaleString("en-US", dateFormat)}

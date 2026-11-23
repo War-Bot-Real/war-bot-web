@@ -84,3 +84,6 @@ button.notification-button.active {
 .message-content{
   margin: 5px;
 }
+.notification-search { display:flex; gap:8px; margin:8px 0 12px; flex-wrap:wrap; }
+.notification-search input { flex:1; min-width:110px; }
+.notification-search input, .notification-search select { padding:7px; border:1px solid #bbb; border-radius:3px; }

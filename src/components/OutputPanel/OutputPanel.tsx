@@ -27,6 +27,7 @@ import TerritoriesFlow from "../../commands/flows/TerritoriesFlow";
 import ResflowFlow from "../../commands/flows/ResflowFlow";
 import BuildFlow from "../../commands/flows/BuildFlow";
 import LoadCarrierFlow from "../../commands/flows/LoadCarrierFlow";
+import TopFlow from "../../commands/flows/TopFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -132,7 +133,7 @@ function OutputPanel({
                     }
                 />
             ) : activeCommand === "forces" ? (
-                <ForcesFlow />
+                <ForcesFlow selectedTerritory={selection?.type === "territory" ? selection.territory.name : null} />
             ) : activeCommand === "resflow" ? (
                 <ResflowFlow />
             ) : activeCommand === "loadcarrier" ? (
@@ -146,11 +147,13 @@ function OutputPanel({
                     }
                 />
             ) : activeCommand === "army" ? (
-                <ForcesFlow domain="ground" />
+                <ForcesFlow domain="ground" selectedTerritory={selection?.type === "territory" ? selection.territory.name : null} />
             ) : activeCommand === "navy" ? (
-                <ForcesFlow domain="naval" />
+                <ForcesFlow domain="naval" selectedTerritory={selection?.type === "territory" ? selection.territory.name : null} />
             ) : activeCommand === "airforce" ? (
-                <ForcesFlow domain="air" />
+                <ForcesFlow domain="air" selectedTerritory={selection?.type === "territory" ? selection.territory.name : null} />
+            ) : activeCommand === "top" ? (
+                <TopFlow />
             ) : activeCommand === "territories" ? (
                 <TerritoriesFlow
                     nation={

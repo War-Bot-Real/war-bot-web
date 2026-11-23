@@ -1,6 +1,7 @@
+
+import { playUiSound } from "../../sounds";
 import { supabase } from "../../lib/supabase";
-import { useRef } from "react";
-import "./NavBar.css"
+import "./NavBar.css";
 import type { Player } from "../../types/Player";
 
 interface NavbarProps {
@@ -10,10 +11,9 @@ interface NavbarProps {
 }
 
 function Navbar({ onAccount, onAdmin, user }: NavbarProps) {
-    const clickSound = useRef(new Audio("/click_default.wav"));
-
     const handleLogout = async () => {
-        clickSound.current.play();
+        playUiSound("/click_default.wav");
+
         const { error } = await supabase.auth.signOut();
 
         if (error) {
@@ -26,11 +26,11 @@ function Navbar({ onAccount, onAdmin, user }: NavbarProps) {
             <h1>War Bot Web</h1>
 
             <div className="navbar-actions">
-                {user?.admin && 
-                  <button onClick={onAdmin}>
-                      Admin
-                  </button>
-                }
+                {user?.admin && (
+                    <button onClick={onAdmin}>
+                        Admin
+                    </button>
+                )}
 
                 <button onClick={onAccount}>
                     Account

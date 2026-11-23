@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { playUiSound } from "./sounds";
+import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { Navigate, Route, Routes, useNavigate } from "react-router";
 
@@ -16,19 +17,15 @@ import type { Player } from "./types/Player";
 function App() {
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
+
     const [nation, setNation] = useState<Nation | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [user, setUser] = useState<Player | null>(null);
-    const clickSound = useRef<HTMLAudioElement | null>(null);
+
     const navigate = useNavigate();
     const authUserId = session?.user.id ?? null;
 
     useEffect(() => {
-        const audio = new Audio("/click_default.wav");
-        audio.preload = "auto";
-        clickSound.current = audio;
-        audio.load();
-
         supabase.auth.getSession().then(({ data }) => {
             setSession(data.session);
             setLoading(false);
@@ -89,10 +86,7 @@ function App() {
     }, [authUserId]);
 
     const playClickSound = () => {
-        if (clickSound.current) {
-            clickSound.current.currentTime = 0;
-            void clickSound.current.play();
-        }
+        playUiSound("/click_default.wav");
     };
 
     if (loading) return <p>Loading...</p>;

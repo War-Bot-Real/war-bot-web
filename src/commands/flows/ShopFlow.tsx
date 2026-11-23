@@ -70,6 +70,21 @@ function ShopFlow({ nation }: ShopFlowProps) {
   const ironBalance = getResourceBalance("Iron");
   const steelBalance = getResourceBalance("Steel");
 
+  const getMaxQuantity = (itemData: ShopItem) => {
+    if (balance === null) return 0;
+    const limits: number[] = [];
+    if (itemData.Money > 0) limits.push(Math.floor(balance / itemData.Money));
+    if ((itemData.Iron ?? 0) > 0) {
+      if (ironBalance === null) return 0;
+      limits.push(Math.floor(ironBalance / itemData.Iron!));
+    }
+    if ((itemData.Steel ?? 0) > 0) {
+      if (steelBalance === null) return 0;
+      limits.push(Math.floor(steelBalance / itemData.Steel!));
+    }
+    return Math.min(1000000, ...limits);
+  };
+
   useEffect(() => {
     if (balance === null || !shop || !canPurchase) return;
 
@@ -79,9 +94,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
       for (const items of Object.values(shop)) {
         for (const [item, rawItemData] of Object.entries(items)) {
           const itemData = rawItemData as ShopItem;
-          const maxQuantity = Math.floor(
-            balance / itemData.Money
-          );
+          const maxQuantity = getMaxQuantity(itemData);
 
           if (
             updated[item] !== undefined &&
@@ -95,17 +108,8 @@ function ShopFlow({ nation }: ShopFlowProps) {
 
       return updated;
     });
-  }, [balance, shop, canPurchase]);
+  }, [balance, shop, canPurchase, ironBalance, steelBalance]);
 
-  const getMaxQuantity = (
-    itemData: ShopItem
-  ) => {
-    if (balance === null) return 0;
-
-    return Math.floor(
-      balance / itemData.Money
-    );
-  };
 
   const handleQuantityChange = (
     item: string,
@@ -138,7 +142,7 @@ function ShopFlow({ nation }: ShopFlowProps) {
       quantities[item] ??
       (maxQuantity > 0 ? 1 : 0);
 
-    if (quantity < 1 || maxQuantity < 1) {
+    if (quantity < 1 || quantity > maxQuantity || maxQuantity < 1) {
       return;
     }
 

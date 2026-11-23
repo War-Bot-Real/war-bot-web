@@ -382,7 +382,7 @@
     gap: 3px;
 }
 
-.shop-item-info span:first-child {
+.shop-item-info > span:first-child {
     color: #292929;
 
     font-size: 14px;
@@ -391,7 +391,7 @@
     overflow-wrap: anywhere;
 }
 
-.shop-item-info span:last-child {
+.shop-item-info > span:last-child {
     color: #555555;
 
     font-size: 12px;
@@ -662,4 +662,147 @@
     object-fit: contain;
 
     image-rendering: auto;
+}
+
+/* Keep monetary prices identical whether or not an item needs resources. */
+.shop-item-info .shop-price,
+.shop-item-info .shop-price > span {
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+.shop-item-info .shop-price > span { color: #333333; }
+.shop-item-info .shop-price .shop-resource { font-weight: 600; }
+
+.territories-toolbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+.territories-toolbar input, .top-flow select { min-width:180px; padding:8px; border:1px solid #999; font:inherit; }
+.territories-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; }
+.territory-card { padding:12px; background:#d5d5d5; border:1px solid #999; }
+.territory-card h3 { margin:0 0 12px; font-size:15px; }
+.territory-card > div { display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-top:1px solid #bbb; font-size:12px; }
+.territory-card > div strong { text-align:right; overflow-wrap:anywhere; }
+.top-flow select { margin-bottom:14px; }
+
+.forces-filters { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+.forces-filters label { display:flex; flex-direction:column; gap:5px; font-size:12px; font-weight:bold; }
+.forces-filters select, .forces-filters input { min-width:160px; padding:8px; border:1px solid #999; font:inherit; }
+
+/* Center the Select from Military button text */
+.military-view > .action-button {
+    text-align: center;
+}
+
+/* Deploy inventory dropdown */
+.deploy-unit-picker {
+    position: relative;
+    width: 100%;
+}
+
+.deploy-unit-picker > input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.deploy-unit-options {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    max-height: 250px;
+    overflow-y: auto;
+    background: #f3f3f3;
+    border: 1px solid #888;
+    box-shadow: 0 4px 10px #0003;
+}
+
+.deploy-unit-options > button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    background: transparent;
+    color: #242424;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    font: inherit;
+}
+
+.deploy-unit-options > button:hover,
+.deploy-unit-options > button:focus {
+    background: #d2d2d2;
+}
+
+.deploy-unit-options > button > span:last-child {
+    color: #555;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.deploy-unit-options > p {
+    padding: 10px 12px;
+    margin: 0;
+    font-size: 13px;
+}
+
+
+/* Merge Units: full-width military selection button */
+.merge-flow .merge-military-selector {
+    width: 100%;
+    min-width: 0;
+}
+
+.merge-flow .merge-military-selector .military-view {
+    width: 100%;
+}
+
+.merge-flow .merge-military-selector .military-view > .action-button {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Keep the merge button full width */
+.merge-flow .command-form > .action-button {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+/* TOP rankings: align column headers with their values */
+.top-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.top-table th,
+.top-table td {
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.top-table th:nth-child(1),
+.top-table td:nth-child(1) {
+    width: 70px;
+}
+
+.top-table th:nth-child(2),
+.top-table td:nth-child(2) {
+    width: 45%;
+}
+
+.top-table th:nth-child(3),
+.top-table td:nth-child(3) {
+    width: auto;
+    text-align: right;
 }
