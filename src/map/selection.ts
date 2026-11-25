@@ -15,6 +15,46 @@ function normalizeTerritorySelection(territories: Territory[]): Selection {
     return { type: "territories", territories };
 }
 
+function toggleNationTerritories(
+    selection: Selection,
+    nationTerritories: Territory[],
+): Selection {
+    if (nationTerritories.length === 0) return selection;
+
+    const selectedTerritories =
+        selection?.type === "territory"
+            ? [selection.territory]
+            : selection?.type === "territories"
+              ? selection.territories
+              : [];
+    const selectedNames = new Set(
+        selectedTerritories.map((territory) => territory.name),
+    );
+    const nationNames = new Set(
+        nationTerritories.map((territory) => territory.name),
+    );
+    const nationAlreadySelected = nationTerritories.every((territory) =>
+        selectedNames.has(territory.name),
+    );
+
+    if (nationAlreadySelected) {
+        return normalizeTerritorySelection(
+            selectedTerritories.filter(
+                (territory) => !nationNames.has(territory.name),
+            ),
+        );
+    }
+
+    const mergedTerritories = new Map(
+        [...selectedTerritories, ...nationTerritories].map((territory) => [
+            territory.name,
+            territory,
+        ]),
+    );
+
+    return normalizeTerritorySelection([...mergedTerritories.values()]);
+}
+
 export function getSelectionAfterTerritoryClick(
     selection: Selection,
     clickedTerritory: Territory,
@@ -63,6 +103,13 @@ export function getSelectionAfterTerritoryClick(
     }
 
     if (modifiers.ctrlKey) {
+        if (nationSelectMode) {
+            const nationTerritories = territories.filter(
+                (territory) => territory.nation === clickedTerritory.nation,
+            );
+            return toggleNationTerritories(selection, nationTerritories);
+        }
+
         if (selection === null) {
             return {
                 type: "territories",

@@ -12,8 +12,7 @@ function SelectionModeToggle({
     return (
         <div className="selection-mode-toggle">
             <span className="selection-mode-label">
-                <span className="selection-mode-prefix">Selection: </span>
-                <strong>{nationMode ? "Nation" : "Province"}</strong>
+                <strong className="selection-mode-prefix">Select Nation</strong>
             </span>
 
             <button
