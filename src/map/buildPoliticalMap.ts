@@ -8,6 +8,10 @@ export function buildPoliticalMap(lookup: TerritoryPixelLookup, nations: Nation[
     const pixels = new Uint8ClampedArray(width * height * 4,);
 
     const nationsByName = new Map<string, Nation>();
+    const selectedTerritoryNames =
+        selection?.type === "territories"
+            ? new Set(selection.territories.map((territory) => territory.name))
+            : null;
 
     for (const nation of nations) {
         nationsByName.set(nation.name, nation);
@@ -37,6 +41,8 @@ export function buildPoliticalMap(lookup: TerritoryPixelLookup, nations: Nation[
 
         if (selection?.type === "territory") {
             selected = territory.name === selection.territory.name;
+        } else if (selectedTerritoryNames) {
+            selected = selectedTerritoryNames.has(territory.name);
         } else if (selection?.type === "nation") {
             selected = territory.nation === selection.nation.name;
         }

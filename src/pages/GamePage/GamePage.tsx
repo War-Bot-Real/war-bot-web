@@ -15,6 +15,9 @@ import type { Nation } from "../../types/Nation";
 import type { Message } from "../../types/Messages";
 import type { Player } from "../../types/Player";
 import type { NotificationPopup } from "../../types/NotificationPopup";
+import type { Territory } from "../../types/Territory";
+import type { TerritoryClickModifiers } from "../../map/selection";
+import { getSelectionAfterTerritoryClick } from "../../map/selection";
 import selectLayout, { LayoutConstants, type Layout } from "./Layouts/selectLayout";
 import MobilePortrait from "./Layouts/MobilePortrait";
 import MobileLandscape from "./Layouts/MobileLandscape";
@@ -42,6 +45,23 @@ function GamePage({ onAccount, onAdmin, nation, messages, user }: GamePageProps)
     const [layout, setLayout] = useState<Layout>();
 
     const { territories, nations, gameTime, mapChanged, updateMap } = useMapData();
+
+    const handleTerritoryClick = (
+        territory: Territory,
+        modifiers: TerritoryClickModifiers,
+        nationSelectMode: boolean,
+    ) => {
+        setSelection((current) =>
+            getSelectionAfterTerritoryClick(
+                current,
+                territory,
+                territories,
+                nations,
+                modifiers,
+                nationSelectMode,
+            ),
+        );
+    };
 
     const eventSounds = useRef({
         default: new Audio("/event_default.mp3"),
@@ -108,6 +128,7 @@ function GamePage({ onAccount, onAdmin, nation, messages, user }: GamePageProps)
     const layoutProps = {
         selection,
         setSelection,
+        handleTerritoryClick,
         activeCommand,
         setActiveCommand,
         notifPopup,

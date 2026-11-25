@@ -16,15 +16,21 @@ function BordersFlow({ selection }: { selection: Selection }) {
             return;
         }
 
+        if (selection.type === "territories") {
+            return;
+        }
+
         const loadBorders = async () => {
             try {
                   let response: TerritoryAsBorder[];
                   if (selection.type === 'nation') {
                     setName(selection.nation.name);
                     response = await getNationBorders(selection.nation.name);
-                  } else {
+                  } else if (selection.type === "territory") {
                     setName(selection.territory.name);
                     response = await getBorders(selection.territory.name);
+                  } else {
+                    return;
                   }
                   setBorders(response);
             } catch (error) {
@@ -40,6 +46,17 @@ function BordersFlow({ selection }: { selection: Selection }) {
             <div className="command-flow borders-flow">
                 <p className="command-empty">
                     Select a territory or nation on the map to see its borders.
+                </p>
+            </div>
+        );
+    }
+
+    if (selection.type === "territories") {
+        return (
+            <div className="command-flow borders-flow">
+                <p className="command-empty">
+                    Borders can be viewed for one territory or nation at a
+                    time. Select a single territory or nation.
                 </p>
             </div>
         );

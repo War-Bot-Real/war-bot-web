@@ -4,12 +4,18 @@ import type { Nation } from "../../../types/Nation";
 import type { NotificationPopup } from "../../../types/NotificationPopup";
 import type { Territory } from "../../../types/Territory";
 import type { Selection } from "../../../types/Selection";
+import type { TerritoryClickModifiers } from "../../../map/selection";
 
 export type Layout = "desktop" | "mobile-landscape" | "mobile-portrait";
 
 export interface LayoutProps {
     selection: Selection;
     setSelection: (selection: Selection) => void;
+    handleTerritoryClick: (
+        territory: Territory,
+        modifiers: TerritoryClickModifiers,
+        nationSelectMode: boolean,
+    ) => void;
     activeCommand: string | null;
     setActiveCommand: (command: string | null) => void;
     notifPopup: NotificationPopup;

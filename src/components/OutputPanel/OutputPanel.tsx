@@ -40,6 +40,36 @@ function OutputPanel({
     activeCommand,
     nation,
 }: OutputPanelProps) {
+    const singleTerritoryCommands = new Set([
+        "deploy",
+        "merge",
+        "split",
+        "disband",
+        "attack",
+        "move",
+        "forces",
+        "army",
+        "navy",
+        "airforce",
+        "build",
+        "borders",
+    ]);
+
+    if (
+        selection?.type === "territories" &&
+        activeCommand !== null &&
+        singleTerritoryCommands.has(activeCommand)
+    ) {
+        return (
+            <section className="output-panel">
+                <p className="command-empty">
+                    This command does not support multi-territory selection.
+                    Select one territory normally to continue.
+                </p>
+            </section>
+        );
+    }
+
     return (
         <section className="output-panel">
             {activeCommand === "shop" ? (
@@ -155,17 +185,26 @@ function OutputPanel({
             ) : activeCommand === "top" ? (
                 <TopFlow />
             ) : activeCommand === "territories" ? (
-                <TerritoriesFlow
-                    nation={
-                        selection?.type === "nation"
-                        ? selection.nation.name
-                        : null
-                    }
-                />
+                <TerritoriesFlow nation={selection?.type === "nation" ? selection.nation.name : null}/>
             ) : selection?.type === "territory" ? (
                 <TerritoryFlow territory={selection.territory}/>
             ) : selection?.type === "nation" ? (
                 <NationFlow nation={selection.nation}/>
+            ) : selection?.type === "territories" ? (
+                <>
+                    <h2>
+                        {selection.territories.length}{" "}
+                        {selection.territories.length === 1
+                            ? "territory"
+                            : "territories"}{" "}
+                        selected
+                    </h2>
+                    <ul>
+                        {selection.territories.map((territory) => (
+                            <li key={territory.name}>{territory.name}</li>
+                        ))}
+                    </ul>
+                </>
             ) : (
                 <>
                     <h2>Welcome</h2>
@@ -181,7 +220,15 @@ function OutputPanel({
                     </p>
 
                     <p>
-                        <b>Shift/Ctrl Click:</b> Select Nation
+                        <b>Ctrl + Click:</b> Add or remove a territory
+                    </p>
+
+                    <p>
+                        <b>Shift + Click:</b> Select Nation
+                    </p>
+
+                    <p>
+                        <b>Ctrl + Shift + Click:</b> Add Nation Territories
                     </p>
 
                     <p>

@@ -18,6 +18,7 @@ import { LayoutConstants, type LayoutProps } from "./selectLayout";
 function MobilePortrait({
     selection,
     setSelection,
+    handleTerritoryClick,
     activeCommand,
     setActiveCommand,
     notifPopup,
@@ -84,23 +85,7 @@ function MobilePortrait({
                         nations={nations}
                         selection={selection}
                         nationSelectMode={nationSelectMode}
-                        territorySelected={territory =>
-                            setSelection(
-                                selection?.type === "territory" &&
-                                    selection.territory.name === territory.name
-                                    ? null
-                                    : { type: "territory", territory }
-                            )
-                        }
-                        nationSelected={nation =>
-                            setSelection(
-                                selection?.type === "nation" &&
-                                    selection.nation.name === nation.name
-                                    ? null
-                                    : { type: "nation", nation }
-                            )
-
-                        }
+                        territoryClicked={handleTerritoryClick}
                         onMapDimensions={(width, height) =>
                             setMapDimensions({ width, height })
                         }

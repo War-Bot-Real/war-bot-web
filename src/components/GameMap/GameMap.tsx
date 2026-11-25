@@ -12,14 +12,18 @@ import type { Nation } from "../../types/Nation";
 import type { Selection } from "../../types/Selection";
 import type { MapMode } from "../MapModeBar/MapModeBar";
 import type { MapData } from "../../types/MapData";
+import type { TerritoryClickModifiers } from "../../map/selection";
 
 interface GameMapProps {
     territories: Territory[];
     nations: Nation[];
     selection: Selection;
     nationSelectMode: boolean;
-    territorySelected: (territory: Territory) => void;
-    nationSelected: (nation: Nation) => void;
+    territoryClicked: (
+        territory: Territory,
+        modifiers: TerritoryClickModifiers,
+        nationSelectMode: boolean,
+    ) => void;
     onMapDimensions: (width: number, height: number) => void;
     mapMode: MapMode;
     gameTime: number;
@@ -29,9 +33,8 @@ function GameMap({
     territories,
     nations,
     selection,
-    territorySelected,
+    territoryClicked,
     nationSelectMode,
-    nationSelected,
     onMapDimensions,
     mapMode,
     gameTime
@@ -43,16 +46,14 @@ function GameMap({
 
 
     const nationSelectModeRef = useRef(nationSelectMode);
-    const territorySelectedRef = useRef(territorySelected);
-    const nationSelectedRef = useRef(nationSelected);
+    const territoryClickedRef = useRef(territoryClicked);
 
     const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
     useEffect(() => {
         nationSelectModeRef.current = nationSelectMode;
-        territorySelectedRef.current = territorySelected;
-        nationSelectedRef.current = nationSelected;
-    }, [nationSelectMode, territorySelected, nationSelected]);
+        territoryClickedRef.current = territoryClicked;
+    }, [nationSelectMode, territoryClicked]);
 
     useEffect(() => {
         let app: Application | null = null;
@@ -337,26 +338,15 @@ function GameMap({
                             territoryIndex
                         ];
 
-                    if (
-                        nationSelectModeRef.current ||
-                        event.shiftKey ||
-                        event.ctrlKey
-                    ) {
-                        const nation =
-                            nations.find(
-                                (nation: Nation) =>
-                                    nation.name ===
-                                    territory.nation,
-                            );
-
-                        if (nation) {
-                            nationSelectedRef.current(nation);
-                            playUiSound("/click_territory.wav");
-                        }
-                    } else {
-                        territorySelectedRef.current(territory);
-                        playUiSound("/click_territory.wav");
-                    }
+                    territoryClickedRef.current(
+                        territory,
+                        {
+                            ctrlKey: event.ctrlKey,
+                            shiftKey: event.shiftKey,
+                        },
+                        nationSelectModeRef.current,
+                    );
+                    playUiSound("/click_territory.wav");
                 });
 
             } catch (error) {

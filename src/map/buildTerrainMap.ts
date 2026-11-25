@@ -12,6 +12,10 @@ export function buildTerrainMap(
         lookup.width,
         lookup.height,
     );
+    const selectedTerritoryNames =
+        selection?.type === "territories"
+            ? new Set(selection.territories.map((territory) => territory.name))
+            : null;
 
     for (let i = 0; i < lookup.territoryIds.length; i++) {
         const territoryIndex = lookup.territoryIds[i];
@@ -32,7 +36,14 @@ export function buildTerrainMap(
         
         let r, g, b: number;
 
-        if (selection?.type === "territory" && selection.territory.name !== territory.name || selection?.type === "nation" && selection.nation.name !== territory.nation) {
+        if (
+            (selection?.type === "territory" &&
+                selection.territory.name !== territory.name) ||
+            (selectedTerritoryNames !== null &&
+                !selectedTerritoryNames.has(territory.name)) ||
+            (selection?.type === "nation" &&
+                selection.nation.name !== territory.nation)
+        ) {
           [r, g, b] = [255, 255, 255]
         } else {
           [r, g, b] = terrain.Color;
