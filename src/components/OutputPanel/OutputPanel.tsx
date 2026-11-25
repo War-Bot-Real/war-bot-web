@@ -4,6 +4,7 @@ import type { Nation } from "../../types/Nation";
 import ShopFlow from "../../commands/flows/ShopFlow";
 import TerritoryFlow from "./outputs/TerritoryInfo";
 import NationFlow from "./outputs/NationInfo";
+import TerritoriesInfo from "./outputs/TerritoriesInfo";
 import "../../commands/styles.css";
 import SetTaxFlow from "../../commands/flows/SetTaxFlow";
 import BalanceFlow from "../../commands/flows/BalanceFlow";
@@ -191,20 +192,7 @@ function OutputPanel({
             ) : selection?.type === "nation" ? (
                 <NationFlow nation={selection.nation}/>
             ) : selection?.type === "territories" ? (
-                <>
-                    <h2>
-                        {selection.territories.length}{" "}
-                        {selection.territories.length === 1
-                            ? "territory"
-                            : "territories"}{" "}
-                        selected
-                    </h2>
-                    <ul>
-                        {selection.territories.map((territory) => (
-                            <li key={territory.name}>{territory.name}</li>
-                        ))}
-                    </ul>
-                </>
+                <TerritoriesInfo territories={selection.territories} />
             ) : (
                 <>
                     <h2>Welcome</h2>
