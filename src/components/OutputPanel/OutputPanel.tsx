@@ -29,6 +29,7 @@ import ResflowFlow from "../../commands/flows/ResflowFlow";
 import BuildFlow from "../../commands/flows/BuildFlow";
 import LoadCarrierFlow from "../../commands/flows/LoadCarrierFlow";
 import TopFlow from "../../commands/flows/TopFlow";
+import PaveFlow from "../../commands/flows/PaveFlow";
 
 interface OutputPanelProps {
     selection: Selection;
@@ -177,6 +178,8 @@ function OutputPanel({
                             : null
                     }
                 />
+            ) : activeCommand === "pave" ? (
+                <PaveFlow selection={selection} />
             ) : activeCommand === "army" ? (
                 <ForcesFlow domain="ground" selectedTerritory={selection?.type === "territory" ? selection.territory.name : null} />
             ) : activeCommand === "navy" ? (

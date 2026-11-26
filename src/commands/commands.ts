@@ -104,6 +104,12 @@ export const commands: Command[] = [
         requiresNation: true
     },
     {
+        id: "pave",
+        name: "Pave Rail",
+        context: "territory",
+        requiresNation: true
+    },
+    {
         id: "borders",
         name: "Borders",
         context: "territory",

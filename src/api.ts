@@ -201,3 +201,11 @@ export async function loadCarrier(carrierId: string, unitIds: string[]) {
 export async function setUsername(username: string) {
     return fetchRequest(`username/${username}`, "PATCH");
 }
+
+export async function pavePrices(territory: string) {
+    return fetchRequest(`pave/${territory}/prices`);
+}
+
+export async function pave(fromTerritory: string, toTerritory: string) {
+    return fetchRequest(`pave/${fromTerritory}/${toTerritory}`, "POST");
+}
